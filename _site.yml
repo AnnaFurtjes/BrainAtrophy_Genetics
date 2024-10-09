@@ -1,0 +1,12 @@
+name: "Anna E. Fürtjes"
+output_dir: "."
+navbar:
+  title: "Brain atrophy genetics"
+  type: inverse
+  left: 
+   - text: "Home"
+     href: index.html
+   - text: "Page 1"
+     href: Analysis.html
+   - text: "Page 2"
+     href: Aim2.html

@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Anna Elisabeth Furtjes">
+<meta name="dcterms.date" content="2024-10-30">
+
+<title>Brain Atrophy Genetics - Phenotypic associations with lifetime brain atrophy</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Brain Atrophy Genetics</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">Overview</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#load-packages" id="toc-load-packages" class="nav-link active" data-scroll-target="#load-packages">Load packages</a></li>
+  <li><a href="#define-funtion" id="toc-define-funtion" class="nav-link" data-scroll-target="#define-funtion">Define funtion</a></li>
+  <li><a href="#calculate-phenotypic-associations" id="toc-calculate-phenotypic-associations" class="nav-link" data-scroll-target="#calculate-phenotypic-associations">Calculate phenotypic associations</a>
+  <ul class="collapse">
+  <li><a href="#lothian-birth-cohort-lbc-1936" id="toc-lothian-birth-cohort-lbc-1936" class="nav-link" data-scroll-target="#lothian-birth-cohort-lbc-1936">Lothian Birth Cohort (LBC) 1936</a>
+  <ul class="collapse">
+  <li><a href="#wave-2-lifetime-brain-atrophy-lba-cross-sectional" id="toc-wave-2-lifetime-brain-atrophy-lba-cross-sectional" class="nav-link" data-scroll-target="#wave-2-lifetime-brain-atrophy-lba-cross-sectional">Wave 2: Lifetime brain atrophy (LBA; cross-sectional)</a></li>
+  <li><a href="#wave-5-lba-cross-sectional" id="toc-wave-5-lba-cross-sectional" class="nav-link" data-scroll-target="#wave-5-lba-cross-sectional">Wave 5: LBA (cross-sectional)</a></li>
+  <li><a href="#longitudinal-data" id="toc-longitudinal-data" class="nav-link" data-scroll-target="#longitudinal-data">Longitudinal data</a></li>
+  </ul></li>
+  <li><a href="#uk-biobank-ukb" id="toc-uk-biobank-ukb" class="nav-link" data-scroll-target="#uk-biobank-ukb">UK Biobank (UKB)</a>
+  <ul class="collapse">
+  <li><a href="#wave-2-lba-cross-sectional" id="toc-wave-2-lba-cross-sectional" class="nav-link" data-scroll-target="#wave-2-lba-cross-sectional">Wave 2: LBA (cross-sectional)</a></li>
+  <li><a href="#wave-3-lba-cross-sectional" id="toc-wave-3-lba-cross-sectional" class="nav-link" data-scroll-target="#wave-3-lba-cross-sectional">Wave 3: LBA (cross-sectional)</a></li>
+  <li><a href="#longitudinal-atrophy-scores" id="toc-longitudinal-atrophy-scores" class="nav-link" data-scroll-target="#longitudinal-atrophy-scores">Longitudinal atrophy scores</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#plot-results" id="toc-plot-results" class="nav-link" data-scroll-target="#plot-results">Plot results</a>
+  <ul class="collapse">
+  <li><a href="#lbc1936" id="toc-lbc1936" class="nav-link" data-scroll-target="#lbc1936">LBC1936</a></li>
+  <li><a href="#ukb" id="toc-ukb" class="nav-link" data-scroll-target="#ukb">UKB</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Phenotypic associations with lifetime brain atrophy</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Anna Elisabeth Furtjes </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 30, 2024</p>
+    </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Doi</div>
+    <div class="quarto-title-meta-contents">
+      <p class="doi">
+        <a href="https://doi.org/test">test</a>
+      </p>
+    </div>
+  </div>
+  </div>
+  
+
+</header>
+
+<hr>
+<p>Results produced by the code below are described in the manuscript under section:<br>
+<strong>Measures of LBA predict brain atrophy rated by neuroradiological experts, as well as other ageing-related health traits such as frailty and cognitive ability</strong>.</p>
+<p>The outcome traits were derived using code displayed in ‘Data preparation’: <a href="test.html">LBC</a> and <a href="test.html">UKB</a>.</p>
+<section id="load-packages" class="level1">
+<h1>Load packages</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="define-funtion" class="level1">
+<h1>Define funtion</h1>
+<p>This function calculates uni-variate associations across all outcomes in <code>pheno</code> and all predictors in <code>neuro</code>. The function detects whether traits are continuous, binary, or zero-inflated and runs the models accordingly with linear, logistic, or hurdle regression. The choice of model can be overwritten with the <code>overwrite</code> flag.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rawAssocAim3 <span class="ot">=</span> <span class="cf">function</span>(<span class="at">pheno =</span> pheno,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">neuro =</span> neuro,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">neuroVar =</span> <span class="st">"resid_stand"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">numOutcomeStand =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">overwrite =</span> <span class="cn">NULL</span>){</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># find ID column</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    IDvar <span class="ot">=</span> <span class="fu">names</span>(pheno)[<span class="fu">names</span>(pheno) <span class="sc">%in%</span> <span class="fu">names</span>(neuro)]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">length</span>(IDvar) <span class="sc">==</span> <span class="dv">0</span>){<span class="fu">warning</span>(<span class="st">"Pheno and neuro data do not share an ID column."</span>); <span class="cf">break</span>}</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># keep neuro data from one time point only</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#neuro = neuro[which(neuro$wave == neuroWave),]</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># edit 8/4/2024: saved data for each wave individually so no need to subset anymore</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># merge the two data</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    dat <span class="ot">=</span> <span class="fu">merge</span>(pheno, neuro, <span class="at">by =</span> IDvar)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># identify columns that can analysed with logit models</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    bin <span class="ot">=</span> <span class="fu">apply</span>(pheno, <span class="dv">2</span>, <span class="cf">function</span>(x){ <span class="fu">all</span>(<span class="fu">na.omit</span>(x) <span class="sc">%in%</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>)})</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    binVar <span class="ot">=</span> <span class="fu">attr</span>(bin, <span class="st">"names"</span>)[bin]</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># identify columns that can be analysed with linear models</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># any variable where 50% or more of the entries are unique, I think it's safe to say its a continuous value</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    num <span class="ot">=</span> <span class="fu">apply</span>(pheno, <span class="dv">2</span>, <span class="cf">function</span>(x){ (<span class="fu">length</span>(<span class="fu">unique</span>(x))<span class="sc">/</span><span class="fu">length</span>(x)) <span class="sc">&gt;</span> <span class="fl">0.5</span> })</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    numVar <span class="ot">=</span> <span class="fu">names</span>(pheno)[num]</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># this will however also pick up on IDvar</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    numVar <span class="ot">=</span> numVar[numVar <span class="sc">!=</span> IDvar]</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># standardise numeric variables if indicates</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">isTRUE</span>(numOutcomeStand)){</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      dat[,numVar] <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">lapply</span>(dat[,numVar], scale))</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    }<span class="cf">else</span>{<span class="fu">message</span>(<span class="st">"You chose not to standardise your outcome variable. If that was an accident, use numOutcomeStand == TRUE"</span>)}</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># identify zero-inflated variables to be analysed with hurdle regression</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if the mode in the data is represented in over 30% of the entries (and it's not binary), I think it's safe to say it's zero-inflated</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    Mode <span class="ot">=</span> <span class="cf">function</span>(y){un <span class="ot">=</span> <span class="fu">unique</span>(y); un[<span class="fu">which.max</span>(<span class="fu">tabulate</span>(<span class="fu">match</span>(y, un)))]}</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    mode <span class="ot">=</span> <span class="fu">apply</span>(pheno, <span class="dv">2</span>, <span class="cf">function</span>(x){ <span class="fu">sum</span>(x <span class="sc">==</span> <span class="fu">Mode</span>(x), <span class="at">na.rm=</span>T)<span class="sc">/</span><span class="fu">length</span>(x) <span class="sc">&gt;</span> <span class="fl">0.3</span> })</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    modeVar <span class="ot">=</span> <span class="fu">names</span>(pheno)[mode]</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># remove binary variables from this category</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    modeVar <span class="ot">=</span> modeVar[<span class="sc">!</span>modeVar <span class="sc">%in%</span> binVar]</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if user specified to overwrite the categorisation of variables into num, bin and mode, here I assign the user specified data format</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(overwrite)){</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># remove assigned status from binVar, numVar, modeVar</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        numVar <span class="ot">=</span> numVar[<span class="sc">!</span>numVar <span class="sc">%in%</span> overwrite<span class="sc">$</span>var]</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        binVar <span class="ot">=</span> binVar[<span class="sc">!</span>binVar <span class="sc">%in%</span> overwrite<span class="sc">$</span>var]</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        modeVar <span class="ot">=</span> modeVar[<span class="sc">!</span>modeVar <span class="sc">%in%</span> overwrite<span class="sc">$</span>var]</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># cycle through the rows in overwrite</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span>(a <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(overwrite)){</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span>(overwrite<span class="sc">$</span>modelType[a] <span class="sc">==</span> <span class="st">"hurdle"</span>){modeVar <span class="ot">=</span> <span class="fu">append</span>(modeVar, overwrite<span class="sc">$</span>var[a])}</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span>(overwrite<span class="sc">$</span>modelType[a] <span class="sc">==</span> <span class="st">"logistic"</span>){binVar <span class="ot">=</span> <span class="fu">append</span>(binVar, overwrite<span class="sc">$</span>var[a])}</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span>(overwrite<span class="sc">$</span>modelType[a] <span class="sc">==</span> <span class="st">"linear"</span>){numVar <span class="ot">=</span> <span class="fu">append</span>(numVar, overwrite<span class="sc">$</span>var[a])}</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test if all variables have been assigned a category</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    VarAvail <span class="ot">=</span> <span class="fu">names</span>(pheno)[<span class="fu">which</span>(<span class="fu">names</span>(pheno) <span class="sc">!=</span> IDvar)]</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    VarAssigned <span class="ot">=</span> <span class="fu">c</span>(binVar, numVar, modeVar)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">isFALSE</span>(<span class="fu">all</span>(VarAvail <span class="sc">%in%</span> VarAssigned))){<span class="fu">warning</span>(<span class="st">"It is not immediately obvious which category your variables belong to. Investigate and reformat to determine accurate statistical models! Alternatively, you can overwrite with the 'overwrite' command."</span>)}</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create object to hold results</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    resNames <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Outcome"</span>, <span class="st">"Predictor"</span>, <span class="st">"Stat.model"</span>, <span class="st">"beta"</span>, <span class="st">"std.error"</span>, <span class="st">"p.value"</span>, <span class="st">"R2_percent"</span>)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="at">nrow =</span> <span class="dv">0</span>, <span class="at">ncol =</span> <span class="fu">length</span>(resNames)))</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(results) <span class="ot">=</span> resNames</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    Index <span class="ot">=</span> <span class="fu">nrow</span>(results)</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    <span class="do">### calculate associations for linear models</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> numVar){</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>      model <span class="ot">=</span> <span class="fu">lm</span>(<span class="fu">paste0</span>(i, <span class="st">" ~ "</span>, neuroVar), <span class="at">data =</span> dat)</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>      <span class="co"># store model info</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>      Index <span class="ot">=</span> Index<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>      results[Index,] <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>Outcome[Index] <span class="ot">=</span> i</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>Predictor[Index] <span class="ot">=</span> neuroVar</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>Stat.model[Index] <span class="ot">=</span> <span class="st">"Linear regression"</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>beta[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">1</span>]</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>std.error[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">2</span>]</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>p.value[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">4</span>]</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>R2_percent[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>r.squared<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>    <span class="do">### calculate logistic models</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> binVar){</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>        <span class="co"># code prior to running this function should have made the binary variables factors </span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>      model <span class="ot">=</span> <span class="fu">glm</span>(<span class="fu">paste0</span>(i, <span class="st">" ~ "</span>, neuroVar), <span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">data =</span> dat)</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>      <span class="co"># store model info</span></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>      Index <span class="ot">=</span> Index<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>      results[Index,] <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>Outcome[Index] <span class="ot">=</span> i</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>Predictor[Index] <span class="ot">=</span> neuroVar</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>Stat.model[Index] <span class="ot">=</span> <span class="st">"Logistic regression"</span></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>beta[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">1</span>]</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>std.error[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">2</span>]</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>p.value[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">4</span>]</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>R2_percent[Index] <span class="ot">=</span> fmsb<span class="sc">::</span><span class="fu">NagelkerkeR2</span>(model)<span class="sc">$</span>R2 <span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>    <span class="do">## calculate hurdle models</span></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> modeVar){</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>      <span class="co"># force variable to be inetger as the model will otherwise not run *made for count values)</span></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>      dat[,i] <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">round</span>(dat[,i]))</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>      model <span class="ot">=</span> pscl<span class="sc">::</span><span class="fu">hurdle</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(i, <span class="st">" ~ "</span>, neuroVar)), <span class="at">data =</span> dat, <span class="at">dist=</span><span class="st">"negbin"</span>)</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>      <span class="co"># store model info</span></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>      Index <span class="ot">=</span> Index<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>      results[Index,] <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>Outcome[Index] <span class="ot">=</span> i</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>Predictor[Index] <span class="ot">=</span> neuroVar</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>Stat.model[Index] <span class="ot">=</span> <span class="st">"Hurdle regression"</span></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>beta[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>coefficient<span class="sc">$</span>zero[<span class="dv">2</span>,<span class="dv">1</span>]</span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>std.error[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>coefficient<span class="sc">$</span>zero[<span class="dv">2</span>,<span class="dv">2</span>]</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>p.value[Index] <span class="ot">=</span> <span class="fu">summary</span>(model)<span class="sc">$</span>coefficient<span class="sc">$</span>zero[<span class="dv">2</span>,<span class="dv">4</span>]</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>      results<span class="sc">$</span>R2_percent[Index] <span class="ot">=</span> pscl<span class="sc">::</span><span class="fu">pR2</span>(model)[<span class="dv">5</span>]<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="st">"Parameters for hurdle regression are zero hurdle model coefficient (binomial with logit link), but R2 is for both parts of the model."</span>)</span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(results)</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="calculate-phenotypic-associations" class="level1">
+<h1>Calculate phenotypic associations</h1>
+<section id="lothian-birth-cohort-lbc-1936" class="level2">
+<h2 class="anchored" data-anchor-id="lothian-birth-cohort-lbc-1936">Lothian Birth Cohort (LBC) 1936</h2>
+<section id="wave-2-lifetime-brain-atrophy-lba-cross-sectional" class="level3">
+<h3 class="anchored" data-anchor-id="wave-2-lifetime-brain-atrophy-lba-cross-sectional">Wave 2: Lifetime brain atrophy (LBA; cross-sectional)</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in LBC data </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pheno <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/LBC1936_allPheno.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/LBC1936_crossNeuroWave1.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure binary variables are coded as factors because the function will otherwise not recognise it as factor</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ColNames<span class="ot">=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"hypertension"</span>,<span class="st">"Stroke"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>pheno[ColNames] <span class="ot">=</span> <span class="fu">lapply</span>(pheno[ColNames], as.factor)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure continuous variables are standardised (rawAssocAim3 deals with that)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#ColNames=c("iCog", "sCog", "iFrailty", "sFrailty", "iBMI", "sBMI", "BrainAge","ageMRI_w2")</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#pheno[ColNames] = as.data.frame(scale(pheno[ColNames]))</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># to ensure unified interpretation, I reverse code the ratio and residual score</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>resid_stand <span class="ot">=</span> neuro<span class="sc">$</span>resid_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>ratio_stand <span class="ot">=</span> neuro<span class="sc">$</span>ratio_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate raw associations for all atrophy scores</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>overwrite <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">var =</span> <span class="fu">c</span>(<span class="st">"VisualAtrophyDeep"</span>, <span class="st">"VisualAtrophySuperficial"</span>), <span class="at">modelType =</span> <span class="fu">c</span>(<span class="st">"linear"</span>, <span class="st">"linear"</span>))</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>rawDiff <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"diff_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>rawRatio <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"ratio_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>rawResid <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"resid_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>raw2 <span class="ot">=</span> <span class="fu">rbind</span>(rawDiff, rawRatio, rawResid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="wave-5-lba-cross-sectional" class="level3">
+<h3 class="anchored" data-anchor-id="wave-5-lba-cross-sectional">Wave 5: LBA (cross-sectional)</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pheno <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/LBC1936_allPheno.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/LBC1936_crossNeuroWave4.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure binary variables are coded as factors because the function will otherwise not recognise it as factor</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ColNames<span class="ot">=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"hypertension"</span>,<span class="st">"Stroke"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>pheno[ColNames] <span class="ot">=</span> <span class="fu">lapply</span>(pheno[ColNames], as.factor)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure continuous variables are standardised (rawAssocAim3 deals with that)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#ColNames=c("iCog", "sCog", "iFrailty", "sFrailty", "iBMI", "sBMI", "BrainAge","ageMRI_w2")</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#pheno[ColNames] = as.data.frame(scale(pheno[ColNames]))</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># to ensure unified interpretation, I reverse code the ratio and residual score</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>resid_stand <span class="ot">=</span> neuro<span class="sc">$</span>resid_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>ratio_stand <span class="ot">=</span> neuro<span class="sc">$</span>ratio_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate raw associations for all atrophy scores</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>overwrite <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">var =</span> <span class="fu">c</span>(<span class="st">"VisualAtrophyDeep"</span>, <span class="st">"VisualAtrophySuperficial"</span>), <span class="at">modelType =</span> <span class="fu">c</span>(<span class="st">"linear"</span>, <span class="st">"linear"</span>))</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>rawDiff <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"diff_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>rawRatio <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"ratio_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>rawResid <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"resid_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>raw5 <span class="ot">=</span> <span class="fu">rbind</span>(rawDiff, rawRatio, rawResid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="longitudinal-data" class="level3">
+<h3 class="anchored" data-anchor-id="longitudinal-data">Longitudinal data</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in LBC data </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pheno <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/LBC1936_allPheno.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/LBC1936_longTBVWaves2and5.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure binary variables are coded as factors</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ColNames<span class="ot">=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"hypertension"</span>,<span class="st">"Stroke"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>pheno[ColNames] <span class="ot">=</span> <span class="fu">lapply</span>(pheno[ColNames], as.factor)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure continuous variables are standardised (rawAssocAim3 deals with that)</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#ColNames=c("iCog", "sCog", "iFrailty", "sFrailty", "iBMI", "sBMI", "BrainAge","ageMRI_w2")</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#pheno[ColNames] = as.data.frame(scale(pheno[ColNames]))</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># to ensure unified interpretation, I reverse code the ratio and residual score</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>TBVresid_2to5_stand <span class="ot">=</span> neuro<span class="sc">$</span>TBVresid_2to5_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>TBVratio_5to2_stand <span class="ot">=</span> neuro<span class="sc">$</span>TBVratio_5to2_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate raw associations for all atrophy scores</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>overwrite <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">var =</span> <span class="fu">c</span>(<span class="st">"VisualAtrophyDeep"</span>, <span class="st">"VisualAtrophySuperficial"</span>), <span class="at">modelType =</span> <span class="fu">c</span>(<span class="st">"linear"</span>, <span class="st">"linear"</span>))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>rawDiff <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"TBVdiff_2to5_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>rawRatio <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"TBVratio_5to2_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>rawResid <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"TBVresid_2to5_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>rawObs <span class="ot">=</span> <span class="fu">rbind</span>(rawDiff, rawRatio, rawResid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save cross data</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>raw2<span class="sc">$</span>wave <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>raw5<span class="sc">$</span>wave <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">=</span> <span class="fu">rbind</span>(raw2, raw5)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>raw<span class="sc">$</span>purpose <span class="ot">=</span> <span class="st">"Estimated Atrophy (cross-sectional)"</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>raw<span class="sc">$</span>purpose <span class="ot">=</span> <span class="st">"Estimated Atrophy (cross-sectional)"</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>rawObs<span class="sc">$</span>purpose <span class="ot">=</span> <span class="st">"Observed Atrophy (longitudinal)"</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>rawObs<span class="sc">$</span>wave <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>save <span class="ot">=</span> <span class="fu">rbind</span>(raw, rawObs)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(save, <span class="at">file =</span> <span class="fu">paste0</span>(wd, <span class="st">"/LBC1936_assocs_observed_vs_estimated_atrophy.txt"</span>), <span class="at">col.names =</span> T, <span class="at">row.names =</span> F, <span class="at">quote =</span> F, <span class="at">na =</span> <span class="cn">NA</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="uk-biobank-ukb" class="level2">
+<h2 class="anchored" data-anchor-id="uk-biobank-ukb">UK Biobank (UKB)</h2>
+<section id="wave-2-lba-cross-sectional" class="level3">
+<h3 class="anchored" data-anchor-id="wave-2-lba-cross-sectional">Wave 2: LBA (cross-sectional)</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in LBC data </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pheno <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/UKB_allPheno.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/UKB_neuroNoLongProcess.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get wave of interest</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">=</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>wave <span class="sc">==</span> <span class="dv">2</span>),]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># edit:30/09/2024 (realised later that I hadn't cleaned the longitudinal data the same as the cross-sectional data, 10SD cutoff which some participants violate with the longitudinal data) - removed 6 participants</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVdiff_2to3_stand <span class="sc">&lt;</span> <span class="dv">10</span>),]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVdiff_2to3_stand <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">10</span>)),]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVratio_3to2_stand <span class="sc">&lt;</span> <span class="dv">10</span>),]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVratio_3to2_stand <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">10</span>)),]</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVresid_2to3_stand <span class="sc">&lt;</span> <span class="dv">10</span>),]</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVresid_2to3_stand <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">10</span>)),]</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># to ensure unified interpretation, I reverse code the ratio and residual score</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>resid_stand <span class="ot">=</span> neuro<span class="sc">$</span>resid_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>ratio_stand <span class="ot">=</span> neuro<span class="sc">$</span>ratio_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure binary variables are coded as factors because the function will otherwise not recognise it as factor</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>ColNames<span class="ot">=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"hypertension"</span>,<span class="st">"stroke"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>pheno[ColNames] <span class="ot">=</span> <span class="fu">lapply</span>(pheno[ColNames], as.factor)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure continuous variables are standardised (rawAssocAim3 deals with that)</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#ColNames=c("cog", "BMI", "brainAge")</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#pheno[ColNames] = as.data.frame(scale(pheno[ColNames]))</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate raw associations for all atrophy scores</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>overwrite <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">var =</span> <span class="fu">c</span>(<span class="st">"packyears"</span>, <span class="st">"frailty"</span>), <span class="at">modelType =</span> <span class="fu">c</span>(<span class="st">"hurdle"</span>, <span class="st">"hurdle"</span>)) <span class="co"># can overwrite with logistic of linear</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>rawDiff <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"diff_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>rawRatio <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"ratio_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>rawResid <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"resid_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>raw2 <span class="ot">=</span> <span class="fu">rbind</span>(rawDiff, rawRatio, rawResid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="wave-3-lba-cross-sectional" class="level3">
+<h3 class="anchored" data-anchor-id="wave-3-lba-cross-sectional">Wave 3: LBA (cross-sectional)</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in data </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pheno <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/UKB_allPheno.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/UKB_neuroNoLongProcess.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get wave of interest</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">=</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>wave <span class="sc">==</span> <span class="dv">3</span>),]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># edit:30/09/2024 (realised later that I hadn't cleaned the longitudinal data the same as the cross-sectional data, 10SD cutoff which some participants violate with the longitudinal data) - removed 6 participants</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVdiff_2to3_stand <span class="sc">&lt;</span> <span class="dv">10</span>),]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVdiff_2to3_stand <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">10</span>)),]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVratio_3to2_stand <span class="sc">&lt;</span> <span class="dv">10</span>),]</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVratio_3to2_stand <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">10</span>)),]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVresid_2to3_stand <span class="sc">&lt;</span> <span class="dv">10</span>),]</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVresid_2to3_stand <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">10</span>)),]</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># to ensure unified interpretation, I reverse code the ratio and residual score</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>resid_stand <span class="ot">=</span> neuro<span class="sc">$</span>resid_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>ratio_stand <span class="ot">=</span> neuro<span class="sc">$</span>ratio_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure binary variables are coded as factors because the function will otherwise not recognise it as factor</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>ColNames<span class="ot">=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"hypertension"</span>,<span class="st">"stroke"</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>pheno[ColNames] <span class="ot">=</span> <span class="fu">lapply</span>(pheno[ColNames], as.factor)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure continuous variables are standardised (rawAssocAim3 deals with that)</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#ColNames=c("cog", "BMI", "brainAge")</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#pheno[ColNames] = as.data.frame(scale(pheno[ColNames]))</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate raw associations for all atrophy scores</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>overwrite <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">var =</span> <span class="fu">c</span>(<span class="st">"packyears"</span>, <span class="st">"frailty"</span>), <span class="at">modelType =</span> <span class="fu">c</span>(<span class="st">"hurdle"</span>, <span class="st">"hurdle"</span>)) <span class="co"># can overwrite with logistic of linear</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>rawDiff <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"diff_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>rawRatio <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"ratio_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>rawResid <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"resid_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>raw5 <span class="ot">=</span> <span class="fu">rbind</span>(rawDiff, rawRatio, rawResid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="longitudinal-atrophy-scores" class="level3">
+<h3 class="anchored" data-anchor-id="longitudinal-atrophy-scores">Longitudinal atrophy scores</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in data </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pheno <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/UKB_allPheno.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(wd, <span class="st">"/UKB_neuroNoLongProcess.txt"</span>), <span class="at">data.table =</span> F)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># shouldn't make a difference which wave we keep because long is saved double</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">=</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>wave <span class="sc">==</span> <span class="dv">2</span>),]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># edit:30/09/2024 (realised later that I hadn't cleaned the longitudinal data the same as the cross-sectional data, 10SD cutoff which some participants violate with the longitudinal data) - removed 6 participants</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVdiff_2to3_stand <span class="sc">&lt;</span> <span class="dv">10</span>),]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVdiff_2to3_stand <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">10</span>)),]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVratio_3to2_stand <span class="sc">&lt;</span> <span class="dv">10</span>),]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVratio_3to2_stand <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">10</span>)),]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVresid_2to3_stand <span class="sc">&lt;</span> <span class="dv">10</span>),]</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>neuro <span class="ot">&lt;-</span> neuro[<span class="fu">which</span>(neuro<span class="sc">$</span>TBVresid_2to3_stand <span class="sc">&gt;</span> (<span class="sc">-</span><span class="dv">10</span>)),]</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># to ensure unified interpretation, I reverse code the ratio and residual score</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>TBVresid_2to3_stand <span class="ot">=</span> neuro<span class="sc">$</span>TBVresid_2to3_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>neuro<span class="sc">$</span>TBVratio_3to2_stand <span class="ot">=</span> neuro<span class="sc">$</span>TBVratio_3to2_stand<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure binary variables are coded as factors because the function will otherwise not recognise it as factor</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>ColNames<span class="ot">=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"hypertension"</span>,<span class="st">"stroke"</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>pheno[ColNames] <span class="ot">=</span> <span class="fu">lapply</span>(pheno[ColNames], as.factor)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure continuous variables are standardised (rawAssocAim3 deals with that)</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#ColNames=c("cog", "BMI", "brainAge")</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#pheno[ColNames] = as.data.frame(scale(pheno[ColNames]))</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate raw associations for all atrophy scores</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>overwrite <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">var =</span> <span class="fu">c</span>(<span class="st">"packyears"</span>, <span class="st">"frailty"</span>), <span class="at">modelType =</span> <span class="fu">c</span>(<span class="st">"hurdle"</span>, <span class="st">"hurdle"</span>)) <span class="co"># can overwrite with logistic of linear</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>rawDiff <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"TBVdiff_2to3_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>rawRatio <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"TBVratio_3to2_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>rawResid <span class="ot">=</span> <span class="fu">rawAssocAim3</span>(<span class="at">pheno =</span> pheno, <span class="at">neuro =</span> neuro, <span class="at">neuroVar =</span> <span class="st">"TBVresid_2to3_stand"</span>, <span class="at">numOutcomeStand =</span> <span class="cn">TRUE</span>, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>rawObs <span class="ot">=</span> <span class="fu">rbind</span>(rawDiff, rawRatio, rawResid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save cross data</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>raw2<span class="sc">$</span>wave <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>raw5<span class="sc">$</span>wave <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">=</span> <span class="fu">rbind</span>(raw2, raw5)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>raw<span class="sc">$</span>purpose <span class="ot">=</span> <span class="st">"Estimated Atrophy (cross-sectional)"</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>raw<span class="sc">$</span>purpose <span class="ot">=</span> <span class="st">"Estimated Atrophy (cross-sectional)"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>rawObs<span class="sc">$</span>purpose <span class="ot">=</span> <span class="st">"Observed Atrophy (longitudinal)"</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>rawObs<span class="sc">$</span>wave <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>save <span class="ot">=</span> <span class="fu">rbind</span>(raw, rawObs)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(save, <span class="at">file =</span> <span class="fu">paste0</span>(wd, <span class="st">"/UKB_assocs_observed_vs_estimated_atrophy.txt"</span>), <span class="at">col.names =</span> T, <span class="at">row.names =</span> F, <span class="at">quote =</span> F, <span class="at">na =</span> <span class="cn">NA</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+</section>
+<section id="plot-results" class="level1">
+<h1>Plot results</h1>
+<section id="lbc1936" class="level2">
+<h2 class="anchored" data-anchor-id="lbc1936">LBC1936</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># betas between atrophy scores and traits</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(wd)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>file <span class="ot">=</span> <span class="fu">list.files</span>(<span class="at">pattern=</span><span class="st">"LBC1936_assocs_observed_vs_estimated_atrophy"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>assoc <span class="ot">=</span> <span class="fu">fread</span>(file)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># brain age phenotype is not intuitively interpretable:</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># positive value should mean the participant has a healthier looking brain than expected given their age </span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># negative value should mean the participant has an unhealthier looking brain than expected</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Hence, here we just flip the assocs so that more LBA is associated with older brain age</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>beta[<span class="fu">which</span>(assoc<span class="sc">$</span>Outcome <span class="sc">==</span> <span class="st">"BrainAge"</span>)] <span class="ot">&lt;-</span> assoc<span class="sc">$</span>beta[<span class="fu">which</span>(assoc<span class="sc">$</span>Outcome <span class="sc">==</span> <span class="st">"BrainAge"</span>)]<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate lower and upper bounds of assoc</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>ci_l <span class="ot">=</span> assoc<span class="sc">$</span>beta <span class="sc">-</span> (<span class="fl">1.96</span><span class="sc">*</span>assoc<span class="sc">$</span>std.error)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>ci_u <span class="ot">=</span> assoc<span class="sc">$</span>beta <span class="sc">+</span> (<span class="fl">1.96</span><span class="sc">*</span>assoc<span class="sc">$</span>std.error)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># because beta shouldn't exceed 1, and it makes the plots look ugly, I will artificially reduce those here</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>ci_l <span class="ot">=</span> <span class="fu">ifelse</span>(assoc<span class="sc">$</span>ci_l <span class="sc">&lt;</span> <span class="sc">-</span><span class="fl">1.21</span>, <span class="sc">-</span><span class="fl">1.21</span>, assoc<span class="sc">$</span>ci_l)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>ci_u <span class="ot">=</span> <span class="fu">ifelse</span>(assoc<span class="sc">$</span>ci_u <span class="sc">&gt;</span> <span class="fl">1.21</span>, <span class="fl">1.21</span>, assoc<span class="sc">$</span>ci_u)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co"># make data frame for geom_label</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>label <span class="ot">=</span> <span class="fu">paste0</span>(<span class="fu">round</span>(assoc<span class="sc">$</span>R2_percent, <span class="at">digits =</span> <span class="dv">1</span>), <span class="st">"%"</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co"># only print the label is correlation is significant</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>sigBonferroni <span class="ot">=</span> <span class="fl">0.05</span><span class="sc">/</span><span class="fu">length</span>(<span class="fu">unique</span>(assoc<span class="sc">$</span>Outcome))</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>label[<span class="fu">which</span>(assoc<span class="sc">$</span>p.value <span class="sc">&gt;</span> sigBonferroni)] <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################################################</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="do">###### Continuous traits</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################################################</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="do">############## ESTIMATED ATROPHY</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="do">### first, only estimated atrophy</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co"># only keep 'diff_stand', 'ratio_stand' or 'resid_stand'</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> assoc[<span class="fu">grepl</span>(<span class="st">"diff_stand|ratio_stand|resid_stand"</span>,assoc<span class="sc">$</span>Predictor),]</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to wave 5 (more atrophy)</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> estimated[<span class="fu">grepl</span>(<span class="st">"5"</span>, estimated<span class="sc">$</span>wave),]</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to continuous variables only</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> estimated[<span class="fu">grepl</span>(<span class="st">"Linear"</span>, estimated<span class="sc">$</span>Stat.model)]</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co"># c("iCog","sCog","Dementia","APOEe4","iFrailty","sFrailty","Diabetes","Stroke","Hypertension","iBMI","sBMI","BrainAge","Packyears")</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co"># order phenotypes</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>Outcomes <span class="ot">&lt;-</span> <span class="fu">factor</span>(estimated<span class="sc">$</span>Outcome, </span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>                             <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"VisualAtrophySuperficial"</span>,<span class="st">"VisualAtrophyDeep"</span>,<span class="st">"iCog"</span>,<span class="st">"sCog"</span>,<span class="st">"iFrailty"</span>,<span class="st">"sFrailty"</span>,<span class="st">"iBMI"</span>,<span class="st">"sBMI"</span>,<span class="st">"BrainAge"</span>),</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>                             <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Visual atrophy</span><span class="sc">\n</span><span class="st">rating</span><span class="sc">\n</span><span class="st"> (superficial)"</span>,<span class="st">"Visual atrophy</span><span class="sc">\n</span><span class="st">rating (deep)"</span>,<span class="st">"iCog"</span>,<span class="st">"sCog"</span>,<span class="st">"iFrailty"</span>,<span class="st">"sFrailty"</span>,<span class="st">"iBMI"</span>,<span class="st">"sBMI"</span>,<span class="st">"BrainAge"</span>),</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ordered=</span>T)</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>estLinear<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>estimated, <span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span>beta),<span class="at">shape=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="fl">1.25</span>, <span class="fl">1.25</span>)<span class="sc">+</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col=</span>Predictor),<span class="at">size=</span><span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>ci_l, <span class="at">xmax=</span>ci_u,<span class="at">col=</span>Predictor), <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">width=</span>.<span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">colour=</span><span class="st">"grey10"</span>, <span class="at">alpha=</span><span class="fl">0.5</span>,<span class="at">linetype=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span><span class="sc">-</span><span class="fl">0.7</span>, <span class="at">label =</span> label, <span class="at">col=</span>Predictor), <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">limits =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(estimated<span class="sc">$</span>Outcomes))))<span class="sc">+</span> <span class="co"># reverse order of y-axis</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.9</span>, <span class="fl">0.9</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Continuous outcome traits"</span>)<span class="sc">+</span></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Linear regression:</span><span class="sc">\n</span><span class="st">beta (95%CI)"</span>)<span class="sc">+</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Lifetime brain atrophy</span><span class="sc">\n</span><span class="st">at age 82 years</span><span class="sc">\n</span><span class="st">(wave 5)"</span>)<span class="sc">+</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Difference score"</span>, <span class="st">"Ratio score"</span>, <span class="st">"Residual score"</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#D81B60"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>)) <span class="sc">+</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size=</span><span class="dv">17</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span> <span class="co"># add centred title</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),<span class="co">#angle=45</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a><span class="do">### why is diff score always the other way? Sensible because larger diff score is worse, but smaller ratio score is worse</span></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="do">############## OBSERVED ATROPHY</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="do">### only keep longitudinal atrophy</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">=</span> assoc[<span class="fu">grepl</span>(<span class="st">"TBV"</span>,assoc<span class="sc">$</span>Predictor),]</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to continuous variables only</span></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">=</span> observed[<span class="fu">grepl</span>(<span class="st">"Linear"</span>, observed<span class="sc">$</span>Stat.model)]</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a><span class="co"># order phenotypes</span></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>Outcomes <span class="ot">&lt;-</span> <span class="fu">factor</span>(observed<span class="sc">$</span>Outcome, </span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>                            <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"VisualAtrophySuperficial"</span>,<span class="st">"VisualAtrophyDeep"</span>,<span class="st">"iCog"</span>,<span class="st">"sCog"</span>,<span class="st">"iFrailty"</span>,<span class="st">"sFrailty"</span>,<span class="st">"iBMI"</span>,<span class="st">"sBMI"</span>,<span class="st">"BrainAge"</span>),</span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>                            <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Visual atrophy</span><span class="sc">\n</span><span class="st">rating</span><span class="sc">\n</span><span class="st"> (superficial)"</span>,<span class="st">"Visual atrophy</span><span class="sc">\n</span><span class="st">rating (deep)"</span>,<span class="st">"iCog"</span>,<span class="st">"sCog"</span>,<span class="st">"iFrailty"</span>,<span class="st">"sFrailty"</span>,<span class="st">"iBMI"</span>,<span class="st">"sBMI"</span>,<span class="st">"BrainAge"</span>),</span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>                            <span class="at">ordered=</span>T)</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>obsLinear<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>observed, <span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span>beta),<span class="at">shape=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col=</span>Predictor),<span class="at">size=</span><span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>ci_l, <span class="at">xmax=</span>ci_u,<span class="at">col=</span>Predictor), <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">width=</span>.<span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">colour=</span><span class="st">"grey10"</span>, <span class="at">alpha=</span><span class="fl">0.5</span>,<span class="at">linetype=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span><span class="sc">-</span><span class="fl">0.7</span>, <span class="at">label =</span> label, <span class="at">col=</span>Predictor), <span class="at">size =</span> <span class="fl">3.5</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_discrete</span>(<span class="at">limits =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(observed<span class="sc">$</span>Outcomes))))<span class="sc">+</span> <span class="co"># reverse order of y-axis</span></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.9</span>, <span class="fl">0.9</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"ontinuous outcome traits"</span>)<span class="sc">+</span></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Linear regression:</span><span class="sc">\n</span><span class="st">beta (95%CI)"</span>)<span class="sc">+</span></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Observed atrophic changes</span><span class="sc">\n</span><span class="st">between age 73 and 82</span><span class="sc">\n</span><span class="st">(waves 2 to 5)"</span>)<span class="sc">+</span></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Difference score"</span>, <span class="st">"Ratio score"</span>, <span class="st">"Residual score"</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#D81B60"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>)) <span class="sc">+</span></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size=</span><span class="dv">17</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span> <span class="co"># add centred title</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),<span class="co">#angle=45</span></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">=</span> estLinear <span class="sc">+</span> </span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>        obsLinear <span class="sc">+</span> </span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot_layout</span>(<span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>        <span class="co">#plot_annotation(title = "Correlations with health-related outcomes in LBC",</span></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>                        <span class="co">#theme = theme(plot.title = element_text(face = "bold", colour = "black", size = 14, hjust = 0.5))) &amp; theme(legend.position = 'bottom')</span></span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="co">#ggpubr::annotate_figure(plot, top = text_grob("Correlations with health-related outcomes in LBC", </span></span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      color = "black", face = "bold", size = 14))</span></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################################################</span></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a><span class="do">###### Binary traits</span></span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################################################</span></span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a><span class="do">############## ESTIMATED ATROPHY</span></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="do">### first, only estimated atrophy</span></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="co"># only keep 'diff_stand', 'ratio_stand' or 'resid_stand'</span></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> assoc[<span class="fu">grepl</span>(<span class="st">"diff_stand|ratio_stand|resid_stand"</span>,assoc<span class="sc">$</span>Predictor),]</span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to wave 5 (more atrophy)</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> estimated[<span class="fu">grepl</span>(<span class="st">"5"</span>, estimated<span class="sc">$</span>wave),]</span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to continuous variables only</span></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> estimated[<span class="fu">grepl</span>(<span class="st">"Logistic|Hurdle"</span>, estimated<span class="sc">$</span>Stat.model)]</span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a><span class="co"># transform beta to OR</span></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>OR <span class="ot">=</span> <span class="fu">exp</span>(estimated<span class="sc">$</span>beta)</span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>ORci_l <span class="ot">=</span> <span class="fu">exp</span>(estimated<span class="sc">$</span>beta <span class="sc">-</span> (<span class="fl">1.96</span> <span class="sc">*</span> estimated<span class="sc">$</span>std.error))</span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>ORci_u <span class="ot">=</span> <span class="fu">exp</span>(estimated<span class="sc">$</span>beta <span class="sc">+</span> (<span class="fl">1.96</span> <span class="sc">*</span> estimated<span class="sc">$</span>std.error))</span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a><span class="co"># display as log odds</span></span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>logOdds <span class="ot">=</span> <span class="fu">log</span>(estimated<span class="sc">$</span>OR)</span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>logOdds_ci_l <span class="ot">=</span> <span class="fu">log</span>(estimated<span class="sc">$</span>ORci_l)</span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>logOdds_ci_u <span class="ot">=</span> <span class="fu">log</span>(estimated<span class="sc">$</span>ORci_u)</span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a><span class="co"># order phenotypes</span></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>Outcomes <span class="ot">&lt;-</span> <span class="fu">factor</span>(estimated<span class="sc">$</span>Outcome, </span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a>                             <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"Stroke"</span>,<span class="st">"hypertension"</span>,<span class="st">"packyears"</span>),</span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a>                             <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"Diabetes"</span>,<span class="st">"Stroke"</span>,<span class="st">"Hypertension"</span>,<span class="st">"Packyears"</span>),</span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ordered=</span>T)</span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a>estLog<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>estimated, <span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span>OR),<span class="at">shape=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="fl">2.3</span>)<span class="sc">+</span></span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col=</span>Predictor),<span class="at">size=</span><span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>ORci_l, <span class="at">xmax=</span>ORci_u,<span class="at">col=</span>Predictor), <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">width=</span>.<span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>, <span class="at">colour=</span><span class="st">"grey10"</span>, <span class="at">alpha=</span><span class="fl">0.5</span>,<span class="at">linetype=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span><span class="fl">0.4</span>, <span class="at">label =</span> label, <span class="at">col=</span>Predictor), <span class="at">size =</span> <span class="fl">3.5</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_discrete</span>(<span class="at">limits =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(estimated<span class="sc">$</span>Outcomes))))<span class="sc">+</span> <span class="co"># reverse order of y-axis</span></span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.3</span>,<span class="dv">3</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">3</span>,<span class="at">by=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Binary outcome traits"</span>)<span class="sc">+</span></span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Logistic regression:</span><span class="sc">\n</span><span class="st">Odds ratio (95%CI)"</span>)<span class="sc">+</span></span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ggtitle("'Estimated' brain atrophy\n(at wave 5)")+</span></span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Difference score"</span>, <span class="st">"Ratio score"</span>, <span class="st">"Residual score"</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#D81B60"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>)) <span class="sc">+</span></span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size=</span><span class="dv">17</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span> <span class="co"># add centred title</span></span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),<span class="co">#angle=45</span></span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">13</span>))<span class="sc">+</span></span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a><span class="do">############## OBSERVED ATROPHY</span></span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a><span class="do">### only keep longitudinal atrophy</span></span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">=</span> assoc[<span class="fu">grepl</span>(<span class="st">"TBV"</span>,assoc<span class="sc">$</span>Predictor),]</span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to continuous variables only</span></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">=</span> observed[<span class="fu">grepl</span>(<span class="st">"Logistic|Hurdle"</span>, observed<span class="sc">$</span>Stat.model)]</span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a><span class="co"># transform beta to OR</span></span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>OR <span class="ot">=</span> <span class="fu">exp</span>(observed<span class="sc">$</span>beta)</span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>ORci_l <span class="ot">=</span> <span class="fu">exp</span>(observed<span class="sc">$</span>beta <span class="sc">-</span> (<span class="fl">1.96</span> <span class="sc">*</span> observed<span class="sc">$</span>std.error))</span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>ORci_u <span class="ot">=</span> <span class="fu">exp</span>(observed<span class="sc">$</span>beta <span class="sc">+</span> (<span class="fl">1.96</span> <span class="sc">*</span> observed<span class="sc">$</span>std.error))</span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a><span class="co"># order phenotypes</span></span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>Outcomes <span class="ot">&lt;-</span> <span class="fu">factor</span>(observed<span class="sc">$</span>Outcome, </span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a>                            <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"Stroke"</span>,<span class="st">"hypertension"</span>,<span class="st">"packyears"</span>),</span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a>                            <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"Diabetes"</span>,<span class="st">"Stroke"</span>,<span class="st">"Hypertension"</span>,<span class="st">"Packyears"</span>),</span>
+<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a>                            <span class="at">ordered=</span>T)</span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a>obsLog<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>observed, <span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span>OR),<span class="at">shape=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col=</span>Predictor),<span class="at">size=</span><span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>ORci_l, <span class="at">xmax=</span>ORci_u,<span class="at">col=</span>Predictor), <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">width=</span>.<span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>, <span class="at">colour=</span><span class="st">"grey10"</span>, <span class="at">alpha=</span><span class="fl">0.5</span>,<span class="at">linetype=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span><span class="fl">0.4</span>, <span class="at">label =</span> label, <span class="at">col=</span>Predictor), <span class="at">size =</span> <span class="fl">3.5</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">limits =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(estimated<span class="sc">$</span>Outcomes))))<span class="sc">+</span> <span class="co"># reverse order of y-axis</span></span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">6.7</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">6</span>,<span class="at">by=</span><span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Binary outcome traits"</span>)<span class="sc">+</span></span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Logistic regression:</span><span class="sc">\n</span><span class="st">Odds ratio (95%CI)"</span>)<span class="sc">+</span></span>
+<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ggtitle("'Observed' brain atrophy\n(wave 2 to 5)")+</span></span>
+<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Difference score"</span>, <span class="st">"Ratio score"</span>, <span class="st">"Residual score"</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#D81B60"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>)) <span class="sc">+</span></span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size=</span><span class="dv">17</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span> <span class="co"># add centred title</span></span>
+<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),<span class="co">#angle=45</span></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">13</span>),</span>
+<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">=</span> estLog <span class="sc">+</span> </span>
+<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a>  obsLog <span class="sc">+</span> </span>
+<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>)</span>
+<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a>layout <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a><span class="st">AB</span></span>
+<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a><span class="st">AB</span></span>
+<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a><span class="st">CD</span></span>
+<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span> estLinear <span class="sc">+</span> obsLinear <span class="sc">+</span> estLog <span class="sc">+</span> obsLog <span class="sc">+</span> </span>
+<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">plot_layout</span>(<span class="at">design =</span> layout, <span class="at">guides =</span> <span class="st">"collect"</span>)<span class="sc">+</span></span>
+<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">"Brain atrophy associations with health-related outcomes in LBC"</span>,</span>
+<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a>                  <span class="at">caption =</span> <span class="st">"Note: R2 estimates are only printed if the corresponding association passed correction for multiple testing (p=0.05/15).</span><span class="sc">\n</span><span class="st">'Packyears' was analysed with Hurdle regression, but the coefficient printed here is from the negative binomial part of the equation,</span><span class="sc">\n</span><span class="st">hence on log-odds scale like the other binary traits. Pseudo-R2 estimates are for the full hurdle model."</span>,</span>
+<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a>                    <span class="at">tag_levels =</span> <span class="st">"A"</span>,</span>
+<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a>                    <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))) </span>
+<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(paste0(out,"phenotypic/LBC_assocs_cross_vs_long.jpg"), bg = "white",plot = plot, width = 20, height = 28, units = "cm", dpi = 300)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/LBC_assocs_cross_vs_long.jpg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="ukb" class="level2">
+<h2 class="anchored" data-anchor-id="ukb">UKB</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in data </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(wd)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>file <span class="ot">=</span> <span class="fu">list.files</span>(<span class="at">pattern=</span><span class="st">"UKB_assocs_observed_vs_estimated_atrophy"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>assoc <span class="ot">=</span> <span class="fu">fread</span>(file)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># brain age phenotype is not intuitively interpretable:</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># positive value should mean the particpant has a healthier looking brain tthan expected given their age </span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># negative value should mean the participant has an unhealthier looking brain than expected</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Hence, here we just flip the assocs so that more LBA is associated with older brian age</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>beta[<span class="fu">which</span>(assoc<span class="sc">$</span>Outcome <span class="sc">==</span> <span class="st">"brainAge"</span>)] <span class="ot">&lt;-</span> assoc<span class="sc">$</span>beta[<span class="fu">which</span>(assoc<span class="sc">$</span>Outcome <span class="sc">==</span> <span class="st">"brainAge"</span>)]<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate lower and upper bounds of assoc</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>ci_l <span class="ot">=</span> assoc<span class="sc">$</span>beta <span class="sc">-</span> (<span class="fl">1.96</span><span class="sc">*</span>assoc<span class="sc">$</span>std.error)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>ci_u <span class="ot">=</span> assoc<span class="sc">$</span>beta <span class="sc">+</span> (<span class="fl">1.96</span><span class="sc">*</span>assoc<span class="sc">$</span>std.error)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co"># because beta shouldn't exceed 1, and it makes the plots look ugly, I will artifically reduce those here</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>ci_l <span class="ot">=</span> <span class="fu">ifelse</span>(assoc<span class="sc">$</span>ci_l <span class="sc">&lt;</span> <span class="sc">-</span><span class="fl">1.21</span>, <span class="sc">-</span><span class="fl">1.21</span>, assoc<span class="sc">$</span>ci_l)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>ci_u <span class="ot">=</span> <span class="fu">ifelse</span>(assoc<span class="sc">$</span>ci_u <span class="sc">&gt;</span> <span class="fl">1.21</span>, <span class="fl">1.21</span>, assoc<span class="sc">$</span>ci_u)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co"># make data frame for geom_label</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>label <span class="ot">=</span> <span class="fu">paste0</span>(<span class="fu">round</span>(assoc<span class="sc">$</span>R2_percent, <span class="at">digits =</span> <span class="dv">1</span>), <span class="st">"%"</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co"># only print the label is correlation is significant</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>sigBonferroni <span class="ot">=</span> <span class="fl">0.05</span><span class="sc">/</span><span class="fu">length</span>(<span class="fu">unique</span>(assoc<span class="sc">$</span>Outcome))</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>assoc<span class="sc">$</span>label[<span class="fu">which</span>(assoc<span class="sc">$</span>p.value <span class="sc">&gt;</span> sigBonferroni)] <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################################################</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="do">###### Continuous traits</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################################################</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="do">############## ESTIMATED ATROPHY</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="do">### first, only estimated atrophy</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co"># only keep 'diff_stand', 'ratio_stand' or 'resid_stand'</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> assoc[<span class="fu">grepl</span>(<span class="st">"diff_stand|ratio_stand|resid_stand"</span>,assoc<span class="sc">$</span>Predictor),]</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to wave 3 (more atrophy)</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> estimated[<span class="fu">grepl</span>(<span class="st">"3"</span>, estimated<span class="sc">$</span>wave),]</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to continuous variables only</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> estimated[<span class="fu">grepl</span>(<span class="st">"Linear"</span>, estimated<span class="sc">$</span>Stat.model)]</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co"># order phenotypes</span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>Outcomes <span class="ot">&lt;-</span> <span class="fu">factor</span>(estimated<span class="sc">$</span>Outcome, </span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>                             <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"cog"</span>,<span class="st">"BMI"</span>,<span class="st">"brainAge"</span>),</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>                             <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Cog"</span>,<span class="st">"BMI"</span>,<span class="st">"BrainAge"</span>),</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ordered=</span>T)</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>estLinear<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>estimated, <span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span>beta),<span class="at">shape=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="fl">1.25</span>, <span class="fl">1.25</span>)<span class="sc">+</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col=</span>Predictor),<span class="at">size=</span><span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>ci_l, <span class="at">xmax=</span>ci_u,<span class="at">col=</span>Predictor), <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">width=</span>.<span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">colour=</span><span class="st">"grey10"</span>, <span class="at">alpha=</span><span class="fl">0.5</span>,<span class="at">linetype=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span><span class="sc">-</span><span class="fl">0.7</span>, <span class="at">label =</span> label, <span class="at">col=</span>Predictor), <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">limits =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(estimated<span class="sc">$</span>Outcomes))))<span class="sc">+</span> <span class="co"># reverse order of y-axis</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.9</span>, <span class="fl">0.9</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Continuous outcome traits"</span>)<span class="sc">+</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Linear regression:</span><span class="sc">\n</span><span class="st">beta (95%CI)"</span>)<span class="sc">+</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Lifetime brain atrophy</span><span class="sc">\n</span><span class="st">(second neuroimaging visit)"</span>)<span class="sc">+</span></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Difference score"</span>, <span class="st">"Ratio score"</span>, <span class="st">"Residual score"</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#D81B60"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>)) <span class="sc">+</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size=</span><span class="dv">17</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span> <span class="co"># add centred title</span></span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),<span class="co">#angle=45</span></span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">13</span>))<span class="sc">+</span></span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="do">############## OBSERVED ATROPHY</span></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a><span class="do">### only keep longitudinal atrophy</span></span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">=</span> assoc[<span class="fu">grepl</span>(<span class="st">"TBV"</span>,assoc<span class="sc">$</span>Predictor),]</span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to continuous variables only</span></span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">=</span> observed[<span class="fu">grepl</span>(<span class="st">"Linear"</span>, observed<span class="sc">$</span>Stat.model)]</span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a><span class="co"># order phenotypes</span></span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>Outcomes <span class="ot">&lt;-</span> <span class="fu">factor</span>(observed<span class="sc">$</span>Outcome, </span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>                             <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"cog"</span>,<span class="st">"BMI"</span>,<span class="st">"brainAge"</span>),</span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>                             <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Cog"</span>,<span class="st">"BMI"</span>,<span class="st">"BrainAge"</span>),</span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ordered=</span>T)</span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>obsLinear<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>observed, <span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span>beta),<span class="at">shape=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col=</span>Predictor),<span class="at">size=</span><span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>ci_l, <span class="at">xmax=</span>ci_u,<span class="at">col=</span>Predictor), <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">width=</span>.<span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">colour=</span><span class="st">"grey10"</span>, <span class="at">alpha=</span><span class="fl">0.5</span>,<span class="at">linetype=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span><span class="sc">-</span><span class="fl">0.7</span>, <span class="at">label =</span> label, <span class="at">col=</span>Predictor), <span class="at">size =</span> <span class="fl">3.5</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_discrete</span>(<span class="at">limits =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(observed<span class="sc">$</span>Outcomes))))<span class="sc">+</span> <span class="co"># reverse order of y-axis</span></span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.9</span>, <span class="fl">0.9</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"ontinuous outcome traits"</span>)<span class="sc">+</span></span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Linear regression:</span><span class="sc">\n</span><span class="st">beta (95%CI)"</span>)<span class="sc">+</span></span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Observed atrophic changes</span><span class="sc">\n</span><span class="st">(first to second neuroimaging visit)"</span>)<span class="sc">+</span></span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Difference score"</span>, <span class="st">"Ratio score"</span>, <span class="st">"Residual score"</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#D81B60"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>)) <span class="sc">+</span></span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size=</span><span class="dv">17</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span> <span class="co"># add centred title</span></span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),<span class="co">#angle=45</span></span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################################################</span></span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a><span class="do">###### Binary traits</span></span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################################################</span></span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a><span class="do">############## ESTIMATED ATROPHY</span></span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a><span class="do">### first, only estimated atrophy</span></span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a><span class="co"># only keep 'diff_stand', 'ratio_stand' or 'resid_stand'</span></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> assoc[<span class="fu">grepl</span>(<span class="st">"diff_stand|ratio_stand|resid_stand"</span>,assoc<span class="sc">$</span>Predictor),]</span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to visit 3 (more atrophy)</span></span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> estimated[<span class="fu">grepl</span>(<span class="st">"3"</span>, estimated<span class="sc">$</span>wave),]</span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to continuous variables only</span></span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> estimated[<span class="fu">grepl</span>(<span class="st">"Logistic|Hurdle"</span>, estimated<span class="sc">$</span>Stat.model)]</span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a><span class="co"># transform beta to OR</span></span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>OR <span class="ot">=</span> <span class="fu">exp</span>(estimated<span class="sc">$</span>beta)</span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>ORci_l <span class="ot">=</span> <span class="fu">exp</span>(estimated<span class="sc">$</span>beta <span class="sc">-</span> (<span class="fl">1.96</span> <span class="sc">*</span> estimated<span class="sc">$</span>std.error))</span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>ORci_u <span class="ot">=</span> <span class="fu">exp</span>(estimated<span class="sc">$</span>beta <span class="sc">+</span> (<span class="fl">1.96</span> <span class="sc">*</span> estimated<span class="sc">$</span>std.error))</span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a><span class="co"># display as log odds</span></span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>logOdds <span class="ot">=</span> <span class="fu">log</span>(estimated<span class="sc">$</span>OR)</span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>logOdds_ci_l <span class="ot">=</span> <span class="fu">log</span>(estimated<span class="sc">$</span>ORci_l)</span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>logOdds_ci_u <span class="ot">=</span> <span class="fu">log</span>(estimated<span class="sc">$</span>ORci_u)</span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a><span class="co"># order phenotypes</span></span>
+<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a>estimated<span class="sc">$</span>Outcomes <span class="ot">&lt;-</span> <span class="fu">factor</span>(estimated<span class="sc">$</span>Outcome, </span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a>                             <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"stroke"</span>,<span class="st">"hypertension"</span>,<span class="st">"packyears"</span>,<span class="st">"frailty"</span>),</span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>                             <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"Diabetes"</span>,<span class="st">"Stroke"</span>,<span class="st">"Hypertension"</span>,<span class="st">"Packyears"</span>,<span class="st">"Frailty"</span>),</span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ordered=</span>T)</span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>estLog<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>estimated, <span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span>OR),<span class="at">shape=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="fl">2.3</span>)<span class="sc">+</span></span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col=</span>Predictor),<span class="at">size=</span><span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>ORci_l, <span class="at">xmax=</span>ORci_u,<span class="at">col=</span>Predictor), <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">width=</span>.<span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>, <span class="at">colour=</span><span class="st">"grey10"</span>, <span class="at">alpha=</span><span class="fl">0.5</span>,<span class="at">linetype=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span><span class="fl">0.4</span>, <span class="at">label =</span> label, <span class="at">col=</span>Predictor), <span class="at">size =</span> <span class="fl">3.5</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_discrete</span>(<span class="at">limits =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(estimated<span class="sc">$</span>Outcomes))))<span class="sc">+</span> <span class="co"># reverse order of y-axis</span></span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.3</span>,<span class="fl">3.1</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">3</span>,<span class="at">by=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Binary outcome traits"</span>)<span class="sc">+</span></span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Logistic regression:</span><span class="sc">\n</span><span class="st">Odds ratio (95%CI)"</span>)<span class="sc">+</span></span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ggtitle("'Estimated' brain atrophy\n(at wave 5)")+</span></span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Difference score"</span>, <span class="st">"Ratio score"</span>, <span class="st">"Residual score"</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#D81B60"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>)) <span class="sc">+</span></span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size=</span><span class="dv">17</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span> <span class="co"># add centred title</span></span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),<span class="co">#angle=45</span></span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">13</span>))<span class="sc">+</span></span>
+<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a><span class="do">############## OBSERVED ATROPHY</span></span>
+<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a><span class="do">### only keep longitudinal atrophy</span></span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">=</span> assoc[<span class="fu">grepl</span>(<span class="st">"TBV"</span>,assoc<span class="sc">$</span>Predictor),]</span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a><span class="co"># restrict to continuous variables only</span></span>
+<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">=</span> observed[<span class="fu">grepl</span>(<span class="st">"Logistic|Hurdle"</span>, observed<span class="sc">$</span>Stat.model)]</span>
+<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a><span class="co"># transform beta to OR</span></span>
+<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>OR <span class="ot">=</span> <span class="fu">exp</span>(observed<span class="sc">$</span>beta)</span>
+<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>ORci_l <span class="ot">=</span> <span class="fu">exp</span>(observed<span class="sc">$</span>beta <span class="sc">-</span> (<span class="fl">1.96</span> <span class="sc">*</span> observed<span class="sc">$</span>std.error))</span>
+<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>ORci_u <span class="ot">=</span> <span class="fu">exp</span>(observed<span class="sc">$</span>beta <span class="sc">+</span> (<span class="fl">1.96</span> <span class="sc">*</span> observed<span class="sc">$</span>std.error))</span>
+<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a><span class="co"># order phenotypes</span></span>
+<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>Outcomes <span class="ot">&lt;-</span> <span class="fu">factor</span>(observed<span class="sc">$</span>Outcome, </span>
+<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a>                             <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"diabetes"</span>,<span class="st">"stroke"</span>,<span class="st">"hypertension"</span>,<span class="st">"packyears"</span>,<span class="st">"frailty"</span>),</span>
+<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a>                             <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Dementia"</span>,<span class="st">"APOEe4"</span>,<span class="st">"Diabetes"</span>,<span class="st">"Stroke"</span>,<span class="st">"Hypertension"</span>,<span class="st">"Packyears"</span>,<span class="st">"Frailty"</span>),</span>
+<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ordered=</span>T)</span>
+<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a>obsLog<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data=</span>observed, <span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span>OR),<span class="at">shape=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col=</span>Predictor),<span class="at">size=</span><span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>ORci_l, <span class="at">xmax=</span>ORci_u,<span class="at">col=</span>Predictor), <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">width=</span>.<span class="dv">2</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>))<span class="sc">+</span></span>
+<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>, <span class="at">colour=</span><span class="st">"grey10"</span>, <span class="at">alpha=</span><span class="fl">0.5</span>,<span class="at">linetype=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y=</span>Outcomes,<span class="at">x=</span><span class="fl">0.4</span>, <span class="at">label =</span> label, <span class="at">col=</span>Predictor), <span class="at">size =</span> <span class="fl">3.5</span>,<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">limits =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(estimated<span class="sc">$</span>Outcomes))))<span class="sc">+</span> <span class="co"># reverse order of y-axis</span></span>
+<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.3</span>,<span class="fl">3.1</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">3</span>,<span class="at">by=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Binary outcome traits"</span>)<span class="sc">+</span></span>
+<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Logistic regression:</span><span class="sc">\n</span><span class="st">Odds ratio (95%CI)"</span>)<span class="sc">+</span></span>
+<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ggtitle("'Observed' brain atrophy\n(wave 2 to 5)")+</span></span>
+<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Difference score"</span>, <span class="st">"Ratio score"</span>, <span class="st">"Residual score"</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#D81B60"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>)) <span class="sc">+</span></span>
+<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size=</span><span class="dv">17</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span> <span class="co"># add centred title</span></span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),<span class="co">#angle=45</span></span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">13</span>),</span>
+<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a><span class="co"># plot all together</span></span>
+<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a>layout <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a><span class="st">AB</span></span>
+<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a><span class="st">CD</span></span>
+<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a><span class="st">CD</span></span>
+<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span> estLinear <span class="sc">+</span> obsLinear <span class="sc">+</span> estLog <span class="sc">+</span> obsLog <span class="sc">+</span> </span>
+<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">plot_layout</span>(<span class="at">design =</span> layout,<span class="at">guides =</span> <span class="st">"collect"</span>)<span class="sc">+</span></span>
+<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">"Brain atrophy correlations with health-related outcomes in UKB"</span>,</span>
+<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>                  <span class="at">caption =</span> <span class="st">"Note: R2 estimates are only printed if the corresponding association passed correction for multiple testing (p=0.05/7).</span><span class="sc">\n</span><span class="st">'Packyears' &amp; 'frailty' were analysed with Hurdle regression, but the coefficient printed here is from the negative binomial part of the equation,</span><span class="sc">\n</span><span class="st">hence on log-odds scale like the other binary traits. Pseudo-R2 estimates are for the full hurdle model."</span>,</span>
+<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a>                    <span class="at">tag_levels =</span> <span class="st">"A"</span>,</span>
+<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a>                    <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))) </span>
+<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(out,<span class="st">"phenotypic/UKB_assocs_cross_vs_long.jpg"</span>), <span class="at">bg =</span> <span class="st">"white"</span>,<span class="at">plot =</span> plot, <span class="at">width =</span> <span class="dv">20</span>, <span class="at">height =</span> <span class="dv">28</span>, <span class="at">units =</span> <span class="st">"cm"</span>, <span class="at">dpi =</span> <span class="dv">150</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/UKB_assocs_cross_vs_long.jpg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

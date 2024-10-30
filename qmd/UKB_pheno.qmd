@@ -1,0 +1,1524 @@
+---
+title: "UKB: Phenotypic data preparation"
+format: 
+  html:
+    code-fold: true
+author: "Anna Elisabeth Furtjes"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html
+doi: test
+---
+
+------------------------------------------------------------------------
+
+```{r setup, include=F, warning=F, message=F, eval=T}
+load("paths.RData")
+knitr::opts_knit$set(root.dir = wd)
+#quarto::quarto_render(input = "UKB_pheno.qmd", output_file = "UKB_pheno.html")
+```
+
+
+Data prepared here was used as input into analyses presented [here](../_site/pheno_assocs.html). The file containing all  phenotypic variables was named `UKB_allPheno.txt`.
+
+## Load packages
+
+```{r packages, warning=F, message=F, eval=F}
+library(data.table)
+library(lavaan)
+```
+
+## Define function 
+
+The function `getFieldLoc` identifies the directory with the most recent UKB download. We have multiple files on the server from different downloads, and I want to be sure I use the most recent one (i.e., the one saved in a directory with the highest number).
+
+```{r, eval=F}
+# script that searches in our available data if we have a certain data field
+getFieldLoc = function(path = path, fileName = fileName, fieldID = fieldID){
+  
+  # read all the field.ukb files
+  files_to_read = list.files(
+    path = path,
+    pattern = fileName,
+    recursive = T,
+    full.names = T
+  )
+  # read all files
+  dat = lapply(files_to_read, fread)
+  names(dat) = files_to_read
+  
+  # search for field ID of interest 
+  candidates = names(dat)[grep(fieldID, dat)]
+  # figure out which one is from the most recent file (i.e., highest number)
+  candidates = str_remove(candidates, paste0(path, "/"))
+  candidates = str_remove(candidates, paste0("/", fileName))
+  candidates = unique(as.numeric(sapply(str_extract_all(candidates, "\\d+"), tail , 1)))
+  most_recent = max(candidates, na.rm =T)
+  
+  return(paste0(path, most_recent))
+}
+```
+
+
+## Cognitive test (factor scores)
+
+Input data used here was kindly provided by Joanna Moodie who had modeled the g-factor for one of her previous projects. The factor was modeled on the whole UKB sample, and then restricted to the participants with available neuroimaging data. This was deemed appropriate because the variables were still normally distributed in the restricted sample. Modelling the factor in the full sample will hopefully mean that the factor was based on a more representative sample than relying on participants who returned for their second neuroimaigng visit (healthy selection bias).
+
+
+```{r cogUKB, eval = F}
+### This script was adapted from Joanna Moodies script
+library(lavaan)
+
+# read in the data
+UKBcog <- read.csv("/CCACE_Shared/Joanna/ForShare/UKB_g/UKB_cogtests.csv", sep = " ")
+# name ID column
+names(UKBcog)[which(names(UKBcog) == "ID")] = "f.eid"
+
+# re-formatting data
+UKBcog$cog_trailB_log[which(UKBcog$cog_trailB_log == 0)] <- NA
+UKBcog$cog_prosmem[which(UKBcog$cog_prosmem == 2)] <- 0
+UKBcog$cog_pairedAss <- exp(UKBcog$cog_pairedAss_log)
+
+#UKBcog <- merge(UKBcog, ' ', by = "ID") # select the participants you want in the sample
+
+# keep varibales of interest
+UKBcog = UKBcog[,c("f.eid",
+							"cog_RT_log",
+							"cog_numeric_memory",
+							"cog_fluid_intelligence",
+							"cog_trailB_log",
+							"cog_matrix_pattern_correct",
+							"cog_tower",
+							"cog_digsym",
+							"cog_pairedAss",
+							"cog_prosmem",
+							"cog_pairsmatch_incorrect_log")]
+
+# define general factor model
+cogmodel <- 'g =~  cog_RT_log +
+					cog_numeric_memory + 
+					cog_fluid_intelligence + 
+					cog_trailB_log + 
+					cog_matrix_pattern_correct + 
+					cog_tower + 
+					cog_digsym + 
+					cog_pairsmatch_incorrect_log +
+					cog_prosmem +
+					cog_pairedAss
+					'
+
+# fit general factor model
+fit = cfa(cogmodel, data = UKBcog, missing="ML")
+summary(fit, fit.measures=TRUE, standardized=T)
+
+# save fit for later
+save(fit, file = paste0(out,"/fit.RData"))
+
+# predict individual-level factor scores 
+gPheno <- lavPredict(fit, UKBcog)
+gPheno <- as.data.frame(cbind(UKBcog$f.eid, gPheno))
+
+# re-name columns
+names(gPheno) = c("f.eid","g")
+
+# hist(gPheno$g)
+
+# standardise
+gPheno$gStand = scale(gPheno$g)
+
+# save in separate file 
+write.table(gPheno[,c("f.eid", "gStand")], file = paste0(out, "/UKB_gFactor.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+
+## Dementia status
+
+Note that according to this definition only 5 participants a diagnosis, and the remaining ones are proxy cases.
+
+
+```{r dementUKB, eval = F}
+## find items and where they are stored on the server
+## dementia is defined based on multiple sources of information we have in the UKV
+## 1. ICD-10 diagnoses: field ID 41270
+## 2. Self-reported illnesses (dementia, alzheimers, cognitive impairment): field ID 20002
+## 3. Source of all cause dementia report: field ID 42019
+## 4. Contributing causes of death: field ID 40001 & 40002
+## 5. Date F00 first reported: field ID 130836
+
+#############################################
+## 1. ICD-10 diagnoses: field ID 41270
+#############################################
+# determine file paths
+path1 = getFieldLoc(path = path, 
+            fileName = "fields.ukb", 
+            fieldID = 41270)
+
+fileID = list.files(pat=path1,pattern="csv")
+# read in file
+file = fread(paste0(path1, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+#names(file) = str_replace(names(file), pattern = "-", replacement = "_")
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+# list columns of interest
+id=which(names(file) == "f.eid")
+dementCols = grep("f.41270", names(file))
+
+# select columns of interest
+dement = as.data.frame(file[, c(..id, ..dementCols)])
+
+# format "" to be NA
+for(i in names(dement)[grep("f.41270", names(dement))]){
+  dement[which(dement[,i] == ""),i] = NA
+}
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(dement[,-which(names(dement) == "f.eid")])) == 0) 
+# 55361
+
+# determine ICD codes of interest to find in field ID 41270
+ICDcode=c("F00","F000","F001","F002","F009","G30","G300","G301","G308","G309","F01","F010","F011","F012","F013","F018","F019","I673","F03","G311","G318")
+
+# match ICDcodes with entries in all f.41270 variables filtered in 'dement'
+dement$countCodes = rowSums(!is.na(sapply(dement[,-which(names(dement) == "f.eid")], match, ICDcode)))
+
+# if 1 or more entries, consisder a case
+dement$dementICD41270 = as.factor(ifelse(dement$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+dement$dementICD41270[allMissing] = NA
+
+# save this variable to a seperate file
+fwrite(dement[,c("f.eid", "dementICD41270")], file = paste0(out, "/UKB_dement_ICD41270.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+
+#############################################
+## 2. Self-reported illnesses (dementia, alzheimers, cognitive impairment, code = 1263): field ID 20002
+#############################################
+path2="/UK_Biobank_New/Data/Raw_Data/1027_Refresh_Dec_2022/670476" 
+fileID = list.files(pat=path2,pattern="csv")
+# read in file
+file = fread(paste0(path2, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+#names(file) = str_replace(names(file), pattern = "-", replacement = "_")
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+# list columns of interest
+id=which(names(file) == "f.eid")
+dementCols = grep("f.20002", names(file))
+
+# select columns of interest
+dement = as.data.frame(file[, c(..id, ..dementCols)])
+
+# identify those who have fully missing data (except their participant ID)
+allMissing = which(rowSums(!is.na(dement[,-which(names(dement) == "f.eid")])) == 0) 
+# 113066
+
+# determine code of interest to find in this field ID
+code = "1263"
+
+# match ICDcodes with entries in all f.41270 variables filtered in 'dement'
+dement$countCodes = rowSums(!is.na(sapply(dement[,-which(names(dement) == "f.eid")], match,code)))
+
+# if 1 or more entries, consisder a case
+dement$dement20002 = as.factor(ifelse(dement$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+dement$dement20002[allMissing] = NA
+
+# append final column to file
+file$dement20002 = dement$dement20002
+
+#################################################
+## 3. Source of all cause dementia report: field ID 42019
+################################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+dementCols = grep("f.42019", names(file))
+
+# select columns of interest
+dement = as.data.frame(file[, c(..id, ..dementCols)])
+
+# only record whether participants have an entry, which is indicative of dementia
+# however the absence of a code does not mean they don't have dementia
+dement$dement42019 = as.factor(ifelse(!is.na(dement$f.42019_0.0), 1, NA))
+
+# append final column to file
+file$dement42019 = dement$dement42019
+
+###################################################
+## 4. Contributing causes of death: field ID 40001 & 40002
+###################################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+dementCols = c(grep("f.40001", names(file)), grep("f.40002", names(file)))
+
+# select columns of interest
+dement = as.data.frame(file[, c(..id, ..dementCols)])
+
+# format "" to be NA
+for(i in names(dement)[c(grep("f.40001", names(dement)), grep("f.40002", names(dement)))]){
+  dement[which(dement[,i] == ""),i] = NA
+}
+
+# determine ICD codes of interest to find in field ID 
+ICDcode=c("F00","F000","F001","F002","F009","G30","G300","G301","G308","G309","F01","F010","F011","F012","F013","F018","F019","I673","F03","G311","G318")
+
+# match ICDcodes with entries in all f.41270 variables filtered in 'dement'
+dement$countCodes = rowSums(!is.na(sapply(dement[,-which(names(dement) == "f.eid")], match, ICDcode)))
+
+# if 1 or more entries, consider a case
+# but if there is no entry, it probably more often means this person has not died yet, rather than that they had no dementia
+dement$dementDeath= as.factor(ifelse(dement$countCodes >= 1, 1, NA))
+
+# append final column to file
+file$dementDeath = dement$dementDeath
+
+######################################
+## 5. Illnesses of father and mother (Alzheimer's disease/dementia; code = 10): field ID 20107 & 20110
+#####################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+dementCols = c(grep("f.20107", names(file)), grep("f.20110", names(file)))
+
+# select columns of interest
+dement = as.data.frame(file[, c(..id, ..dementCols)])
+
+# remove all minus (-) values
+dement[dement <= 0] = NA
+
+# determine codes of interest to find in field ID 
+code=c(10)
+
+# match ICDcodes with entries in all f.41270 variables filtered in 'dement'
+dement$countCodes = rowSums(!is.na(sapply(dement[,-which(names(dement) == "f.eid")], match, code)))
+
+# if 1 or more entries, consider a case
+# this is a report on parents, so absence of entry does not mean they don't have dementia
+dement$dementParents = as.factor(ifelse(dement$countCodes >= 1, 1, NA))
+
+# append final column to file
+file$dementParents = dement$dementParents
+
+
+################################################
+## 5. Date F00 first reported: field ID 130836
+###############################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+dementCols = grep("f.130836", names(file))
+
+# select columns of interest
+dement = as.data.frame(file[, c(..id, ..dementCols)])
+
+# store IDs for coded dates that suggest mistakes - however, doesnt contain any of the coded fields
+# which(dement$f.130836_0.0 == "1901-01-01")
+
+# record who has date 
+dement$dement130836 = NA
+dement$dement130836[which(!is.na(dement$f.130836_0.0))] = 1
+
+# store in file
+file$dement130836 = as.factor(dement$dement130836)
+
+################################################
+## Combine all data sources to one phenotype
+################################################
+# keep columns of interest
+file = file[,c("f.eid", "dement20002", "dement42019", "dementDeath","dementParents","dement130836")]
+
+# read in info from item 41270 (that was saved on a txt file - see (1.)) 
+var41270 = fread(paste0(out, "/UKB_dement_ICD41270.txt"), header = T)
+var41270$dementICD41270 = as.factor(var41270$dementICD41270)
+
+# merge with info above
+file = as.data.frame(merge(var41270, file, by = "f.eid"))
+
+# identify those with all missing
+allMissing = which(rowSums(!is.na(file[,-which(names(file) == "f.eid")])) == 0) 
+
+# identify cases
+file$dement = 0 
+
+# identify cases
+file$dement[which(file$dement20002 == 1 |
+				file$dement42019 == 1 |
+				file$dementDeath == 1 |
+				file$dementParents == 1 |
+				file$dementICD41270 == 1 |
+				file$dement130836 == 1)] = 1
+
+
+# delete allMissing from controls
+file$dement[allMissing] = NA
+
+# make factor
+file$dement = as.factor(file$dement)
+
+#dementICD41270 dement20002   dement42019   dementDeath   dementParents  dement      
+#0   :442840    0   :389146   1   :  7896   1   :   860   1   : 66764   1   : 73835  
+#1   :  4156    1   :   156   NA's:494461   NA's:501497   NA's:435593   0	: 409281
+#NA's: 55361    NA's:113055                              				NA's: 19241
+
+# save final variable to a seperate file
+fwrite(file[,c("f.eid", "dement")], file = paste0(out, "/UKB_DementiaStatus.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+```
+
+
+## APOE status
+
+First extract the two SNPs of interest using PLINK2.
+
+```{bash APOEsort, eval = F}
+# filter for the two APOE SNPs
+plink2 --bfile $loc/UKB500K_autosomes_X_XY_MAF_01_CLEAN_07052018_GD --snps rs7412,rs429358 --make-bed --freq --export A --out $temp/UKB_APOE
+```
+
+Then, model APOE status according to the approach used [here](https://www.thelancet.com/journals/ebiom/article/PIIS2352-3964(20)30330-3/fulltext#seccesectitle0014).
+
+```{r APOEUKB, eval = F}
+# Determine whether someone has the e4 allele
+# read in data
+dat = read.table(paste0(temp, "/UKB_APOE.raw"), header = T)
+
+## simplify data
+# remove -IDs and remove redundant columns
+dat = dat[-which(dat$FID < 0),c("FID", "rs429358_T", "rs7412_C")]
+
+# code variables to match look-up table
+dat$rs429358 = NA
+dat$rs429358[which(dat$rs429358_T == 2)] = "TT"
+dat$rs429358[which(dat$rs429358_T == 1)] = "CT"
+dat$rs429358[which(dat$rs429358_T == 0)] = "CC"
+
+dat$rs7412 = NA
+dat$rs7412[which(dat$rs7412_C == 2)] = "CC"
+dat$rs7412[which(dat$rs7412_C == 1)] = "CT"
+dat$rs7412[which(dat$rs7412_C == 0)] = "TT"
+
+# code variables according to combination of those genotypes
+dat$APOEgeno = NA
+dat$APOEgeno[which(dat$rs7412 == "CC" & dat$rs429358 == "CC")] = "e4/e4"
+dat$APOEgeno[which(dat$rs7412 == "CC" & dat$rs429358 == "CT")] = "e3/e4"
+dat$APOEgeno[which(dat$rs7412 == "CT" & dat$rs429358 == "CT")] = "e2/e4"
+dat$APOEgeno[which(dat$rs7412 == "CC" & dat$rs429358 == "TT")] = "e3/e3"
+dat$APOEgeno[which(dat$rs7412 == "CT" & dat$rs429358 == "TT")] = "e2/e3"
+dat$APOEgeno[which(dat$rs7412 == "TT" & dat$rs429358 == "TT")] = "e2/e2"
+dat$APOEgeno[which(dat$rs7412 == "CT" & dat$rs429358 == "CC")] = "e1/e4"
+dat$APOEgeno[which(dat$rs7412 == "TT" & dat$rs429358 == "CT")] = "e1/e2"
+
+
+# infer APOE status
+dat$APOEstatus = NA
+dat$APOEstatus[which(dat$APOEgeno == "e4/e4" | dat$APOEgeno == "e3/e4" | dat$APOEgeno == "e2/e4" | dat$APOEgeno == "e1/e4")] = "e4Allele"
+dat$APOEstatus[which(dat$APOEgeno == "e3/e3" | dat$APOEgeno == "e2/e3" | dat$APOEgeno == "e2/e2" | dat$APOEgeno == "e1/e2")] = "NOe4Allele"
+
+table(dat$APOEstatus, dat$APOEgeno)
+
+#              e1/e2  e1/e4  e2/e2  e2/e3  e2/e4  e3/e3  e3/e4  e4/e4
+#  e4Allele        0     13      0      0   8818      0  82089   8266
+#  NOe4Allele      2      0   1984  42269      0 199277      0      0
+
+
+# keep only 2 columns
+dat = dat[,c("FID", "APOEgeno", "APOEstatus")]
+
+write.table(dat, paste0(save, "/UKB_APOE_Nov2023.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+
+## Type 2 diabetes
+
+```{r t2dUKB, eval = F}
+## dementia is defined based on multiple sources of information we have in the UKB
+## 1. Self-reported illness (field ID 20002) & self-reported diagnosis by doctor (2443)
+## 2. ICD9 diagnoses (field ID 41203 & 41205)
+## 3. ICD10 diagnoses (field ID 41202 & 41204)
+## 4. Cause of death (field ID 40001)
+
+#########################################
+## 1. Self-reported illness (field IDs 20002, 2443, 2986, 2976, 21003) 
+#########################################
+fileID = list.files(pat=path,pattern="csv")
+# read in file
+file = fread(paste0(path, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+
+#### field ID 20002
+####################
+
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = grep("f.20002", names(file))
+
+# select columns of interest
+t2d = as.data.frame(file[, c(..id, ..Cols)])
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(t2d[,-which(names(t2d) == "f.eid")])) == 0) 
+# 113066
+
+# determine codes of interest to find in field ID 41270
+t2d_codes <- c("1233","1220")
+
+# match ICDcodes with entries in all f.20002 variables filtered in 't2d'
+t2d$countCodes = rowSums(!is.na(sapply(t2d[,-which(names(t2d) == "f.eid")], match, t2d_codes)))
+
+# if 1 or more entries, consider a case
+t2d$t2d20002 = as.factor(ifelse(t2d$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+t2d$t2d20002[allMissing] = NA
+
+# append final column to file
+file$t2d20002 = t2d$t2d20002
+
+#### field 2443
+#### diabetes self-report interview touchscreen 
+#################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = grep("f.2443", names(file))
+
+# select columns of interest
+t2d = as.data.frame(file[, c(..id, ..Cols)])
+
+# remove all minus (-) values as they stand for "do not know" or "Prefer not to answer"
+t2d[t2d < 0] = NA
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(t2d[,-which(names(t2d) == "f.eid")])) == 0) 
+
+# determine codes of interest to find in field 
+diab_code <- "1"
+
+# match codes with entries in all variables filtered in 't2d'
+t2d$countCodes = rowSums(!is.na(sapply(t2d[,-which(names(t2d) == "f.eid")], match, diab_code)))
+
+# if 1 or more entries, consider a case
+t2d$t2d2443 = as.factor(ifelse(t2d$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+t2d$t2d2443[allMissing] = NA
+
+# append final column to file
+file$t2d2443 = t2d$t2d2443
+
+##################################################
+## 4. Cause of death (field ID 40001)
+##################################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = grep("f.40001", names(file))
+
+# select columns of interest
+t2d = as.data.frame(file[, c(..id, ..Cols)])
+
+# format "" to be NA
+for(i in names(t2d)[grep("f.40001", names(t2d))]){
+  t2d[which(t2d[,i] == ""),i] = NA
+}
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(t2d[,-which(names(t2d) == "f.eid")])) == 0) 
+
+# determine ICD10 codes of interest to find in field 
+diab_code <- c("E110","E111","E112","E113","E114","E115","E116","E117","E118","E119")
+
+# match codes with entries in all variables filtered in 't2d'
+t2d$countCodes = rowSums(!is.na(sapply(t2d[,-which(names(t2d) == "f.eid")], match, diab_code)))
+
+# if 1 or more entries, consider a case
+t2d$t2dDeath = as.factor(ifelse(t2d$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+t2d$t2dDeath[allMissing] = NA
+
+# append final column to file
+file$t2dDeath = t2d$t2dDeath
+
+# intermediate save data 
+save = file[,c("f.eid", "t2d20002", "t2d2443", "t2dDeath")]
+
+############################################
+## 2. ICD10 diagnoses (field ID 41202 & 41204)
+############################################
+### read in new data; basket 675090 has newer data for these variables 
+
+fileID = list.files(pat=path,pattern="csv")
+# read in file
+file = fread(paste0(path, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = c(grep("f.41202", names(file)), grep("f.41204", names(file)))
+
+# select columns of interest
+t2d = as.data.frame(file[, c(..id, ..Cols)])
+
+# format "" to be NA
+for(i in names(t2d)[c(grep("f.41202", names(t2d)), grep("f.41204", names(t2d)))]){
+  t2d[which(t2d[,i] == ""),i] = NA
+}
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(t2d[,-which(names(t2d) == "f.eid")])) == 0) 
+
+# determine ICD10 codes of interest to find in field 
+diab_code <- c("E110","E111","E112","E113","E114","E115","E116","E117","E118","E119")
+
+# match codes with entries in all variables filtered in 't2d'
+t2d$countCodes = rowSums(!is.na(sapply(t2d[,-which(names(t2d) == "f.eid")], match, diab_code)))
+
+# if 1 or more entries, consider a case
+t2d$t2dICD41202_4 = as.factor(ifelse(t2d$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+t2d$t2dICD41202_4[allMissing] = NA
+
+# append final column to file
+file$t2dICD41202_4 = t2d$t2dICD41202_4
+
+
+##################################################
+## 3. ICD9 diagnoses (field ID 41203 & 41205)
+##################################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = c(grep("f.41203", names(file)), grep("f.41205", names(file)))
+
+# select columns of interest
+t2d = as.data.frame(file[, c(..id, ..Cols)])
+
+# format "" to be NA
+for(i in names(t2d)[c(grep("f.41203", names(t2d)), grep("f.41205", names(t2d)))]){
+  t2d[which(t2d[,i] == ""),i] = NA
+}
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(t2d[,-which(names(t2d) == "f.eid")])) == 0) 
+
+# determine ICD10 codes of interest to find in field 
+diab_code <- c("25000","25010","25020","25090")
+
+# match codes with entries in all variables filtered in 't2d'
+t2d$countCodes = rowSums(!is.na(sapply(t2d[,-which(names(t2d) == "f.eid")], match, diab_code)))
+
+# if 1 or more entries, consider a case
+t2d$t2dICD41203_5 = as.factor(ifelse(t2d$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+t2d$t2dICD41203_5[allMissing] = NA
+
+# append final column to file
+file$t2dICD41203_5 = t2d$t2dICD41203_5
+
+
+######################################
+## Combine all t2d
+######################################
+# merge with saved columns above
+file = merge(file, save, by = "f.eid")
+
+# keep columns of interest only
+file = as.data.frame(file[, c("f.eid", "t2d20002", "t2d2443", "t2dICD41202_4", "t2dICD41203_5", "t2dDeath")])
+
+# identify those with all missing
+allMissing = which(rowSums(!is.na(file[,-which(names(file) == "f.eid")])) == 0) 
+
+# identify cases
+file$t2d = 0 
+
+# identify cases
+file$t2d[which(file$t2d20002 == 1 |
+				file$t2d2443 == 1 |
+				file$t2dICD41202_4 == 1 |
+				file$t2dICD41203_5 == 1 |
+				file$t2dDeath == 1)] = 1
+
+# delete allMissing from controls
+file$t2d[allMissing] = NA
+
+# make factor
+file$t2d = as.factor(file$t2d)
+
+#     0      1 
+# 451786  50436
+
+# save final variable to a seperate file
+fwrite(file[,c("f.eid", "t2d")], file = paste0(out, "/UKB_t2dStatus.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+```
+
+## Hypertension 
+
+```{r hypUKB, eval = F}
+# Hypertension is defined based on multiple field IDs
+## 1. Self-reported illness (field ID 20002) & self-reported diagnosis by doctor (2443)
+## 2. ICD9 diagnoses (field ID 41203 & 41205)
+## 3. ICD10 diagnoses (field ID 41202 & 41204)
+## 4. Cause of death (field ID 40001)
+
+#########################################
+## 1. Self-reported illness (field IDs 20002, 2443, 2986, 2976, 21003) 
+#########################################
+path="/UK_Biobank_New/Data/Raw_Data/1027_Refresh_Dec_2022/670476"
+fileID = list.files(pat=path,pattern="csv")
+# read in file
+file = fread(paste0(path, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+#### field ID 20002
+####################
+# list columns of interest
+id = which(names(file) == "f.eid")
+Cols = grep("f.20002", names(file))
+
+# select columns of interest
+hyp = as.data.frame(file[, c(..id, ..Cols)])
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(hyp[,-which(names(hyp) == "f.eid")])) == 0) 
+# 113066
+
+# determine codes of interest to find in field ID 41270
+hyp_codes <- c("1065","1072")
+
+# match ICDcodes with entries in all f.20002 variables filtered in 't2d'
+hyp$countCodes = rowSums(!is.na(sapply(hyp[,-which(names(hyp) == "f.eid")], match, hyp_codes)))
+
+# if 1 or more entries, consider a case
+hyp$hyp20002 = as.factor(ifelse(hyp$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+hyp$hyp20002[allMissing] = NA
+
+# append final column to file
+file$hyp20002 = hyp$hyp20002
+
+#### field 131287
+#### Source of report of I10 
+#################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = grep("f.131287", names(file))
+
+# select columns of interest
+hyp = as.data.frame(file[, c(..id, ..Cols)])
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(is.na(hyp[,which(names(hyp) != "f.eid")])) 
+
+# determine participants with non missing 
+allPresent = which(!is.na(hyp[,which(names(hyp) != "f.eid")]))
+
+# consider non-missing a case
+hyp$hyp131287 = NA
+hyp$hyp131287[allPresent] = 1
+
+# append final column to file
+file$hyp131287 = hyp$hyp131287
+
+##################################################
+## 4. Cause of death (field ID 40001)
+##################################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = grep("f.40001", names(file))
+
+# select columns of interest
+hyp = as.data.frame(file[, c(..id, ..Cols)])
+
+# format "" to be NA
+for(i in names(hyp)[grep("f.40001", names(hyp))]){
+  hyp[which(hyp[,i] == ""),i] = NA
+}
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(hyp[,-which(names(hyp) == "f.eid")])) == 0) 
+
+# determine ICD10 codes of interest to find in field 
+hyp_code <- c("I10")
+
+# match codes with entries in all variables filtered in 'hyp'
+hyp$countCodes = rowSums(!is.na(sapply(hyp[,-which(names(hyp) == "f.eid")], match, hyp_code)))
+
+# if 1 or more entries, consider a case
+hyp$hypDeath = as.factor(ifelse(hyp$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+hyp$hypDeath[allMissing] = NA
+
+# append final column to file
+file$hypDeath = hyp$hypDeath
+
+# intermediate save data 
+save = file[,c("f.eid", "hyp20002", "hyp131287", "hypDeath")]
+
+############################################
+## 2. ICD10 diagnoses (field ID 41202 & 41204)
+############################################
+### read in new data; basket 675090 has newer data for these variables 
+
+fileID = list.files(pat=path,pattern="csv")
+# read in file
+file = fread(paste0(path, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = c(grep("f.41202", names(file)), grep("f.41204", names(file)))
+
+# select columns of interest
+hyp = as.data.frame(file[, c(..id, ..Cols)])
+
+# format "" to be NA
+for(i in names(hyp)[c(grep("f.41202", names(hyp)), grep("f.41204", names(hyp)))]){
+  hyp[which(hyp[,i] == ""),i] = NA
+}
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(hyp[,-which(names(hyp) == "f.eid")])) == 0) 
+
+# determine ICD10 codes of interest to find in field 
+hyp_code <- c("I10")
+
+# match codes with entries in all variables filtered in 't2d'
+hyp$countCodes = rowSums(!is.na(sapply(hyp[,-which(names(hyp) == "f.eid")], match, hyp_code)))
+
+# if 1 or more entries, consider a case
+hyp$hypICD41202_4 = as.factor(ifelse(hyp$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+hyp$hypICD41202_4[allMissing] = NA
+
+# append final column to file
+file$hypICD41202_4 = hyp$hypICD41202_4
+
+
+##################################################
+## 3. ICD9 diagnoses (field ID 41203 & 41205)
+##################################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = c(grep("f.41203", names(file)), grep("f.41205", names(file)))
+
+# select columns of interest
+hyp = as.data.frame(file[, c(..id, ..Cols)])
+
+# format "" to be NA
+for(i in names(hyp)[c(grep("f.41203", names(hyp)), grep("f.41205", names(hyp)))]){
+  hyp[which(hyp[,i] == ""),i] = NA
+}
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(hyp[,-which(names(hyp) == "f.eid")])) == 0) 
+
+# determine ICD10 codes of interest to find in field 
+hyp_code <- c("401","4010","4011","4019")
+
+# match codes with entries in all variables filtered in 't2d'
+hyp$countCodes = rowSums(!is.na(sapply(hyp[,-which(names(hyp) == "f.eid")], match, hyp_code)))
+
+# if 1 or more entries, consider a case
+hyp$hypICD41203_5 = as.factor(ifelse(hyp$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+hyp$hypICD41203_5[allMissing] = NA
+
+# append final column to file
+file$hypICD41203_5 = hyp$hypICD41203_5
+
+
+######################################
+## Combine all hypertension variables 
+######################################
+# merge with saved columns above
+file = merge(file, save, by = "f.eid")
+
+# keep columns of interest only
+file = as.data.frame(file[, c("f.eid", "hyp20002", "hyp131287", "hypDeath", "hypICD41202_4", "hypICD41203_5")])
+
+# identify those with all missing
+allMissing = which(rowSums(!is.na(file[,-which(names(file) == "f.eid")])) == 0) 
+
+# identify cases
+file$hyp = 0 
+
+# identify cases
+file$hyp[which(file$hyp20002 == 1 |
+				file$hyp131287 == 1 |
+				file$hypDeath == 1 |
+				file$hypICD41202_4 == 1 |
+				file$hypICD41203_5 == 1)] = 1
+
+
+# delete allMissing from controls
+file$hyp[allMissing] = NA
+
+# make factor
+file$hyp = as.factor(file$hyp)
+
+#     0      1 
+# 277454 204678 
+
+# save final variable to a seperate file
+fwrite(file[,c("f.eid", "hyp")], file = paste0(out, "/UKB_HypertensionStatus.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+```
+
+## Smoking (packyears)
+
+```{r smokUKB, eval = F}
+fileID = list.files(pat=path,pattern="csv")
+# read in file
+file = fread(paste0(path, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+# list columns of interest
+id=which(names(file) == "f.eid")
+# using instance at the time of initial neuroimaging visit
+# also keep "ever smoked" variable to determine zeros in data set
+# no need to consider variable f.20160_2.0 because when it's 0, it's also 0 in packyears 
+Cols = grep("f.20161_2.0", names(file))
+
+# select columns of interest
+smok = as.data.frame(file[, c(..id, ..Cols)])
+
+# rename var
+names(smok)[which(names(smok) == "f.20161_2.0")] = "packyears"
+
+# save variable
+fwrite(smok[,c("f.eid", "packyears")], file = paste0(out, "/UKB_packyears.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+```
+
+
+## Body mass index
+
+```{r bmiUKB, eval = F}
+fileID = list.files(pat=path,pattern="csv")
+# read in file
+file = fread(paste0(path, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+# list columns of interest
+id = which(names(file) == "f.eid")
+# normal BMI item f.21001.0.0
+# impedance BMI item f.97777.0.0
+Cols = c(grep("f.21001_2.0", names(file)), grep("f.23104_2.0", names(file)))
+
+# select columns of interest
+bmi = as.data.frame(file[, c(..id, ..Cols)])
+
+# Yaghootkar, 2016: “We excluded individuals with differences
+#>.4.56 SDs between impedance and normal BMI measures where both 
+# variables were available"
+
+## Calculate difference between f.21001.0.0 and f.23104.0.0 for each individual
+bmi$BMI_diff <- bmi$f.21001.0.0 - bmi$f.23104.0.0
+
+# Calculate mean and SD of the difference between f.21001.0.0 and f.23104.0.0
+mean_diff <- mean(bmi$BMI_diff,na.rm=T)
+SD_diff <- sd(bmi$BMI_diff,na.rm=T)
+
+# Calculate the mean of BMI measures for each individual
+bmi$bmi <- rowMeans(bmi[, c("f.21001_2.0", "f.23104_2.0")], na.rm = T)
+
+# Set BMI_mean to NA for individuals with BMI_diff ±4.56 SD from the mean
+bmi$bmi[which(bmi$BMI_diff < mean_diff - (SD_diff*4.56) | bmi$BMI_diff > mean_diff + (SD_diff*4.56))]<-NA
+
+# save final variable to a seperate file
+fwrite(bmi[,c("f.eid", "bmi")], file = paste0(out, "/UKB_bmi.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+```
+
+
+
+## Stroke 
+
+```{r, eval=F}
+# multiple field IDs used to identify stroke
+# 1. Self-reported illness: field ID 200002
+# 2. Cause of death: field ID 40001
+# 3. Source of stroke report: field ID 42007
+# 4. ICd9 diagnoses: field IDs 41203 & 41205
+# 5. ICD10 diagnoses: field IDs 41202 & 41206
+
+#########################################
+## 1. Self-reported illness (field IDs 20002, 2443, 2986, 2976, 21003) 
+#########################################
+# 20002.* path="/UK_Biobank_New/Data/Raw_Data/1027_Refresh_Dec_2022/670476" 
+# 42007.* path="/UK_Biobank_New/Data/Raw_Data/1027_Refresh_Dec_2022/670476" 
+
+path="/UK_Biobank_New/Data/Raw_Data/1027_Refresh_Dec_2022/670476"
+fileID = list.files(pat=path,pattern="csv")
+# read in file
+file = fread(paste0(path, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+
+#### field ID 20002 (code 1081 & 1583)
+####################
+
+# list columns of interest
+id = which(names(file) == "f.eid")
+Cols = grep("f.20002", names(file))
+
+# select columns of interest
+stro = as.data.frame(file[, c(..id, ..Cols)])
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(stro[,-which(names(stro) == "f.eid")])) == 0) 
+# 113066
+
+# determine codes of interest to find in field ID 41270
+codes <- c(1081,1086,1491,1583)
+
+# match ICDcodes with entries in all f.20002 variables filtered in 't2d'
+stro$countCodes = rowSums(!is.na(sapply(stro[,-which(names(stro) == "f.eid")], match, codes)))
+
+# if 1 or more entries, consider a case
+stro$stro20002 = as.factor(ifelse(stro$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+stro$stro20002[allMissing] = NA
+
+# append final column to file
+file$stro20002 = stro$stro20002
+
+#### field 42007
+#### Source of report of stroke
+#################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = grep("f.42007", names(file))
+
+# select columns of interest
+stro = as.data.frame(file[, c(..id, ..Cols)])
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(stro[,-which(names(stro) == "f.eid")])) == 0) 
+
+# determine participants with non missing - consider them cases
+allPresent = which(!is.na(stro[,which(names(stro) != "f.eid")]))
+
+# consider non-missing a case (but missing doesn't mean they don
+stro$stro42007 = 0
+stro$stro42007[allPresent] = 1
+stro$stro42007[allMissing] = NA
+
+stro$stro42007 = as.factor(stro$stro42007)
+
+# append final column to file
+file$stro42007 = stro$stro42007
+
+############################################
+# 2. Cause of Death (field ID 40001)
+############################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = grep("f.40001", names(file))
+
+# select columns of interest
+stro = as.data.frame(file[, c(..id, ..Cols)])
+
+# format "" to be NA
+for(i in names(stro)[grep("f.40001", names(stro))]){
+  stro[which(stro[,i] == ""),i] = NA
+}
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(stro[,-which(names(stro) == "f.eid")])) == 0) 
+
+# determine ICD10 codes of interest to find in field 
+codes <- c("I600","I601","I602","I603","I604","I605","I606","I607","I608","I609","I61","I610","I611","I612","I613","I614","I615","I616","I618","I619","I63","I630","I631","I632","I633","I634","I635","I636","I638","I639","I64")
+
+
+# match codes with entries in all variables filtered in 'hyp'
+stro$countCodes = rowSums(!is.na(sapply(stro[,-which(names(stro) == "f.eid")], match, codes)))
+
+# if 1 or more entries, consider a case
+stro$stroDeath = as.factor(ifelse(stro$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+stro$stroDeath[allMissing] = NA
+
+# append final column to file
+file$stroDeath = stro$stroDeath
+
+# intermediate save
+save = file[,c("f.eid", "stro20002", "stro42007", "stroDeath")]
+
+############################################
+## 2. ICD10 diagnoses (field ID 41202 & 41204)
+############################################
+### read in new data; basket 675090 has newer data for these variables 
+
+path="/UK_Biobank_New/Data/Raw_Data/1027_Refresh_Dec_2022/675090"
+fileID = list.files(pat=path,pattern="csv")
+# read in file
+file = fread(paste0(path, "/", fileID))
+# file doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = c(grep("f.41202", names(file)), grep("f.41204", names(file)))
+
+# select columns of interest
+stro = as.data.frame(file[, c(..id, ..Cols)])
+
+# format "" to be NA
+for(i in names(stro)[c(grep("f.41202", names(stro)), grep("f.41204", names(stro)))]){
+  stro[which(stro[,i] == ""),i] = NA
+}
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(stro[,-which(names(stro) == "f.eid")])) == 0) 
+
+# determine ICD10 codes of interest to find in field 
+ICDcode <- c("I600","I601","I602","I603","I604","I605","I606","I607","I608","I609","I61","I610","I611","I612","I613","I614","I615","I616","I618","I619","I63","I630","I631","I632","I633","I634","I635","I636","I638","I639","I64")
+
+# match codes with entries in all variables filtered in 't2d'
+stro$countCodes = rowSums(!is.na(sapply(stro[,-which(names(stro) == "f.eid")], match, ICDcode)))
+
+# if 1 or more entries, consider a case
+stro$stroICD41202_4 = as.factor(ifelse(stro$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+stro$stroICD41202_4[allMissing] = NA
+
+# append final column to file
+file$stroICD41202_4 = stro$stroICD41202_4
+
+
+##################################################
+## 3. ICD9 diagnoses (field ID 41203 & 41205)
+##################################################
+# list columns of interest
+id=which(names(file) == "f.eid")
+Cols = c(grep("f.41203", names(file)), grep("f.41205", names(file)))
+
+# select columns of interest
+stro = as.data.frame(file[, c(..id, ..Cols)])
+
+# format "" to be NA
+for(i in names(stro)[c(grep("f.41203", names(stro)), grep("f.41205", names(stro)))]){
+  stro[which(stro[,i] == ""),i] = NA
+}
+
+# identify those who have fully missing data (ecxept their participant ID)
+allMissing = which(rowSums(!is.na(stro[,-which(names(stro) == "f.eid")])) == 0) 
+
+# determine ICD10 codes of interest to find in field 
+codes <- c("4309","4319","4340","4341","4349","4369")
+
+# match codes with entries in all variables filtered in 't2d'
+stro$countCodes = rowSums(!is.na(sapply(stro[,-which(names(stro) == "f.eid")], match, codes)))
+
+# if 1 or more entries, consider a case
+stro$stroICD41203_5 = as.factor(ifelse(stro$countCodes >= 1, 1, 0))
+
+# delete those with missing IDs
+stro$stroICD41203_5[allMissing] = NA
+
+# append final column to file
+file$stroICD41203_5 = stro$stroICD41203_5
+
+
+######################################
+## Combine all hypertension variables 
+######################################
+
+# merge with saved columns above
+file = merge(file, save, by = "f.eid")
+
+# keep columns of interest only
+file = as.data.frame(file[, c("f.eid", "stro20002", "stro42007", "stroDeath", "stroICD41202_4", "stroICD41203_5")])
+
+# identify those with all missing
+allMissing = which(rowSums(!is.na(file[,-which(names(file) == "f.eid")])) == 0) 
+
+# identify cases
+file$stroke = 0 
+
+# identify cases
+file$stroke[which(file$stro20002 == 1 |
+				file$stro42007 == 1 |
+				file$stroDeath == 1 |
+				file$stroICD41202_4 == 1 |
+				file$stroICD41203_5 == 1)] = 1
+
+
+# delete allMissing from controls
+file$stroke[allMissing] = NA
+
+# make factor
+file$stroke = as.factor(file$stroke)
+
+#     0      1 
+# 461708  20197 
+
+# save final variable to a seperate file
+fwrite(file[,c("f.eid", "stroke")], file = paste0(out, "/UKB_StrokeStatus.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+```
+
+```{r strokeUKBDes, eval = F}
+#### test overlap with neuroimaging sample
+# read in file that holds neuroimaging IDs
+path="/CCACE_Shared/Anna_F/DownloadUKB/Nov2023/"
+IDfile= list.files(path = path, pattern = "AllAvailLong")
+
+allNeuro = read.table(paste0(path, IDfile))
+names(allNeuro)[1] = "f.eid"
+
+# read in data
+stroke = fread(paste0(out, "/UKB_StrokeStatus.txt"))
+
+# merge with data
+stroke = merge(stroke, allNeuro, by = "f.eid", all.y=T)
+
+table(stroke$stroke)
+```
+
+
+## Fried frailty definition
+
+```{r, eval=F}
+## Fried fraitly definition
+# Weight loss: 2306
+# Exhaustion: 2080
+# Weakness: 46,47
+# Physical activity: 6164, 1011
+
+path="/UK_Biobank_New/Data/Raw_Data/1027_Refresh_Dec_2022/670476"
+fileID = list.files(pat=path,pattern="csv")
+# read in file
+file = fread(paste0(path, "/", fileID))
+# R doesnt like column names that start with number and it doesnt like -
+names(file) = paste0("f.",names(file))
+names(file) = gsub("-", "_", names(file), fixed = T)
+
+# Weight loss: 2306 (neuroimaging visit)
+# Coding
+# -3 = Prefer not to say (NA)
+# -1 = Do not know (0)
+# 0 = no weight loss (0)
+# 2 = gained weight (0)
+# 3 = lost weight (1)
+id = which(names(file) == "f.eid")
+Cols = grep("2306_2.", names(file))
+
+sub = as.data.frame(file[, c(..id, ..Cols)])
+
+# assign categories as in Jiang et al 
+sub$f.2306_2.0[which(sub$f.2306_2.0 == -3)] = NA
+sub$f.2306_2.0[which(sub$f.2306_2.0 == -1)] = 0
+sub$f.2306_2.0[which(sub$f.2306_2.0 == 0)] = 0
+sub$f.2306_2.0[which(sub$f.2306_2.0 == 2)] = 0
+sub$f.2306_2.0[which(sub$f.2306_2.0 == 3)] = 1
+
+# intermediate save
+file$weightLoss = sub$f.2306_2.0
+
+# Exhaustion: 2080
+# Coding in Jiang et al
+# -3 = Prefer not to answer (NA)
+# -1 = Don't know (0)
+# 1 = Not at all (0)
+# 2 = Several days (0)
+# 3 = More than half the days (1)
+# 4 = Nearly every day (1)
+id = which(names(file) == "f.eid")
+Cols = grep("f.2080_2.", names(file))
+
+sub = as.data.frame(file[, c(..id, ..Cols)])
+
+# assign categories as in Jiang et al 
+sub$f.2080_2.0[which(sub$f.2080_2.0 == -3)] = NA
+sub$f.2080_2.0[which(sub$f.2080_2.0 == -1)] = 0
+sub$f.2080_2.0[which(sub$f.2080_2.0 == 1)] = 0
+sub$f.2080_2.0[which(sub$f.2080_2.0 == 2)] = 0
+sub$f.2080_2.0[which(sub$f.2080_2.0 == 3)] = 1
+sub$f.2080_2.0[which(sub$f.2080_2.0 == 4)] = 1
+
+# intermediate save
+file$exhaustion = sub$f.2080_2.0
+
+# Walking speed (924)
+# -7 = None of the above (NA)
+# -3 = Prefer not to answer (NA)
+# 1 = Slow pace (1)
+# 2 = Steady average pace (0)
+# 3 = Brisk pace (0)
+id = which(names(file) == "f.eid")
+Cols = grep("f.924_2.", names(file))
+
+sub = as.data.frame(file[, c(..id, ..Cols)])
+
+# assign categories as in Jiang et al 
+sub$f.924_2.0[which(sub$f.924_2.0 == -7)] = NA
+sub$f.924_2.0[which(sub$f.924_2.0 == -3)] = NA
+sub$f.924_2.0[which(sub$f.924_2.0 == 1)] = 1
+sub$f.924_2.0[which(sub$f.924_2.0 == 2)] = 0
+sub$f.924_2.0[which(sub$f.924_2.0 == 3)] = 0
+
+# intermediate save
+file$walkingSpeed = sub$f.924_2.0
+
+# Weakness (grip strength) field ID average of 46,47
+# Cut offs
+# Males: 
+# BMI <= 24 & grip strength <=29
+# 24.1<=BMI<=28 & grip strength <= 30
+# BMI > 28 & grip strength <= 32
+# Females:
+# BMI <= 23 & grip <=17
+# 23.1<=BMI<=26 & grip <=17.3
+# 26.1<=BMI & grip <=18
+# BMI>29 & grip<=21
+
+# select columns
+id = which(names(file) == "f.eid")
+Cols = c(grep("f.46_2.", names(file)), grep("f.47_2.", names(file)), grep("f.21001_2.0", names(file)), grep("f.23104_2.0", names(file)), grep("f.31_", names(file)))
+# subset data
+sub = as.data.frame(file[, c(..id, ..Cols)])
+
+# get average bmi between two indepdendent measures
+sub$bmi <- rowMeans(sub[, c("f.21001_2.0", "f.23104_2.0")], na.rm = T)
+
+# get average grip strength between left and right hand
+sub$grip <- rowMeans(sub[, c("f.46_2.0", "f.47_2.0")], na.rm = T)
+
+# create new variable to hold weakness categories
+sub$weakness = 0
+
+# identify participants who have missing bmi and missing grip as we can't determine measures for them
+allMissing = which(rowSums(!is.na(sub[,c("bmi", "grip")])) == 0) 
+
+# assign categories
+## Males: field ID f.31 is 1 for male
+males = subset(sub, f.31_0.0 == 1)
+males$weakness[which(males$bmi <= 24 & males$grip <=29)] = 1
+males$weakness[which(males$bmi >= 24.1 & males$bmi <= 28 & males$grip <= 30)] = 1
+males$weakness[which(males$bmi > 28 & males$grip <=32)] = 1
+
+## Females: f.31 is 0 for female
+females = subset(sub, f.31_0.0 == 0)
+females$weakness[which(females$bmi <= 23  & females$grip <= 17)] = 1
+females$weakness[which(females$bmi >= 23.1 & females$bmi <= 26 & females$grip <= 17.3)] = 1
+females$weakness[which(females$bmi >= 26.1 & females$bmi <= 29 & females$grip <= 18)] = 1
+females$weakness[which(females$bmi > 29 & females$grip <= 21)] = 1
+
+# combine males and females into 1 dataset
+both = rbind(males, females)
+
+# merge weakness variable back with other variables
+file = merge(file, both[,c("f.eid", "weakness")], by = "f.eid")
+
+# remove participants with all missing info
+file$weakness[allMissing] = NA
+
+# Physical activity field ID average of 6164
+## 1 = Walking for pleasure (0)
+## 2 = Other exercises (0)
+## 3 = Strenuous sports (0)
+## 4 = Light DIY (0 = more than once per week, 1 = once per weeks or less)
+## 5 = Heavy DIY (0)
+## -7 = None of the above (1)
+## -3 = Prefer not to answer (NA) 
+
+# Frequency of light DIY in the 4 weeks, 1011
+## 1 = Once in the last 4 weeks
+## 2 = 2-3 times in the last4 weeks
+## 3 = Once a week
+## 4 = 2-3 times a week
+## 5 = 4-5 times a week
+## 6 = every day
+## -1 = do not know 
+## -3 = prefer not to answer 
+
+# select columns
+id = which(names(file) == "f.eid")
+Cols = c(grep("f.6164_2.", names(file)), grep("f.1011_2", names(file)))
+
+sub = as.data.frame(file[, c(..id, ..Cols)])
+
+# identify participants who have indicated 'none of the above' (assigned value: 1)
+NoPhysAct = which(sub$f.6164_2.0 == -7)
+
+# we also assign value 1 to people who indicate to do light DIY once per week or less
+NoPhysAct = c(NoPhysAct, which(sub$f.6164_2.0 == 4 & sub$f.1011_2.0 == 1 | sub$f.6164_2.0 == 4 & sub$f.1011_2.0 == 2 | sub$f.6164_2.0 == 4 & sub$f.1011_2.0 == 3))
+
+# identify participants with all missing data (assigned value: NAs)
+allMissing = which(rowSums(!is.na(sub[,grep("6164", names(sub))])) == 0) 
+
+# create variable where all participants have assigned value 0
+sub$physicalActiv = 0 
+
+# identify those with No Physical Activity
+sub$physicalActiv[NoPhysAct] = 1
+
+# identify those with all missing
+sub$physicalActiv[allMissing] = NA
+
+# temporary save
+file$physicalActiv = sub$physicalActiv
+
+### get overall sumscore
+frail = file[,c("f.eid","weightLoss", "exhaustion", "walkingSpeed", "weakness", "physicalActiv")]
+frail$FriedFrailty = rowSums(frail[,c("weightLoss", "exhaustion", "walkingSpeed", "weakness", "physicalActiv")], na.rm = F)
+# hist(frail$FriedFrailty)
+
+# save file 
+fwrite(frail[,c("f.eid", "FriedFrailty")], file = paste0(out, "/UKB_FriedFrailty.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+```
+
+## Brain Age
+
+Brain age was calculated with (brainageR v2)[github.com/james-cole/brainageR] using the Docker file available on (GitHub)[https://github.com/fprados/brainageR_dockerfile], which is performed on each individual NIFTI file and then saved in separate text files.
+  
+```{bash BrainAge, eval = F}
+sudo docker run --rm -it -v ${WD}:/data -w /data docker.io/library/brainimage:latest /bin/bash
+
+DAT="/data/temp"
+IDinfo="/data/scripts/UKBlong"
+
+# read in participant IDs
+all=$(cat ${IDinfo}/AllAvailIDs_UKB15112023.txt)
+
+# run brainageR
+for i in $all
+do
+
+echo $i
+
+    if [ ! -f /data/data/UKB_BrainAge/${i}_brain_predicted.age.csv ]
+    then
+
+        brainageR -f ${DAT}/BrainAge/${i}_T1.nii -o /data/data/UKB_BrainAge/${i}_brain_predicted.age.csv
+
+    fi
+
+done
+```
+
+### Format individual-level data 
+
+We found that the average brain age prediction was ~15 years younger than chronological age, and this seems to be a concensus across other research groups that attempted to extract brain age from UKB neuroimaging data. To center brain age around zero, we deduct  the sample brain age mean value from each individual value before calculating the brain age gap, which should not affect the interindividual variability we're modeling.
+
+```{r, eval=F}
+# identify csv files saved in Brain Age processing directory
+files = list.files(path = target, pattern = "_T1_brain_predicted.age.csv")
+files = paste0(target, "/",files)
+
+# object to hold brain age info
+save = data.frame()
+
+# cycle through all files and save info
+for(i in files){
+  # read in file
+  file = read.csv(i, header = T)
+  
+  # store info in object "save"
+  save = rbind(save, file)
+  
+}
+
+# re-name File column to subject ID
+save$File = stringr::str_remove(save$File, pattern = "_T1_orig_defaced")
+
+# re-name ID column
+names(save)[which(names(save) == "File")] = "f.eid"
+
+# rename
+save$f.eid = stringr::str_remove(save$f.eid, pattern = "_orig_defaced")
+
+write.table(save, file = "/CCACE_Shared/Anna_F/BrainAtrophy/data/UKB_BrainAge_T1_orig_defaced.txt", col.names = T, row.names = F, quote = F, sep = "\t")
+```
+
+
+## Merge all UKB phenotypes into one file
+
+
+```{r mergeUKB, eval= F}
+#list.files(path = wd, pattern = "UKB_")
+# it makes it more straightforward to conduct the following analyses if I merge all phenotypes into one file
+# Step 1: Read all phenotypes in
+# Step 2: Merge them
+# Step 3: Save
+
+# cognitive ability
+cog = fread(paste0(wd, "/UKB_gFactor.txt"))
+# dementia
+dement = fread(paste0(wd, "/UKB_DementiaStatus.txt"))
+dement$dement = as.factor(dement$dement)
+# APOE
+APOE = fread(paste0(wd, "/UKB_APOE_Nov2023.txt"))
+names(APOE)[which(names(APOE) == "FID")] = "f.eid"
+APOE = APOE[,c("f.eid", "APOEstatus")]
+APOE$APOEstatus[which(APOE$APOEstatus == "e4Allele")] = 1
+APOE$APOEstatus[which(APOE$APOEstatus == "NOe4Allele")] = 0
+APOE$APOEstatus = as.factor(APOE$APOEstatus)
+
+# Frailty
+frail = fread(paste0(wd, "/UKB_FriedFrailty.txt"))
+# diabetes
+diab = fread(paste0(wd, "/UKB_t2dStatus.txt"))
+diab$t2d = as.factor(diab$t2d)
+# hyp
+hyp = fread(paste0(wd, "/UKB_HypertensionStatus.txt"))
+hyp$hyp = as.factor(hyp$hyp)
+# packyears
+smok = fread(paste0(wd, "/UKB_packyears.txt"))
+# bmi
+bmi = fread(paste0(wd, "/UKB_bmi.txt"))
+# brain age
+BrainAge = fread(paste0(wd, "/UKB_BrainAge_T1_orig_defaced.txt"))
+## get brain age gap: chronological age minus brain predicted age 
+age = fread(paste0(wd, "/UKB_covarGWAS.txt"))
+names(age)[grepl("FID", names(age))] <- "f.eid"
+BrainAge = merge(BrainAge, age[,c("f.eid", "age")], by = "f.eid")
+BrainAge$chronAge <- BrainAge$age / 12
+BrainAge$BrainAgeGap <- BrainAge$chronAge - BrainAge$brain.predicted_age
+# deducting mean age to be centered around zero
+BrainAge$brainAge <- BrainAge$BrainAgeGap - mean(BrainAge$BrainAgeGap)
+BrainAge = BrainAge[,c("f.eid", "brainAge")]
+
+# stroke
+stroke = fread(paste0(wd, "/UKB_StrokeStatus.txt"))
+stroke$stroke = as.factor(stroke$stroke)
+
+# merge data
+DatList = list(cog, dement, APOE, frail, diab, hyp, smok, bmi, stroke, BrainAge)
+UKB_merged = Reduce(function(x,y) merge(x, y, by = "f.eid", all = T), DatList)
+
+# restrict data set to neuroimaging participants 
+path="/CCACE_Shared/Anna_F/DownloadUKB/Nov2023/"
+IDfile= list.files(path = path, pattern = "AllAvailLong")
+
+allNeuro = read.table(paste0(path, IDfile))
+names(allNeuro)[1] = "f.eid"
+
+UKB_merged = UKB_merged[UKB_merged$f.eid %in% allNeuro$f.eid,]
+
+# choose prettier names
+names(UKB_merged) = c("f.eid","cog","dementia","APOEe4","frailty","diabetes","hypertension","packyears","BMI","stroke", "brainAge")
+
+# write
+fwrite(UKB_merged, file = paste0(out, "/UKB_allPheno.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+```
+

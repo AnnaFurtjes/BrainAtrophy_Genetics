@@ -1,0 +1,864 @@
+---
+title: "LBC1936: Phenotypic data preparation"
+format: 
+  html:
+    code-fold: true
+author: "Anna Elisabeth Furtjes"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html
+doi: test
+---
+
+------------------------------------------------------------------------
+
+```{r setup, include=F, warning=F, message=F, eval=T}
+load("paths.RData")
+knitr::opts_knit$set(root.dir = wd)
+#quarto::quarto_render(input = "LBC_pheno.qmd", output_file = "LBC_pheno.html")
+```
+
+
+Data prepared here was used as input into analyses presented [here](../_site/pheno_assocs.html). The file containing all  phenotypic variables was named `LBC1936_allPheno.txt`.
+
+## Load packages
+
+```{r packages, warning=F, message=F, eval=F}
+library(data.table)
+```
+
+## Function for longitudinal plots
+
+```{r}
+# write function to plot longitudinal  data
+plot_long = function(dat = data, id.var = "lbc36no", var = "matreas"){
+
+	# make sure dat is data.frame
+	dat = as.data.frame(dat)
+  # select data for the chosen cognitive test
+  dat = dat[,c(which(names(dat) == id.var), grep(var, names(dat)))]
+
+  # transform wide to long format
+  long <- reshape2::melt(dat, id.vars = id.var, value.name = var)
+  names(long)[which(names(long) == "variable")] = "Wave"
+  names(long)[which(names(long) == var)] = "var"
+  names(long)[which(names(long) == id.var)] = "id.var"
+  # remove redundant naming from waves
+  long$Wave = as.numeric(sub(".*_w", "", long$Wave))
+
+  plot = ggplot(data = long, aes(x = Wave, y = var, group = id.var))+
+  geom_point(color = "#82A0D8", size = .5)+
+  geom_line(aes(group=as.factor(id.var)),method="lm", se=F, color = "#8DDFCB", size = 0.2, alpha = .2, stat =  "smooth") +
+    theme(legend.position = "none")+
+    theme_bw()+
+    theme(text = element_text(size=20),
+          plot.margin=unit(c(1, 1, 1, 1), "cm"),
+          axis.text.y = element_text(size =20),
+          axis.text.x = element_text(size =20),
+          panel.border = element_blank())
+
+  return(plot)
+}
+```
+
+
+## Cognitive tests (factor scores)
+
+This script was kindly provided  by Joanna Moodie who had modelled a general factor of cognitive ability in the LBC1936 for one of her projects.
+
+```{r extractG, eval = F,  message = F, warning=FALSE}
+#######################################
+## Read in and format data
+######################################
+
+# read data
+data = foreign::read.spss(paste0(target, "/LBC1936_BrainAtrophy_AF_07NOV2023.sav"), to.data.frame=T)
+
+##########################################################
+### Format data
+##########################################################
+
+data=data[,c("lbc36no",
+              "matreas_w1","matreas_w2","matreas_w3","matreas_w4","matreas_w5",
+              "blkdes_w1","blkdes_w2","blkdes_w3","blkdes_w4","blkdes_w5",
+              "spantot_w1","spantot_w2","spantot_w3","spantot_w4","spantot_w5",
+              "vpatotal_w1","vpatotal_w2","vpatotal_w3","vpatotal_w4","vpa_total_w5",
+              "lmtotal_w1","lmtotal_w2","lmtotal_w3","lmtotal_w4","lmtotal_w5",
+              "digback_w1","digback_w2","digback_w3","digback_w4","digback_w5",
+              "nart_w1","nart_w2","nart_total_w3","nart_total_w4","nart_total_w5",
+              "wtar_w1","wtar_w2","wtar_total_w3","wtar_total_w4","wtar_total_w5",
+              "vftot_w1","vftot_w2","vftot_w3" ,"vftot_w4","vftot_w5",
+              "digsym_w1","digsym_w2","digsym_w3","digsym_w4","digsym_w5",
+              "symsear_w1","symsear_w2","symsear_w3","symsear_w4","symsear_w5",
+              "crtmean_w1","crtmean_w2","crtmean_w3","crtmean_w4","crtmean_w5",
+              "ittotal_w1","ittotal_w2","ittotal_w3","ittotal_w4","ittotal_w5")]
+
+
+# recode missing values
+data[data == -999] <- NA
+data[data == -777] <- NA
+data[data == 999] <- NA
+data[data == 888] <- NA
+data[data == -888] <- NA
+
+# assign correct variable classes
+# some numeric columns are coded as factors when some should be integers and some should be numeric
+# the code below transforms variables first into characters, then numeric because some of the values otherwise get corrupted
+IntNames = names(data)[-grep("crtmean", names(data))]
+IntNames = IntNames[-which(IntNames == "lbc36no")]
+data[IntNames] = lapply(data[IntNames], as.character)
+data[IntNames] = lapply(data[IntNames], as.integer)
+
+NumNames = names(data)[grep("crtmean", names(data))]
+data[NumNames] = lapply(data[NumNames], as.character)
+data[NumNames] = lapply(data[NumNames], as.numeric)
+
+# the symbol search variable has some impossible values (< 0).. these should be removed
+for (i in names(data)[grep("symsear", names(data))]) {
+  data[which(data[,i] < 0),i] <- NA
+}
+
+#rescaled some of the cognitive test variables so that variances are within a similar
+#range see http://www.statmodel.com/discussion/messages/11/1615.html?1335376547
+
+dset_mod <- mutate(data,
+                   blkdes_w1 = blkdes_w1/2,
+                   blkdes_w2 = blkdes_w2/2,
+                   blkdes_w3 = blkdes_w3/2,
+                   blkdes_w4 = blkdes_w4/2,
+                   blkdes_w5 = blkdes_w5/2,
+                   vftot_w1 = vftot_w1/2,
+                   vftot_w2 = vftot_w2/2,
+                   vftot_w3 = vftot_w3/2,
+                   vftot_w4 = vftot_w4/2,
+                   vftot_w5 = vftot_w5/2,
+                   lmtotal_w1 = lmtotal_w1/3,
+                   lmtotal_w2 = lmtotal_w2/3,
+                   lmtotal_w3 = lmtotal_w3/3,
+                   lmtotal_w4 = lmtotal_w4/3,
+                   lmtotal_w5 = lmtotal_w5/3,
+                   digback_w1 = 3*digback_w1,
+                   digback_w2 = 3*digback_w2,
+                   digback_w3 = 3*digback_w3,
+                   digback_w4 = 3*digback_w4,
+                   digback_w5 = 3*digback_w5,
+                   digsym_w1 = digsym_w1/2,
+                   digsym_w2 = digsym_w2/2,
+                   digsym_w3 = digsym_w3/2,
+                   digsym_w4 = digsym_w4/2,
+                   digsym_w5 = digsym_w5/2,
+                   ittotal_w1 = ittotal_w1/2,
+                   ittotal_w2 = ittotal_w2/2,
+                   ittotal_w3 = ittotal_w3/2,
+                   ittotal_w4 = ittotal_w4/2,
+                   ittotal_w5 = ittotal_w5/2,
+                   crtmean_w1 = -50 * crtmean_w1,
+                   crtmean_w2 = -50 * crtmean_w2,
+                   crtmean_w3 = -50 * crtmean_w3,
+                   crtmean_w4 = -50 * crtmean_w4,
+                   crtmean_w5 = -50 * crtmean_w5)
+
+#==================================================================
+# LBC1936 factor of curves model
+#==================================================================
+model <- '
+# test growth curves
+Imatreas =~ 1*matreas_w1 + 1*matreas_w2 + 1*matreas_w3 + 1*matreas_w4 + 1*matreas_w5
+Smatreas =~ 0*matreas_w1 + 2.98*matreas_w2 + 6.75*matreas_w3 + 9.82*matreas_w4 + 12.54*matreas_w5
+
+Iblkdes =~ 1*blkdes_w1 + 1*blkdes_w2 + 1*blkdes_w3 + 1*blkdes_w4 + 1*blkdes_w5
+Sblkdes=~ 0*blkdes_w1 + 2.98*blkdes_w2 + 6.75*blkdes_w3 + 9.82*blkdes_w4 + 12.54*blkdes_w5
+
+Ispantot =~ 1*spantot_w1 + 1*spantot_w2 + 1*spantot_w3 + 1*spantot_w4 + 1*spantot_w5
+Sspantot=~ 0*spantot_w1 + 2.98*spantot_w2 + 6.75*spantot_w3 + 9.82*spantot_w4 + 12.54*spantot_w5
+
+Inart =~ 1*nart_w1 + 1*nart_w2 + 1*nart_total_w3 + 1*nart_total_w4 + 1*nart_total_w5
+Snart =~ 0*nart_w1 + 2.98*nart_w2 + 6.75*nart_total_w3 + 9.82*nart_total_w4 + 12.54*nart_total_w5
+
+Iwtar =~ 1*wtar_w1 + 1*wtar_w2 + 1*wtar_total_w3 + 1*wtar_total_w4 + 1*wtar_total_w5
+Swtar =~ 0*wtar_w1 + 2.98*wtar_w2 + 6.75*wtar_total_w3 + 9.82*wtar_total_w4 + 12.54*wtar_total_w5
+
+Ivftot =~ 1*vftot_w1 + 1*vftot_w2 + 1*vftot_w3 + 1*vftot_w4 + 1*vftot_w5
+Svftot =~ 0*vftot_w1 + 2.98*vftot_w2 + 6.75*vftot_w3 + 9.82*vftot_w4 + 12.54*vftot_w5
+
+Ivpatotal =~ 1*vpatotal_w1 + 1*vpatotal_w2 + 1*vpatotal_w3 + 1*vpatotal_w4 + 1*vpa_total_w5
+Svpatotal =~ 0*vpatotal_w1 + 2.98*vpatotal_w2 + 6.75*vpatotal_w3 + 9.82*vpatotal_w4 + 12.54*vpa_total_w5
+
+Ilmtotal =~ 1*lmtotal_w1 + 1*lmtotal_w2 + 1*lmtotal_w3 + 1*lmtotal_w4 + 1*lmtotal_w5
+Slmtotal =~ 0*lmtotal_w1 + 2.98*lmtotal_w2 + 6.75*lmtotal_w3 + 9.82*lmtotal_w4 + 12.54*lmtotal_w5
+
+Idigback =~ 1*digback_w1 + 1*digback_w2 + 1*digback_w3 + 1*digback_w4 + 1*digback_w5
+Sdigback =~ 0*digback_w1 + 2.98*digback_w2 + 6.75*digback_w3 + 9.82*digback_w4 + 12.54*digback_w5
+
+Isymsear =~ 1*symsear_w1 + 1*symsear_w2 + 1*symsear_w3 + 1*symsear_w4 + 1*symsear_w5
+Ssymsear =~ 0*symsear_w1 + 2.98*symsear_w2 + 6.75*symsear_w3 + 9.82*symsear_w4 + 12.54*symsear_w5
+
+Idigsym =~ 1*digsym_w1 + 1*digsym_w2 + 1*digsym_w3 + 1*digsym_w4 + 1*digsym_w5
+Sdigsym =~ 0*digsym_w1 + 2.98*digsym_w2 + 6.75*digsym_w3 + 9.82*digsym_w4 + 12.54*digsym_w5
+
+Iittotal =~ 1*ittotal_w1 + 1*ittotal_w2 + 1*ittotal_w3 + 1*ittotal_w4 + 1*ittotal_w5
+Sittotal =~ 0*ittotal_w1 + 2.98*ittotal_w2 + 6.75*ittotal_w3 + 9.82*ittotal_w4 + 12.54*ittotal_w5
+
+Icrtmean =~ 1*crtmean_w1 + 1*crtmean_w2 + 1*crtmean_w3 + 1*crtmean_w4 + 1*crtmean_w5
+Scrtmean =~ 0*crtmean_w1 + 2.98*crtmean_w2 + 6.75*crtmean_w3 + 9.82*crtmean_w4 + 12.54*crtmean_w5
+
+# latent g intercept and slope 
+Ig =~  Iblkdes + Imatreas  + Ispantot + Ivftot + Ivpatotal + Ilmtotal +
+  Idigback + Isymsear + Idigsym + Icrtmean + Iittotal + Inart + Iwtar 
+# 
+Sg =~ Sblkdes + Smatreas + Sspantot + Svftot + Svpatotal + Slmtotal +
+  Sdigback + Ssymsear + Sdigsym + Scrtmean + Sittotal + Snart + Swtar 
+
+#indicator as scaling reference: loading=1, int=0
+Iblkdes ~ 0*1
+Sblkdes ~ 0*1 
+
+# within-wave covariances between nart and wtar
+nart_w1 ~~ wtar_w1
+nart_w2 ~~ wtar_w2
+nart_total_w3 ~~ wtar_total_w3
+nart_total_w4 ~~ wtar_total_w4
+nart_total_w5 ~~ wtar_total_w5
+
+# within-test intercept-slope covariances
+Imatreas ~~ Smatreas
+Iblkdes ~~ Sblkdes
+#Ispantot ~~Sspantot
+Inart ~~ Snart
+Iwtar ~~ Swtar
+Ivftot ~~ Svftot
+Ivpatotal ~~ Svpatotal
+Ilmtotal ~~ Slmtotal
+Idigback ~~ Sdigback
+Isymsear ~~ Ssymsear
+Idigsym ~~ Sdigsym
+Iittotal ~~ Sittotal
+Icrtmean ~~ Scrtmean
+
+
+# within-domain intercept-intercept and slope-slope covariances
+Iblkdes ~~ Imatreas # Visuospatial domain
+Iblkdes ~~ Ispantot
+Imatreas ~~ Ispantot
+Sblkdes ~~ Smatreas 
+#Sblkdes ~~ Sspantot
+#Smatreas ~~ Sspantot
+
+Inart ~~ Ivftot #Crystalized domain
+Iwtar ~~ Ivftot
+Iwtar ~~ Inart
+Snart ~~ Svftot
+Swtar ~~ Svftot
+Swtar ~~ Snart
+
+Ilmtotal ~~ Ivpatotal # Verbal memory domain
+Ilmtotal ~~ Idigback
+Ivpatotal ~~ Idigback
+Slmtotal ~~ Svpatotal
+Slmtotal ~~ Sdigback
+Svpatotal ~~ Sdigback
+
+Iittotal ~~ Idigsym #Processing speed domain
+Iittotal ~~ Isymsear
+Iittotal ~~ Icrtmean
+Idigsym ~~ Isymsear
+Idigsym ~~ Icrtmean
+Isymsear ~~ Icrtmean
+Sittotal ~~ Sdigsym 
+Sittotal ~~ Ssymsear
+Sittotal ~~ Scrtmean
+Sdigsym ~~ Ssymsear
+Sdigsym ~~ Scrtmean
+Ssymsear ~~ Scrtmean
+
+#fixed negative residual variance to 0 
+Sspantot ~~ 0*Sspantot
+'
+
+# fit model in lavaan 
+fit <- growth(model = model, dset_mod,  missing = "ml.x")
+#save=standardizedsolution(fit, output="data.frame")
+summary(fit, fit.measures = T, standardized = T)
+
+#==================================================================
+# extract LBC1936 g intercepts and slopes
+#==================================================================
+
+cogscores <- dset_mod %>% select(contains("matreas") | contains("blkdes") | contains("spantot") | contains("nart") | contains("vftot") | contains("vpa") | contains("lmtotal") | contains("digback") | contains("symsear") | contains("digsym") | contains("ittotal") | contains("crtmean") )
+wavesindex <- rep(c(1,2,3,4,5), 12) # index the waves 
+
+# find people that were only tested at one wave only to exclude them from prediction
+# and find people that were not tested at wave 1
+w1 <- matrix(NA, nrow(cogscores), 1)
+w2 <- matrix(NA, nrow(cogscores), 1)
+w3 <- matrix(NA, nrow(cogscores), 1)
+w4 <- matrix(NA, nrow(cogscores), 1)
+w5 <- matrix(NA, nrow(cogscores), 1)
+for (i in 1:nrow(cogscores)) {
+  if (!all(is.na(cogscores[i, which(wavesindex == 1)]))) {
+    w1[i,1] <- 1 }
+  if (!all(is.na(cogscores[i, which(wavesindex == 2)]))) {
+    w2[i,1] <- 1 }
+  if (!all(is.na(cogscores[i, which(wavesindex == 3)]))) {
+    w3[i,1] <- 1 }
+  if (!all(is.na(cogscores[i, which(wavesindex == 4)]))) {
+    w4[i,1] <- 1 }
+  if (!all(is.na(cogscores[i, which(wavesindex == 5)]))) {
+    w5[i,1] <- 1 }
+}
+
+wavesample <- cbind(w1, w2, w3, w4, w5)
+rowSums(wavesample, na.rm = T)
+onewave <- which(rowSums(wavesample, na.rm = T) < 2) # these people were only tested at one wave
+
+
+# delete participant with all missing data
+#dset_mod1 = dset_mod[-which(rowSums(is.na(dset_mod)) >= (ncol(dset_mod)-1)),]
+
+# extract factor scores
+factorScores <- data.frame(lavPredict(fit, dset_mod, 
+                 type ="lv", 
+                 method = "regression", 
+                 label = TRUE))
+
+# set slopes for participants who were only tested at one wave to NA
+factorScores$Sg[onewave] <- NA 
+# set intercepts for participants who were not tested at w1 to NA 
+factorScores$Ig[which(is.na(w1))] <- NA 
+# add participant ID back to factor scores
+factorScores <- data.frame(lbc36no = dset_mod$lbc36no, Ig = factorScores$Ig, Sg = factorScores$Sg)
+
+# report Ns
+cbind(c("N intercepts included", "N intercepts excluded", "N slopes included", "N slopes excluded"), as.numeric(c(length(which(is.na(factorScores$Ig) == F)), length(which(is.na(factorScores$Ig) == T)), length(which(is.na(factorScores$Sg) == F)), length(which(is.na(factorScores$Sg) == T))))) 
+
+# write.table to dat
+write.table(factorScores, file = paste0(wd, "/LBC1936_Cog_FactorScores.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+### Plot cognitive scores 
+
+```{r LBCplotCog, warning=F, message=F, fig.dim = c(16,20), fig.cap="Trajectories of raw cognitive scores across five waves", eval=F}
+# consistent variable names
+names(data) <- gsub("vpa_tot", "vpatot", colnames(data)) 
+
+# plot the different cognitive tests
+p_matreas <- plot_long(dat = data, id.var = "lbc36no", var = "matreas")+
+  xlab("Wave")+
+  ylab("Matrix reasoning\n(# correct)\n'matreas'")
+
+p_blkdes <- plot_long(dat = data, id.var = "lbc36no", var = "blkdes")+
+  xlab("Wave")+
+  ylab("Block design\n(# correct)\n'blkdes'")
+
+p_spantot <- plot_long(dat = data, id.var = "lbc36no", var = "spantot")+
+  xlab("Wave")+
+  ylab("Spatial span\n(# correct)\n'spantot'")
+
+p_vpatotal <- plot_long(dat = data, id.var = "lbc36no", var = "vpatotal")+
+  xlab("Wave")+
+  ylab("Verbal paired associations\n(# correct)\n'vpatotal'")
+
+p__lmtotal <- plot_long(dat = data, id.var = "lbc36no", var = "lmtotal")+
+  xlab("Wave")+
+  ylab("Logical memory\n(# details recalled)\n'lmtotal'")
+
+p_digback <- plot_long(dat = data, id.var = "lbc36no", var = "digback")+
+  xlab("Wave")+
+  ylab("Digit span backwards\n(max length)\n'digback'")
+
+p_nart <- plot_long(dat = data, id.var = "lbc36no", var = "nart")+
+  xlab("Wave")+
+  ylab("National Adult\nReading Test\n(# correct) 'nart'")
+
+p_wtar <- plot_long(dat = data, id.var = "lbc36no", var = "wtar")+
+  xlab("Wave")+
+  ylab("Wechsler Test of\nAdult Reading\n(# correct) 'wtar'")
+
+p_vftot <- plot_long(dat = data, id.var = "lbc36no", var = "vftot")+
+  xlab("Wave")+
+  ylab("Verbal fluency\n(# correct)\n'vftot'")
+
+p_digsym<- plot_long(dat = data, id.var = "lbc36no", var = "digsym")+
+  xlab("Wave")+
+  ylab("Digit-symbol substitution\n(# matched pairs)\n'digsym'")
+
+p_symsear <- plot_long(dat = data, id.var = "lbc36no", var = "symsear")+
+  xlab("Wave")+
+  ylab("Symbol Search\n(# correct)\n'symsear'")
+
+p_crtmean <- plot_long(dat = data, id.var = "lbc36no", var = "crtmean")+
+  xlab("Wave")+
+  ylab("Four-choice reaction\ntime (ms)\n'crtmean'")
+
+p_ittotal <- plot_long(dat = data, id.var = "lbc36no", var = "ittotal")+
+  xlab("Wave")+
+  ylab("Inspection time\n(# correct)\n'ittotal'")
+
+# arrange all plots
+plots <- ls(pattern="p_")
+plot_list <- list()
+
+for(i in plots){
+  plot_list[[i]] <- get(i)
+}
+
+# arrange all plots
+ggarrange(plotlist = plot_list, ncol = 3, nrow = 5)
+```
+
+
+
+## Clinically-ascertained all-cause dementia 
+
+This variable is available through the LBC1936 and was derived as described [here](https://link.springer.com/article/10.1186/s12888-023-04797-7).
+
+```{r dement, eval = F, message=F, warning=F}
+# read data
+file = foreign::read.spss(paste0(target, "/LBC1936_EarlyAccessDementiaAscertainment_AF_07DEC2023.sav"), to.data.frame=T)
+
+# remove redundant spacing 
+for(i in names(file)){
+  file[,i] = stringr::str_remove_all(file[,i], pattern = " ")
+}
+
+# remove NA coding
+file[file == -999] <- NA
+file[file == -888] <- NA
+
+# no participants with all missing data
+# which(is.na(file$dement_w1))
+
+table(file$dementia_code)
+#  Dementia NoDementia 
+#       118        747 
+
+file$dementia_code[which(file$dementia_code == "Dementia")] <- 1
+file$dementia_code[which(file$dementia_code == "NoDementia")] <- 0
+
+# binary variable as factor
+file$dementia_code = as.factor(file$dementia_code)
+
+# write.table to dat
+write.table(file[,c("lbc36no", "dementia_code")], file = paste0(wd, "/LBC1936_dementia.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+
+## APOE status
+
+```{r APOE, message=F, warning=F, eval = F}
+# read data
+file = foreign::read.spss(paste0(target, "/LBC1936_BrainAtrophy_AF_07NOV2023.sav"), to.data.frame=T)
+
+table(file[,grep("APOE", names(file))])
+#APOEgenotype
+#APOEe4               ?     e2/e2 e2/e3 e2/e4 e3/e3 e3/e4 e4/e4
+#No e4 allele     0     0     5   120     0   597     0     0
+#e4 allele        0     0     0     0    23     0   262    21
+
+
+table(file$APOEe4)
+#No e4 allele    e4 allele 
+#722          306
+
+# recode
+file$APOEe4 = as.numeric(file$APOEe4)-1
+
+# make factor
+file$APOEe4 = as.factor(file$APOEe4)
+
+# write.table to dat
+write.table(file[,c("lbc36no", "APOEe4")], file = paste0(wd, "/LBC1936_APOEe4.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+
+## Frailty
+
+```{r LBCfrailty, message=F, warning=F, eval =F}
+# names(file)[grep("Frailty", names(file))]
+frailty = file[,c(1,grep("Frailty", names(file)))]
+
+# model slopes and intercepts
+frailModel <- '
+          i =~ 1*FrailtyIndex_W1 + 1*FrailtyIndex_W2 + 1*FrailtyIndex_W3 + 1*FrailtyIndex_W4 + 1*FrailtyIndex_W5
+          s =~ 0*FrailtyIndex_W1 + 2.98*FrailtyIndex_W2 + 6.75*FrailtyIndex_W3 + 9.82*FrailtyIndex_W4 + 12.54*FrailtyIndex_W5
+          '
+
+fit = growth(frailModel, frailty, missing = "ml.x")
+summary(fit, standardized = T)
+
+# estimate individual-level values for slope and intercept
+frailtyPred = as.data.frame(lavPredict(fit,
+                 type ="lv", 
+                 method = "regression", 
+                 label = TRUE))
+
+# merge with participant ID
+frailtyPred = cbind(frailty$lbc36no,frailtyPred)
+names(frailtyPred) = c("lbc36no", "iFrail","sFrail")
+
+# save
+write.table(frailtyPred, file = paste0(wd, "/LBC1936_Frailty.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+### Plot frailty
+
+```{r, eval =F}
+##### visualise 
+frailty = file[,c(1,grep("Frailty", names(file)))]
+# unify naming (otherwise plotting function won't work)
+names(frailty) = str_replace(names(frailty), pattern= "_W", replacement = "_w")
+
+# find people who were tested at one wave only to exclude them from slope prediction
+onewave = which(rowSums(is.na(frailty[,grep("_W", names(frailty))])) == 4)
+
+# find people who were not tested at wave 1 to exclude from intercept
+NotWave1 = which(is.na(frailty$FrailtyIndex_W1))
+
+# set slopes for participants who were only tested at one wave to NA
+frailtyPred$s[onewave] <- NA 
+# set intercepts for participants who were not tested at w1 to NA 
+frailtyPred$i[NotWave1] <- NA 
+
+##### inspect trajectory
+
+p_frailty <- plot_long(dat = frailty, id.var = "lbc36no", var = "FrailtyIndex")+
+  xlab("Wave")+
+  ylab("Frailty index")
+
+p_frailty
+```
+
+## Diabetes
+
+```{r, eval =F}
+# no participants with all missing data
+# which(is.na(file$diab_w1))
+
+# first of all, all No
+file$diab_life = 0
+file$diab_life[which(file$diab_w1 == "Yes" | 
+                         file$diab_w2 == "Yes" |
+                         file$diab_w3 == "Yes" | 
+                         file$diab_w4 == "Yes" | 
+                         file$diab_w5 == "Yes")] = 1
+
+# remove those with all missing
+allMissing = which(rowSums(!is.na(file[,grep("diab_w", names(file))])) == 0) 
+if(length(allMissing) != 0){file$diab_life[allMissing] = NA}
+
+
+table(file$diab_life)
+# No Yes 
+# 942 149 
+
+file$diab_life = as.factor(file$diab_life)
+
+# write.table to dat
+write.table(file[,c("lbc36no", "diab_life")], file = paste0(wd, "/LBC1936_diabetes.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+## Hypertension
+
+```{r, eval =F}
+# no participants with all missing data
+# which(is.na(file$hibp_w1))
+
+# first of all, all No
+file$hypertension_life = 0
+file$hypertension_life[which(file$hibp_w1 == "Yes" | 
+                       file$hibp_w2 == "Yes" |
+                       file$hibp_w3 == "Yes" | 
+                       file$hibp_w4 == "Yes" | 
+                       file$hibp_w5 == "Yes")] = 1
+
+# remove those with all missing
+allMissing = which(rowSums(!is.na(file[,grep("hibp_w", names(file))])) == 0) 
+if(length(allMissing) != 0){file$hypertension_life[allMissing] = NA}
+
+file$hypertension_life = as.factor(file$hypertension_life)
+
+table(file$hypertension_life)
+# No Yes 
+# 448 643 
+
+# write.table to dat
+write.table(file[,c("lbc36no", "hypertension_life")], file = paste0(wd, "/LBC1936_hypertension.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+## Smoking (packyears)
+
+Number of cigarettes per year x years of smoking / 20 (pack size) 
+
+```{r, eval =F}
+# keep variables of interest
+smok = file[,c(1,grep("smo", names(file)))]
+
+# wave 1 has 465 more non-missing values than wave 2 
+# all.equal(smok$smokagestop_w1, smok$smokagestop_w2)
+
+# keep only first wave
+smok = smok[,c(1,grep("_w1", names(smok)))]
+
+# identify participants who have starting year but not end year as they must still be smokers
+smok$smokagestop = ifelse(smok$smokcat_w1 == "current smoker", 70, smok$smokagestop_w1)
+
+# extract years of smoking (so far, regardless if they stopped smoking or not)
+smok$yearsSmok = smok$smokagestop - smok$smokagestart_w1
+
+# two entries are smoknumcigs == 0 which would null the equation
+# one of those participants have indicates to be a current smoker and the other one to hae never smoked (but still gave starting age)
+# as I don't know how that came about, I have deleted these two data points
+smok[which(smok$smoknumcigs_w1 == 0),] = NA
+
+# calculate packyears
+smok$packyears = (smok$smoknumcigs_w1 * 365 * smok$yearsSmok)/20
+
+# null the never smokers
+smok$packyears[which(smok$smokcat_w1 == "never smoked")] = 0
+
+hist(smok$packyears)
+
+# write.table to dat
+write.table(smok[,c("lbc36no", "packyears")], file = paste0(wd, "/LBC1936_packYears.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+
+## Body mass index (BMI)
+
+```{r, eval =F}
+# names(file)[grep("bmi", names(file))]
+bmi = file[,c(1,grep("bmi", names(file)))]
+
+# recode missing
+bmi[bmi == -999] <- NA
+
+# model slopes and intercepts
+BMImodel <- '
+          i =~ 1*bmi_w1 + 1*bmi_w2 + 1*bmi_w3 + 1*bmi_w4 + 1*bmi_w5
+          s =~ 0*bmi_w1 + 2.98*bmi_w2 + 6.75*bmi_w3 + 9.82*bmi_w4 + 12.54*bmi_w5
+          '
+
+fit = growth(BMImodel, bmi, missing = "ml.x")
+summary(fit, standardized = T)
+
+# estimate individual-level values for slope and intercept
+bmiPred = as.data.frame(lavPredict(fit,
+                 type ="lv", 
+                 method = "regression", 
+                 label = TRUE))
+
+# merge with participant ID
+bmiPred = cbind(bmi$lbc36no, bmiPred)
+names(bmiPred) = c("lbc36no", "iBMI", "sBMI")
+
+# write.table to dat
+write.table(bmiPred[,c("lbc36no", "iBMI", "sBMI")], file = paste0(wd, "/LBC1936_bmi.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+### Plot BMI
+
+```{r, eval =F}
+## visualise
+bmi = file[,c(1,grep("bmi", names(file)))]
+
+# find people who were tested at one wave only to exclude them from slope prediction
+onewave = which(rowSums(is.na(bmi[,grep("_W", names(bmi))])) == 4)
+
+# find people who were not tested at wave 1 to exclude from intercept
+NotWave1 = which(is.na(bmi$bmiIndex_W1))
+
+# set slopes for participants who were only tested at one wave to NA
+bmiPred$s[onewave] <- NA 
+# set intercepts for participants who were not tested at w1 to NA 
+bmiPred$i[NotWave1] <- NA 
+
+summary(bmiPred)
+
+# write.table to dat
+write.table(bmiPred, file = paste0(wd, "/LBC1936_bmiFactorScores.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+
+##### inspect trajectory
+plot_long(dat = bmi, id.var = "lbc36no", var = "bmi")+
+  xlab("Wave")+
+  ylab("bmi index")
+```
+
+## Brain age
+
+```{r, eval =F}
+# read file
+file = as.data.frame(foreign::read.spss(paste0(target, "/BrainAgeVia2p1_AF_07DEC2023.sav"), to.file.frame=T))
+
+# remove ID info when waves are indicated in "JC_BrainAge_ID"
+file$JC_BrainAge_ID = as.numeric(gsub(".*_w", "", file$JC_BrainAge_ID))
+
+# rename columns more intuitively
+names(file)[which(names(file) == "JC_BrainAge_ID")] = "wave"
+names(file)[which(names(file) == "JCBA_brain_age_W2")] = "brainAgeEst"
+
+# read in age info 
+ageInfo = as.data.frame(foreign::read.spss("LBC1936_BrainAtrophy_AF_07NOV2023.sav"))
+# strange name formatting
+ageInfo$lbc36no =gsub(" ", "", ageInfo$lbc36no)
+
+# merge info 
+file = merge(file, ageInfo[, c("lbc36no", "agedays_w2")], by = "lbc36no")
+
+# get age in days in years to match estimated brain age
+file$agedays_w2 = file$agedays_w2/365
+
+# get brain age gap which is the difference between brain age and chronological age
+# positive value should mean the particpant has a healthier looking brain tthan expected given their age 
+# negative value should mean the participant has an unhealthier looking brain than expected
+file$brainAge = file$agedays_w2 - file$brainAgeEst
+
+# summary stats
+summary(file$brainAge)
+hist(file$brainAge)
+
+# write.table to dat
+write.table(file[,c("lbc36no","brainAge")], file = paste0(wd, "/LBC1936_brainAge.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+## Stroke
+
+```{r, eval =F}
+# set path to where data was saved 
+target="/CCACE_Shared/Anna_F/BrainAtrophy/data"
+
+# read data
+file = foreign::read.spss(paste0(target, "/LBC1936_BrainAtrophy_AF_07NOV2023.sav"), to.data.frame=T)
+
+# names(file)[grep("stroke", names(file))]
+
+# first of all, all No
+file$strokemask_life = 0
+# identify people who had no scan
+file$strokemask_life[which(is.na(file$stroke_mask_w2) & 
+                             is.na(file$stroke_mask_w3) &
+                             is.na(file$stroke_mask_w4) &
+                             is.na(file$stroke_mask_w5))] = NA
+
+file$strokemask_life[which(file$stroke_mask_w2 == "Yes Stroke Mask - Had scan" | 
+                               file$stroke_mask_w3 == "Yes Stroke Mask - Had scan" |
+                               file$stroke_mask_w4 == "Yes Stroke Mask - Had scan" | 
+                               file$stroke_mask_w5 == "Yes Stroke Mask - Had scan")] = 1
+
+
+file$strokemask_life <- as.factor(file$strokemask_life)
+
+table(file$strokemask_life)
+# No Yes 
+# 544 156 
+
+# write.table to dat
+write.table(file[,c("lbc36no","strokemask_life")], file = paste0(wd, "/LBC1936_strokemask.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+
+## Visual rating scales
+
+Note we did not have access to rating scales at wave 5, only wave 3.
+
+```{r, eval =F}
+# set path to where data was saved 
+target="/CCACE_Shared/Anna_F/BrainAtrophy/data"
+
+# read data
+file = foreign::read.spss(paste0(target, "/LBC1936_BrainAtrophy_AtrophyRating_AF_03MAY2024.sav"), to.data.frame=T)
+
+# strange name formatting
+file$lbc36no = gsub(" ", "", file$lbc36no)
+
+# atrophy deep and superficial are in great agreement (only 80 participants where they are not identical)
+sum(file$atrophy_deep_w3 == file$atrophy_superficial_w3, na.rm=T)
+
+# recode so the scales are numeric
+file$atrophy_deep_recoded = NA
+file$atrophy_deep_recoded[grepl("(<25th)", file$atrophy_deep_w3)] = 1
+file$atrophy_deep_recoded[grepl("(25-50th)", file$atrophy_deep_w3)] = 2
+file$atrophy_deep_recoded[grepl("(50-75th)", file$atrophy_deep_w3)] = 3
+file$atrophy_deep_recoded[grepl("(75-95th)", file$atrophy_deep_w3)] = 4
+file$atrophy_deep_recoded[grepl("(>95th)", file$atrophy_deep_w3)] = 5
+file$atrophy_deep_recoded[grepl("(>>5)", file$atrophy_deep_w3)] = 6
+
+# same for atrophy superficial
+file$atrophy_superficial_recoded = NA
+file$atrophy_superficial_recoded[grepl("(<25th)", file$atrophy_superficial_w3)] = 1
+file$atrophy_superficial_recoded[grepl("(25-50th)", file$atrophy_superficial_w3)] = 2
+file$atrophy_superficial_recoded[grepl("(50-75th)", file$atrophy_superficial_w3)] = 3
+file$atrophy_superficial_recoded[grepl("(75-95th)", file$atrophy_superficial_w3)] = 4
+file$atrophy_superficial_recoded[grepl("(>95th)", file$atrophy_superficial_w3)] = 5
+file$atrophy_superficial_recoded[grepl("(>>5)", file$atrophy_superficial_w3)] = 6
+
+
+# write.table to dat
+write.table(file[,c("lbc36no","atrophy_deep_recoded","atrophy_superficial_recoded")], file = paste0(target, "/LBC1936_atrophyScales.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+## Age
+
+```{r, eval =F}
+# read data
+file = foreign::read.spss(paste0(target, "/LBC1936_BrainAtrophy_AF_07NOV2023.sav"), to.data.frame=T)
+
+# strange name formatting
+file$lbc36no = gsub(" ", "", file$lbc36no)
+
+# keep age variable for first neuroimaging visit
+file = file[,c("lbc36no", "ageMRI_w2")]
+
+# save file
+write.table(file, file = paste0(target, "/LBC1936_age_w2.txt"), quote = F, col.names = T, row.names = F, sep = "\t")
+```
+
+## Merge all LBC variables into one file
+
+```{r merge, eval =F}
+# it makes it more straightforward to conduct the following analyses if I merge all phenotypes into one file
+# Step 1: Read all phenotypes in
+# Step 2: Merge them
+# Step 3: Save
+
+# cognitive ability
+cog = fread(paste0(wd, "/LBC1936_Cog_FactorScores.txt"))
+# dementia
+dement = fread(paste0(wd, "/LBC1936_dementia.txt"))
+# APOE
+APOE = fread(paste0(wd, "/LBC1936_APOEe4.txt"))
+# Frailty
+frail = fread(paste0(wd, "/LBC1936_Frailty.txt"))
+# diabetes
+diab = fread(paste0(wd, "/LBC1936_diabetes.txt"))
+# hyp
+hyp = fread(paste0(wd, "/LBC1936_hypertension.txt"))
+# packyears
+smok = fread(paste0(wd, "/LBC1936_packYears.txt"))
+# bmi
+bmi = fread(paste0(wd, "/LBC1936_bmi.txt"))
+# brain age
+BrainAge = fread(paste0(wd, "/LBC1936_brainAge.txt"))
+# stroke
+stroke = fread(paste0(wd, "/LBC1936_strokemask.txt"))
+# atrophy scales
+atrophy = fread(paste0(wd, "/LBC1936_atrophyScales.txt"))
+# age
+age = fread(paste0(wd, "/LBC1936_age_w2.txt"))
+
+# merge data
+DatList = list(cog, dement, APOE, frail, diab, hyp, smok, bmi, BrainAge, stroke, atrophy, age)
+LBC_merged = Reduce(function(x,y) merge(x, y, by = "lbc36no", all = T), DatList)
+
+# remove empty rows
+LBC_merged = LBC_merged[-which(rowSums(!is.na(LBC_merged)) == 0),]
+
+# choose prettier names
+names(LBC_merged) = c("lbc36no","iCog","sCog","dementia","APOEe4","iFrailty","sFrailty","diabetes","hypertension","packyears","iBMI","sBMI","BrainAge","Stroke","VisualAtrophyDeep","VisualAtrophySuperficial","ageMRI_w2")
+
+# remove empty rows
+LBC_merged = LBC_merged[rowSums(is.na(LBC_merged)) != ncol(LBC_merged),]
+
+# write
+fwrite(LBC_merged, file = paste0(wd, "/LBC1936_allPheno.txt"), col.names = T, row.names = F, quote = F, na = NA, sep = "\t")
+```
+
+

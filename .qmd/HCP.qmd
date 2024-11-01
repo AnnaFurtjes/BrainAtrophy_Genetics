@@ -1,0 +1,502 @@
+---
+title: "Human Connectome Project"
+format: 
+  html:
+    code-fold: true
+author: "Anna Elisabeth Furtjes"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html
+doi: test
+---
+
+------------------------------------------------------------------------
+
+```{r setup, include=F, warning=F, message=F, eval=T}
+load("paths.RData")
+knitr::opts_knit$set(root.dir = wd)
+#quarto::quarto_render(input = "HCP.qmd", output_file = "HCP.html")
+```
+
+# Load packages
+
+```{r packages, message=F, warning=F, include = T}
+library(data.table)
+library(ggplot2)
+library(stringr)
+library(ggpubr)
+library(cowplot)
+library(dplyr)
+```
+
+# Read in and format the data
+```{r, message=F, warning=F}
+HCPcov = fread(paste0(HCPdir,list.files(path = HCPdir, pattern = "unrestricted_annafurtjes")))
+HCPcov = HCPcov[,c("Subject", "Release", "Acquisition","fMRI_3T_ReconVrs")]
+
+HCP = fread(paste0(HCPdir,"unrestricted_hcp_freesurfer.csv"))
+HCP = HCP[,c("Subject", "Gender", "FS_InterCranial_Vol", "FS_BrainSeg_Vol_No_Vent")]
+
+HCP = merge(HCP, HCPcov, by = "Subject")
+
+HCPage = fread(paste0(HCPdir, "RESTRICTED_annafurtjes_12_14_2023_4_18_2.csv"))
+HCPage = HCPage[,c("Subject","Age_in_Yrs", "Family_ID")]
+
+HCP = merge(HCP, HCPage, by ="Subject")
+names(HCP) = c("ID", "Sex", "ICV", "TBV", "Release", "Acquisition","fMRI_3T_ReconVrs", "Age", "Family_ID")
+
+# convert mm3 estimates to more intuitive cm3 estimates
+HCP$ICV = HCP$ICV/1000
+HCP$TBV = HCP$TBV/1000
+
+# calculate atrophy scores
+HCP$diff = HCP$ICV - HCP$TBV
+HCP$ratio = HCP$TBV / HCP$ICV
+
+# delete those from data 
+HCP=HCP[-which(HCP$diff < 0),]
+
+# estimate residual model
+model <- lm(TBV ~ ICV, data = HCP)
+HCP$resid = as.vector(resid(model, na.rm=T))
+
+# standardise variables
+HCP$diff_stand = as.vector(scale(HCP$diff))
+HCP$ratio_stand = as.vector(scale(HCP$ratio))
+HCP$resid_stand = as.vector(scale(HCP$resid))
+
+```
+
+
+
+# Age correlations in the full sample
+
+It is contrary to our expectation that ICV gets so much larger with younger age - cohort effect?
+
+  - Much stronger correlation between younger age and ICV than there should be (N = 1103)
+  
+  - This explains why the atrophy scores with dependence of baseline levels are also strongly affected by age
+  
+  - The only score that is independent of baseline levels - i.e., residual score - has no association with age
+
+
+```{r, message=F, warning=F}
+corICV = ggplot(data = HCP, aes(x = ICV, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  theme(panel.border = element_blank())
+
+corTBV = ggplot(data = HCP, aes(x = TBV, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  theme(panel.border = element_blank())
+
+cordiff = ggplot(data = HCP, aes(x = diff, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Difference score")+
+  theme(panel.border = element_blank())
+
+corratio = ggplot(data = HCP, aes(x = ratio, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Ratio score")+
+  theme(panel.border = element_blank())
+
+corresid = ggplot(data = HCP, aes(x = resid, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Residual score")+
+  theme(panel.border = element_blank())
+
+ggarrange(corICV, corTBV, cordiff, corratio, corresid, common.legend=T, legend = "bottom")
+```
+
+
+
+
+# Excluding related individuals
+
+  - Relatedness is determined based on Family_ID variable
+  
+  - The correlations stay about the same even when excluding all related individuals (N = 444)
+  
+```{r, message=F, warning=F}
+##### Family_ID
+## Randomly select one participant from each family and keep  only one
+HCPunrel = HCP[, .SD[sample(x = .N, size = 1)], by = Family_ID]
+
+# calculate atrophy scores
+HCPunrel$diff = HCPunrel$ICV - HCPunrel$TBV
+HCPunrel$ratio = HCPunrel$TBV / HCPunrel$ICV
+
+# delete those from data (none in this unrelated data)
+if(sum(HCPunrel$diff < 0) != 0){HCPunrel=HCPunrel[-which(HCPunrel$diff < 0),]}
+
+# estimate residual model
+model <- lm(TBV ~ ICV, data = HCPunrel)
+HCPunrel$resid = as.vector(resid(model, na.rm=T))
+
+# standardise variables
+HCPunrel$diff_stand = as.vector(scale(HCPunrel$diff))
+HCPunrel$ratio_stand = as.vector(scale(HCPunrel$ratio))
+HCPunrel$resid_stand = as.vector(scale(HCPunrel$resid))
+
+
+########## plot age correlations (copied from Aim 1)
+corICV = ggplot(data = HCPunrel, aes(x = ICV, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  theme(panel.border = element_blank())
+
+corTBV = ggplot(data = HCPunrel, aes(x = TBV, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  theme(panel.border = element_blank())
+
+
+cordiff = ggplot(data = HCPunrel, aes(x = diff, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Difference score")+
+  theme(panel.border = element_blank())
+
+corratio = ggplot(data = HCPunrel, aes(x = ratio, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Ratio score")+
+  theme(panel.border = element_blank())
+
+corresid = ggplot(data = HCPunrel, aes(x = resid, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Residual score")+
+  theme(panel.border = element_blank())
+
+ggarrange(corICV, corTBV, cordiff, corratio, corresid, common.legend=T, legend = "bottom")
+```
+
+
+
+# Adjusting for batch effects
+
+Adjusting for batch effects does not change the strong age correlation we see in this young sample either.
+
+
+```{r, message=F, warning=F}
+# adjust for Release and acquisition
+
+# adjust ICV
+model = lm('ICV ~ Release + Acquisition + fMRI_3T_ReconVrs', data =HCP)
+summary(model)
+
+HCP$ICVadj = resid(model)
+
+corICV = ggplot(data = HCP, aes(x = ICVadj, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("ICV adjusted for Release and Acquisition")+
+  theme(panel.border = element_blank())
+
+# adjust TBV 
+model = lm('TBV ~ Release + Acquisition', data =HCP)
+HCP$TBVadj = resid(model)
+
+corTBV = ggplot(data = HCP, aes(x = TBVadj, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("TBV adjusted for Release and Acquisition")+
+  theme(panel.border = element_blank())
+
+# re-create diff score with adjusted variables
+HCP$diff_adj = HCP$ICVadj - HCP$TBVadj
+  
+cordiff = ggplot(data = HCP, aes(x = diff_adj, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Difference score")+
+  theme(panel.border = element_blank())
+
+# re-create ratio score with adjusted variables
+HCP$ratio_adj = HCP$TBVadj / HCP$ICVadj
+ 
+corratio = ggplot(data = HCP, aes(x = ratio_adj, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Ratio score")+
+  theme(panel.border = element_blank())
+
+ggarrange(corICV, corTBV, common.legend = T, legend = "bottom")
+```
+
+
+
+# Restrict sample by age
+
+  - If we consider participants of and below 29 years only, the ICV age correlation disappears
+  
+  - This threshold was empirically determined and then applied in the plot below 
+  
+  - In this younger sample, we see no age correlations whatsoever anymore
+  
+
+## Determine most appropriate age cut-off for HCP
+
+  - the plot shows that the ICV-age correlation disappears at age 29 and below
+  
+  - also this sample includes only 3 out of the 10 participants that had to get excluded due to ICV < TBV
+  
+
+```{r, message=F, warning=F}
+### determne which age is a good one to use for cut-off
+# determine age cut-offs to iterate through
+ageCut = seq(from = min(HCP$Age)+1, to = max(HCP$Age), by = 1)
+
+# object to store results
+storeNames = c("Age cut-off value", "Cor", "p", "ci_l", "ci_u", "Measure")
+store = as.data.frame(matrix(nrow = length(ageCut), ncol = length(storeNames)))
+names(store) = storeNames
+
+# iterate over each age cut-off and calculate scores
+for(i in ageCut){
+  # store which age cut off iteration this is
+  loc = which(is.na(store$`Age cut-off value`))[1]
+  store[loc,"Age cut-off value"] = i
+  
+  # cut sample
+  Youngdata = HCP[which(HCP$Age <= i),]
+  
+  # calculate correlations
+  ## ICVerence
+  store[loc,"Cor"] =
+    with(Youngdata, cor.test(Age, ICV))$estimate
+  
+  store[loc,"p"] =
+    with(Youngdata, cor.test(Age, ICV))$p.value
+  
+  store[loc,"ci_l"] =
+    with(Youngdata, cor.test(Age, ICV))$conf.int[1]
+  
+  store[loc,"ci_u"] =
+    with(Youngdata, cor.test(Age, ICV))$conf.int[2]
+  
+  store[loc,"Measure"] = "ICV"
+}
+
+ggplot(data = store)+
+  geom_point(aes(x = Cor, y = `Age cut-off value`), alpha = 0.5)+
+  geom_errorbar(aes(y = `Age cut-off value`, xmin = ci_l, xmax = ci_u), alpha = 0.3)+
+  geom_vline(xintercept = -0.1, color = "grey")+
+  geom_hline(yintercept = 31, color = "grey")+
+  xlab("Correlation with age")+
+  ylab("Age cut-off used to subset\nsample into a younger subsample")+
+  scale_y_continuous(limits = c(21, 37.5), breaks = seq(from = 20, to = 36, by = 2))+
+  ggtitle("Age-ICV correlation in HCP")+
+  theme_bw()+
+  theme(panel.border = element_blank())
+```
+
+
+
+## Explore age correlations in sample of or below 31 years
+
+  - When we restrict our sample to <= 31 years, the age correlations disappear
+
+```{r, message=F, warning=F}
+HCPyoung = HCP[which(HCP$Age <= 31),]
+
+# calculate atrophy scores
+HCPyoung$diff = HCPyoung$ICV - HCPyoung$TBV
+HCPyoung$ratio = HCPyoung$TBV / HCPyoung$ICV
+
+# delete those from data 
+#HCPyoung=HCPyoung[-which(HCPyoung$diff < 0),]
+
+# estimate residual model
+model <- lm(TBV ~ ICV, data = HCPyoung)
+HCPyoung$resid = as.vector(resid(model, na.rm=T))
+
+
+corICV = ggplot(data = HCPyoung, aes(x = ICV, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  theme(panel.border = element_blank())
+
+corTBV = ggplot(data = HCPyoung, aes(x = TBV, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  theme(panel.border = element_blank())
+
+
+cordiff = ggplot(data = HCPyoung, aes(x = diff, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Difference score")+
+  theme(panel.border = element_blank())
+
+corratio = ggplot(data = HCPyoung, aes(x = ratio, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Ratio score")+
+  theme(panel.border = element_blank())
+
+corresid = ggplot(data = HCPyoung, aes(x = resid, y = Age))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  stat_cor(method = "pearson",color ="blue")+
+  ylab("Age in years")+
+  xlab("Residual score")+
+  theme(panel.border = element_blank())
+
+ggarrange(corICV, corTBV, cordiff, corratio, corresid, common.legend=T, legend = "bottom")
+
+```
+
+# Plot distributions colored by age
+
+Shown in Supplementary Figure 3: Distributions of TBV, ICV, and lifetime brain atrophy estimated with the residual, ratio, and difference method. Histograms are coloured by age groups. 
+
+
+```{r, eval = T, message=F, warning=F,fig.dim=c(20,8)}
+####################################################
+# read in HCP data
+HCP = fread(paste0(HCPdir,"/unrestricted_hcp_freesurfer.csv"))
+HCP = HCP[,c("Subject", "Gender", "FS_InterCranial_Vol", "FS_BrainSeg_Vol_No_Vent")]
+names(HCP) = c("ID", "Sex", "ICV", "TBV")
+
+# add age information
+HCPage = fread(paste0(wd, "/RESTRICTED_annafurtjes_12_14_2023_4_18_2.csv"))
+names(HCPage)[which(names(HCPage) == "Subject")] = "ID"
+names(HCPage)[which(names(HCPage) == "Age_in_Yrs")] = "Age"
+HCP = merge(HCP, HCPage[,c("ID","Age")], by = "ID")
+
+# as outlined elsewhere, empirical investigations warrant to use an age cut-off of 31 years in this sample
+HCP = HCP[which(HCP$Age <= 31),]
+
+# convert mm3 estimates to more intuitive cm3 estimates
+HCP$ICV = HCP$ICV/1000
+HCP$TBV = HCP$TBV/1000
+
+# estimate brain atrophy from single MRI scan
+HCP$diff = HCP$ICV - HCP$TBV
+HCP$ratio = HCP$TBV / HCP$ICV
+
+# Quality control: 
+#print(paste0("Some participants have negative difference scores and ratio scores > 1, which means that their ICV estimate is smaller than their TBV estimate. This must be an error as the skull always surrounds the brain. Those ", sum((HCP$diff < 0))," HCP participants were excluded from the data set."))
+
+deletedHCP = sum(HCP$diff < 0)
+# delete those from data 
+if(sum(HCP$diff < 0) != 0){HCP=HCP[-which(HCP$diff < 0),]}
+
+# estimate residual model
+model <- lm(TBV ~ ICV, data = HCP)
+HCP$resid = as.vector(resid(model, na.rm=T))
+
+  
+# standardise variables
+HCP$diff_stand = as.vector(scale(HCP$diff))
+HCP$ratio_stand = as.vector(scale(HCP$ratio))
+HCP$resid_stand = as.vector(scale(HCP$resid))
+
+####################################################
+# make age groups
+HCP$Age_group <- NA
+HCP$Age_group[HCP$Age < 24] <- "23 years and under"
+HCP$Age_group[HCP$Age >= 24 & HCP$Age < 25] <- "24"
+HCP$Age_group[HCP$Age >= 25 & HCP$Age < 26] <- "25"
+HCP$Age_group[HCP$Age >= 26 & HCP$Age < 27] <- "26"
+HCP$Age_group[HCP$Age >= 27 & HCP$Age < 28] <- "27"
+HCP$Age_group[HCP$Age >= 28 & HCP$Age < 29] <- "28"
+HCP$Age_group[HCP$Age >= 29] <- "29 years and over"
+
+p1=ggplot(HCP, aes(x=TBV, fill=Age_group)) +
+  geom_histogram()+
+  scale_fill_manual("Age groups", values = c("#292f56", "#1e4572", "#005c8b", "#008ba0", "#00bca1","#69e882", "#acfa70"))+
+  xlab("TBV")+
+  theme_bw()
+
+p2=ggplot(HCP, aes(x=ICV, fill=Age_group)) +
+  geom_histogram()+
+  scale_fill_manual("Age groups", values = c("#292f56", "#1e4572", "#005c8b", "#008ba0", "#00bca1","#69e882", "#acfa70"))+
+  xlab("ICV")+
+  theme_bw()
+
+p3=ggplot(HCP, aes(x=resid_stand, fill=Age_group)) +
+  geom_histogram()+
+  scale_fill_manual("Age groups", values = c("#292f56", "#1e4572", "#005c8b", "#008ba0", "#00bca1","#69e882", "#acfa70"))+
+  xlab("Residual score")+
+  theme_bw()
+
+p4=ggplot(HCP, aes(x=ratio_stand, fill=Age_group)) +
+  geom_histogram()+
+  scale_fill_manual("Age groups", values = c("#292f56", "#1e4572", "#005c8b", "#008ba0", "#00bca1","#69e882", "#acfa70"))+
+  xlab("Ratio score")+
+  theme_bw()
+
+p5=ggplot(HCP, aes(x=diff_stand, fill=Age_group)) +
+  geom_histogram()+
+  scale_fill_manual("Age groups", values = c("#292f56", "#1e4572", "#005c8b", "#008ba0", "#00bca1","#69e882", "#acfa70"))+
+  xlab("Difference score")+
+  theme_bw()
+
+pHCP <- ggarrange(p1,p2,p3,p4,p5, nrow = 1, common.legend = T, legend = "bottom")
+# add title
+pHCP <- annotate_figure(pHCP, top = text_grob("HCP",face = "bold", size = 14))
+
+#ggsave(paste0(out,"phenotypic/HCP_disttributions.jpg"), bg = "white",plot = pHCP, width = 30, height = 10, units = "cm", dpi = 300)
+pHCP
+```

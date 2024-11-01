@@ -1,0 +1,184 @@
+---
+title: "SNP-heritability"
+format: 
+  html:
+    code-fold: true
+author: "Anna Elisabeth Furtjes"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html
+doi: test
+---
+
+------------------------------------------------------------------------
+
+```{r setup, include=F, warning=F, message=F, eval=F}
+load("paths.RData")
+#quarto::quarto_render(input = "h2.qmd", output_file = "h2.html")
+```
+
+SNP-heritability for all phenotypes of interest was calculated in the [GCTA software](https://yanglab.westlake.edu.cn/software/gcta/#Overview).
+
+Ensure that the `resid_stand` variable was calculated in the subsample with non-missing data that is analysed in the GCTA analysis. 
+
+
+## Make GRM
+```{bash, eval = F}
+#!/bin/bash
+cd $wd
+# using PLINK files with my own qc (N = 43392)
+# I'd been wondering whether to restrict SNPs for MAF > 0.4 (Andrew and Isy do that in the context of calculating Nhat because outlier estimates are more likely due to mismatches with reference data set)
+# However, I don't see how this would apply to this case
+# Also found this paper: https://www.nature.com/articles/ng.3941
+# Fig.4 shows that heritability estimates in a simulation are about the same in each of the presented MAF bins, even MAF bin 0.4-0.5 produces very similar estimates - decided not to exclude, especially since I already have more stringent cut-off and fewer SNPs than Gails processing
+
+gcta-1.94.1 \
+--bfile $genotype/ukb_neuroimaging_brainAtrophy_GWASinput \
+--autosome \
+--make-grm \
+--maf 0.01 \
+--out $wd/UKB_neuroimagingN43392_MAF0.01
+```
+
+## Remove related individuals
+
+Input data here has already been screened for related individuals with greedyRelated in the genetic QC step, but GTCA will remove even more because it's stricter.
+
+```{bash, eval = F}
+## identify genetically unrelated individuals
+# cut-off of 0.125 up to third-degree relatives
+# testing 0.025, 0.05, 0.1, 0.125
+gcta-1.94.1 \
+--grm $wd/UKB_neuroimagingN43392_MAF0.01 \
+--grm-singleton 0.125 \
+--out unrelated_singleton0.125 
+
+## prune GRM for relatedness by using cut-off
+#cut=0.125
+
+for cut in 0.025 0.05 0.1 0.125
+do
+gcta-1.94.1 \
+--grm $wd/UKB_neuroimagingN43392_MAF0.01 \
+--grm-cutoff $cut \
+--make-grm \
+--out $wd/UKB_neuroimagingN43392_MAF0.01_unrelated${cut}
+done
+```
+
+## REML
+
+### Adjust phenotypic variables
+
+This step was introduced while testing the reml script because it runs much more efficiently when the phenotypes of interest have been adjusted for covariates prior to running reml. This was deliberately not done for the GWAS associations because we want to be able to interpret SNP effects in units of outcome phenotype (which does not apply to reml where we model a variance component for all SNPs simultaneously).
+
+```{r adjust, eval=F}
+library(data.table)
+# prep input covar files in R
+# which need to be split into categorical and continuous traits
+ covar = fread("UKB_covarGWAS.txt")
+# Cols = c("FID", "IID", "xCoord", "yCoord", "zCoord", paste0("PC", 1:40))
+# qcovar = covar[, ..Cols]
+# Cols = c("FID", "IID", "assessmentMonth","site", "array", "batch")
+# bcovar = covar[, ..Cols]
+# write.table(qcovar, file = "qcovar.gcta", col.names = F, row.names = F, sep = "\t", na = "NA")
+# write.table(bcovar, file = "bcovar.gcta", col.names = F, row.names = F, sep = "\t", na = "NA")
+
+# require one pheno files for each trait: no header, columns are IID, FID, phenotypes
+# could use --mpheno option but it feels like I have more control when I do it separately
+ dat = fread("UKB_CrossNeuroIDP_noOutliers.txt")
+# it is recommended to adjust the phenotyped for age and sex effects and standardise them tp z-scores prior to REML analysis because for some traits, the variance in females is larger than in males which cannot be corrected by including the sex effect as a covariate in the REML analysis
+ dat = merge(dat, covar, by = c("FID", "IID")) 
+
+# remove missing values for regression to run
+dat = dat[complete.cases(dat),]
+
+# restrict only to participants with clean genetic data
+keep = fread("/CCACE_Shared/Anna_F/BrainAtrophy/data/GCTA_out/UKB_neuroimagingN43392_MAF0.01_unrelated0.025.grm.id")
+
+dat = dat[dat$IID %in% keep$V1,]
+
+# build model 
+
+for(trait in c("TBVstand", "ICVstand", "CSFstand", "diff_stand", "ratio_stand", "resid_stand")){
+  cov1 = paste0("age + sex + assessmentMonth + site + xCoord + yCoord + zCoord + array + batch +")
+  cov2 = paste0("PC", 1:40, collapse = " + ")
+  
+  formula = paste0(trait , " ~ ", cov1, cov2)
+  
+  model = lm(as.formula(formula), data = dat)
+  
+  pred = scale(resid(model))
+  
+  summary(pred)
+  
+  # merge data
+  colNames = names(dat)
+  both = cbind(dat,pred)
+  names(both) = c(colNames, paste0(trait, "_adjusted"))
+  
+  keep = c("FID","IID",paste0(trait, "_adjusted"))
+  
+  write.table(both[, ..keep], file = paste0(trait,"_adjusted.pheno"), col.names = F, row.names = F, sep = "\t", na = "NA")
+}
+```
+
+### Run GCTA-REML
+
+```{bash, eval=F}
+## the covar file must be split up into categorical and quantitative covariates
+## --covar indicates the categorical file, and --qcovar the quantitative files 
+
+cut=0.025
+
+for trait in TBVstand ICVstand CSFstand diff_stand ratio_stand resid_stand
+do
+
+gcta-1.94.1 \
+--reml \
+--grm-bin $genotype/UKB_neuroimagingN43392_MAF0.01_unrelated${cut} \
+--pheno $phenotype/${trait}_age_sex.pheno \
+--reml-alg 0 \
+--covar $phenotype/bcovar.gcta \
+--qcovar $phenotype/qcovar.gcta \
+--reml-lrt 1 \
+--thread-num 10 \
+--reml-maxit 200 \
+--out $out/gcta_${trait}_unrelated${cut}
+
+done
+```
+
+
+## SNP-by-age interactions
+
+```{bash, eval=F}
+#!/bin/bash
+
+# R
+# library(data.table)
+# setwd("/CCACE_Shared/Anna_F/BrainAtrophy/data")
+# prep input covar files in R
+# covar = fread("UKB_covarGWAS.txt")
+
+# save age variable as plain text file
+# write.table(covar[,c("FID", "IID", "age")], file = "UKB_age.gxe", col.names = F, row.names = F, sep = "\t", na = "NA")
+
+
+#### Here I am using the same script as in GCTA_reml_adjusted.sh only that I am including a gxe interaction term
+#### Chose to keep the phenotype residualised for age because we want to control for a main effect of age (so we're comparing people of similar ages), but then we're asking whether the there is a significant GxAge variance contribution to the toal phenotypic variance 
+#### also changing --reml-lrt to 2 because I am assuming there are two genetic variance components included in the analysis (main genetic effect and then the gene environment effect)
+
+cut=0.025
+
+gcta-1.94.1 \
+--reml \
+--grm-bin $genotype/UKB_neuroimagingN43392_MAF0.01_unrelated${cut} \
+--pheno $phenotype/${trait}_adjusted.pheno \
+--reml-alg 0 \
+--reml-lrt 2 \
+--gxe $phenotype/UKB_age.gxe \
+--thread-num 30 \
+--reml-maxit 200 \
+--out $out/gcta_${trait}_unrelated${cut}_GxAge
+```
+

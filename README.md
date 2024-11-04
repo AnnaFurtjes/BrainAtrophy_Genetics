@@ -1,5 +1,7 @@
 # Brain Atrophy Genetics project
  
-Pre-registration:
+Pre-registration: https://osf.io/gydmw/
+
 bioRxiv:
-Analysis code: 
+
+Analysis code: https://annafurtjes.github.io/BrainAtrophy_Genetics/

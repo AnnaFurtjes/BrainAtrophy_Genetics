@@ -12,15 +12,14 @@ doi: test
 ------------------------------------------------------------------------
 
 ```{r setup, include=F, warning=F, message=F, eval=F}
-wd = "C:/Users/afurtjes/Documents/GitHub/BrainAtrophy_Genetics/qmd"
-knitr::opts_knit$set(root.dir = wd)
+load("paths.RData")
 #quarto::quarto_render(input = "age_corrs.qmd", output_file = "age_corrs.html")
 ```
 
 Results produced by the code below are described in the manuscript under section:\
 **Measures of LBA indicated age-associated brain shrinkage**.
 
-The traits used for correlation analysis were derived using code displayed in 'Data preparation': UKB: [neuroimaging](../_site/UKB_neuro.html) & [phenotypic](../_site/UKB_pheno.html) data..
+The traits used for correlation analysis were derived using code displayed in 'Data preparation': UKB: [neuroimaging](UKB_neuro.html) & [phenotypic](UKB_pheno.html) data..
 
 # Load packages
 

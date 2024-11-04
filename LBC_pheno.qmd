@@ -13,12 +13,11 @@ doi: test
 
 ```{r setup, include=F, warning=F, message=F, eval=T}
 load("paths.RData")
-knitr::opts_knit$set(root.dir = wd)
 #quarto::quarto_render(input = "LBC_pheno.qmd", output_file = "LBC_pheno.html")
 ```
 
 
-Data prepared here was used as input into analyses presented [here](../_site/pheno_assocs.html). The file containing all  phenotypic variables was named `LBC1936_allPheno.txt`.
+Data prepared here was used as input into analyses presented [here](pheno_assocs.html). The file containing all  phenotypic variables was named `LBC1936_allPheno.txt`.
 
 ## Load packages
 

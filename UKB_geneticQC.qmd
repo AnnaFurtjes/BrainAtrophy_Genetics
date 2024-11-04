@@ -12,7 +12,6 @@ doi: test
 ------------------------------------------------------------------------
 
 ```{r setup, include=F, warning=F, message=F, eval=F}
-knitr::opts_knit$set(root.dir = wd)
 #quarto::quarto_render(input = "UKB_geneticQC.qmd", output_file = "UKB_geneticQC.html")
 ```
 

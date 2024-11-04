@@ -13,12 +13,12 @@ doi: test
 
 This analysis was moved to the Supplement during revisions of the paper. It shows that measures of lifetime brain atrophy worsen over a 9-year period in LBC1936, even when we cross-sectionally process our neuroimaging data (as opposed to using FS longitudinal processing).
 
-Neuroimaging data used here was prepared using code displayed in 'Data preparation': LBC: [neuroimaging](../_site/LBC_neuro.html) data.
+Neuroimaging data used here was prepared using code displayed in 'Data preparation': LBC: [neuroimaging](LBC_neuro.html) data.
 
 
 
 ```{r setup, include=F, warning=F, message=F, eval=F}
-wd = "C:/Users/afurtjes/Documents/GitHub/BrainAtrophy_Genetics/qmd"
+load("paths.RData")
 knitr::opts_knit$set(root.dir = wd)
 #quarto::quarto_render(input = "age_corrsLBC.qmd", output_file = "age_corrsLBC.html")
 ```

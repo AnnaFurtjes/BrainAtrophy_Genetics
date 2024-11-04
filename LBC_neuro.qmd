@@ -13,7 +13,6 @@ doi: test
 
 ```{r setup, include=F, warning=F, message=F, eval=T}
 load("paths.RData")
-knitr::opts_knit$set(root.dir = wd)
 #quarto::quarto_render(input = "LBC_neuro.qmd", output_file = "LBC_neuro.html")
 ```
 

@@ -12,14 +12,13 @@ doi: test
 ------------------------------------------------------------------------
 
 ```{r setup, include=F, warning=F, message=F, eval=F}
-knitr::opts_knit$set(root.dir = wd)
 #quarto::quarto_render(input = "pheno_assocs.qmd", output_file = "pheno_assocs.html")
 ```
 
 Results produced by the code below are described in the manuscript under section:\
 **Measures of LBA predict brain atrophy rated by neuroradiological experts, as well as other ageing-related health traits such as frailty and cognitive ability**.
 
-The outcome traits were derived using code displayed in 'Data preparation': LBC: [neuroimaging](../_site/LBC_neuro.html) & [phenotypic](../_site/LBC_pheno.html) data; UKB: [neuroimaging](../_site/UKB_neuro.html) & [phenotypic](../_site/UKB_pheno.html) data.
+The outcome traits were derived using code displayed in 'Data preparation': LBC: [neuroimaging](LBC_neuro.html) & [phenotypic](LBC_pheno.html) data; UKB: [neuroimaging](UKB_neuro.html) & [phenotypic](UKB_pheno.html) data.
 
 # Load packages
 

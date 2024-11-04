@@ -14,7 +14,6 @@ doi: test
 
 ```{r setup, include=F, warning=F, message=F, eval=T}
 load("paths.RData")
-knitr::opts_knit$set(root.dir = wd)
 #quarto::quarto_render(input = "STRADL.qmd", output_file = "STRADL.html")
 ```
 

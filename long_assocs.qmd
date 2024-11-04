@@ -11,14 +11,13 @@ doi: test
 
 ```{r setup, include=F, warning=F, message=F, eval=T}
 load("paths.RData")
-knitr::opts_knit$set(root.dir = wd)
 #quarto::quarto_render(input = "long_assocs.qmd", output_file = "long_assocs.html")
 ```
 
 Results produced by the code below are described in the manuscript under section:\
 **LBA moderately  captured observed atrophic changes that were longitudinally observed between two MRI scans nine years apart**.
 
-The outcome traits were derived using code displayed in 'Data preparation': LBC: [neuroimaging](../_site/LBC_neuro.html) & [phenotypic](../_site/LBC_pheno.html) data; UKB: [neuroimaging](../_site/UKB_neuro.html) & [phenotypic](../_site/UKB_pheno.html) data.
+The outcome traits were derived using code displayed in 'Data preparation': LBC: [neuroimaging](LBC_neuro.html) & [phenotypic](LBC_pheno.html) data; UKB: [neuroimaging](UKB_neuro.html) & [phenotypic](/UKB_pheno.html) data.
 Ratio and residual scores were not flipped in these analyses, like they were in the analyses presented in the main manuscript. This does not affect the directions of effects when we were comparing e.g., LBA residual score with longitudinal residual score.
 
 # Load packages
@@ -178,7 +177,7 @@ Figures from this analysis are reported in the main paper, and this plot is in S
 ```{r scaling,message=F, warning=F, fig.dim=c(6,6)}
 ### make same plot only for cross-sectional measures to compare to resid Scaling factor
 scaling = plot_heatmap(dat = UKB3[,c("ICV", "TBV", "T1ScalingFactor", "diff", "ratio", "resid", "residScalingFactor_stand")], 
-                 axisNames = c("ICV", "TBV", "T1 Scaling Factor", "Difference\nscore\n(cross)", "Ratio\nscore\n(cross)", "Residual\nscore\n(cross)", "Residual score\n(scaling factor)"))+
+                 axisNames = c("ICV", "TBV", "T1 Scaling\nFactor", "Difference\nscore\n(cross)", "Ratio\nscore\n(cross)", "Residual\nscore\n(cross)", "Residual score\n(scaling factor)"))+
   ggtitle(paste0("UKB\nsecond neuroimaging visit\n(N = ",n,")"))
 
 #ggsave(paste0(out, "phenotypic/UKB_scalingFactor.jpg"), plot = scaling, width = 14, height = 14, units = "cm", dpi = 200)

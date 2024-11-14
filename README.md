@@ -1,4 +1,4 @@
-# Brain Atrophy Genetics project
+# Lifetime brain Atrophy Genetics project
  
 Pre-registration: https://osf.io/gydmw/
 

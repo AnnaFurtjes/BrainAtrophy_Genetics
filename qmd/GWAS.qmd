@@ -6,7 +6,7 @@ format:
 author: "Anna Elisabeth Furtjes"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html
-doi: test
+doi: 10.1101/2024.11.06.622274
 ---
 
 ------------------------------------------------------------------------
@@ -18,7 +18,7 @@ load("paths.RData")
 
 GWAS analysis was performed with the [REGENIE software](https://rgcgithub.github.io/regenie/).
 
-Input data was prepared using scripts for [phenotypic](UKB_neuro.html) and [genotype data](UKB_geneticQC.html). Imputed data was imputed using the Michigan imputation server. 
+Input data was prepared using scripts for [phenotypic](UKB_neuro.html) and [genotype data](UKB_geneticQC.html). Imputed data was imputed using the Michigan imputation server.
 
 Ensure that the `resid_stand` variable was calculated in the subsample with non-missing data that is analysed in the GWAS analysis.
 

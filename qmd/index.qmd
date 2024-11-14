@@ -4,7 +4,7 @@ format: html
 author: "Anna Elisabeth Furtjes"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html
-doi: test
+doi: 10.1101/2024.11.06.622274
 ---
 
 ------------------------------------------------------------------------

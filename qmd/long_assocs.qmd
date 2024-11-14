@@ -6,7 +6,7 @@ format:
 author: "Anna Elisabeth Furtjes"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html
-doi: test
+doi: 10.1101/2024.11.06.622274
 ---
 
 ```{r setup, include=F, warning=F, message=F, eval=T}

@@ -6,7 +6,7 @@ format:
 author: "Anna Elisabeth Furtjes"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html
-doi: test
+doi: 10.1101/2024.11.06.622274
 ---
 
 ------------------------------------------------------------------------
@@ -16,12 +16,9 @@ load("paths.RData")
 #quarto::quarto_render(input = "LBC_neuro.qmd", output_file = "LBC_neuro.html")
 ```
 
-Code displayed here was used to obtain neuroimaging measures: TBV, ICV, LBA (difference, ratio, residual scores).
-These measures were obtained for all waves from cross-sectionally processed data, and from longitudinal data considering waves 2 and 5. 
-
+Code displayed here was used to obtain neuroimaging measures: TBV, ICV, LBA (difference, ratio, residual scores). These measures were obtained for all waves from cross-sectionally processed data, and from longitudinal data considering waves 2 and 5.
 
 The LBC neuroimaging data was processed with FS v5.1, which does not produce `BrainSegNotVent` estimates that we pre-registered to use across all samples. Instead, we derive TBV as the sum of GMV (cortical and subcortical should also include cerebellum) + cerebellum WMV + cerebral WMV, as was done in a previous [paper](https://onlinelibrary.wiley.com/doi/full/10.1002/hbm.25572). One participant was excluded because TBV estimate was larger than ICV estimate - total of 269 participants with two assessments.
-
 
 ## Load packages
 
@@ -33,7 +30,6 @@ library(data.table)
 library(stringr)
 library(dplyr)
 ```
-
 
 ## Define functions
 
@@ -360,11 +356,7 @@ descriptives = function(samples = c("HCP", "Share", "both")){
 }
 ```
 
-
-
 ## Extract from cross-sectional FS processing stream output
-
-
 
 Data from the cross-sectional processing stream is used in all cases where samples are compared, as well as in analyses where cross-sectional and longitudinal measures are directly compared.
 
@@ -418,7 +410,6 @@ asegstats2table --subjectsfile $ref3 --meas volume --common-segs --delimiter com
 # Wave4
 asegstats2table --subjectsfile $ref4 --meas volume --common-segs --delimiter comma --tablefile "${out}/LBC1936_global_w4_cross.csv"
 ```
-
 
 ### Format Wave 1
 
@@ -596,7 +587,6 @@ crossLBC$lbc36no = stringr::str_remove(crossLBC$lbc36no, pattern = "_W3")
 fwrite(crossLBC[,c("lbc36no", "ICV", "TBV", "CSF", "diff", "ratio", "resid", "ICVstand", "TBVstand", "CSFstand", "resid_stand", "diff_stand", "ratio_stand")], paste0(wd, "/LBC1936_crossNeuroWave3.txt"), quote = F, col.names = T, sep = "\t")
 ```
 
-
 ### Format Wave 4
 
 ```{r, eval =F}
@@ -654,7 +644,6 @@ crossLBC$lbc36no = stringr::str_remove(crossLBC$lbc36no, pattern = "_W4")
 fwrite(crossLBC[,c("lbc36no", "ICV", "TBV", "CSF", "diff", "ratio", "resid", "ICVstand", "TBVstand", "CSFstand", "resid_stand", "diff_stand", "ratio_stand")], paste0(wd, "/LBC1936_crossNeuroWave4.txt"), quote = F, col.names = T, sep = "\t")
 ```
 
-
 ### Visualise cross-secional scores (waves 2 and 5)
 
 ```{r plot, eval=T, warning=F, message=F, fig.dim=c(12,5)}
@@ -692,9 +681,6 @@ plot = plot_grid(p1, p2, p3, nrow = 1, labels = c("A", "B", "C"), label_size = 6
 plot
 ```
 
-![Distribution of atrophy scores derived from cross-sectional data](/CCACE_Shared/Anna_F/BrainAtrophy/data/LBCDistributionsCross.jpg)
-
-
 ### Descriptive statistics (cross-sectional measures)
 
 ```{r descriptives, results='asis', message=F, warning=F, eval = T}
@@ -707,8 +693,6 @@ des = des[-which(des$Statistic == "Cut off"),]
 
 knitr::kable(des, col.names = c("Stats","LBC (wave 1)", "LBC (wave 4)"))
 ```
-
-
 
 ## Extract from longitudinal FS processing stream output
 
@@ -792,7 +776,6 @@ LBC_merged$TBV = LBC_merged$TBV/1000
 fwrite(LBC_merged[,c("lbc36no", "wave", "TBV")], paste0(wd, "/LBC1936_longTBVWaves2and5.txt"), quote = F, col.names = T, sep = "\t")
 ```
 
-
 ### Format longitudinal change measures
 
 ```{r, eval =F, message=F, warning=F}
@@ -836,10 +819,9 @@ neuro$TBVresid_2to5_stand = as.numeric(scale(neuro$TBVresid_2to5))
 fwrite(neuro, paste0(wd, "/LBC1936_longTBVWaves2and5.txt"), quote = F, col.names = T, sep = "\t")
 ```
 
-
 #### Display raw change in TBV
 
-This is Supplementary Plot 10. 
+This is Supplementary Plot 10.
 
 ```{r, fig.dim=c(6,6), message=F, warning=F}
 long = fread(paste0(out, "/LBC1936_longTBVWaves2and5.txt"))
@@ -998,8 +980,8 @@ plot_hist <- function(dat = dat, var = "diff_stand", split_sample_by = NULL){
 }
 ```
 
+This is Supplementary Table 11.
 
-This is Supplementary Table 11. 
 ```{r, message=F, warning=F}
 long = fread(paste0(out, "/LBC1936_longTBVWaves2and5.txt"))
 

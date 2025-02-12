@@ -410,7 +410,7 @@ ggarrange(corICV, corTBV, cordiff, corratio, corresid, common.legend=T, legend =
 Shown in Supplementary Figure 3: Distributions of TBV, ICV, and lifetime brain atrophy estimated with the residual, ratio, and difference method. Histograms are coloured by age groups. 
 
 
-```{r, eval = T, message=F, warning=F,fig.dim=c(20,8)}
+```{r, eval = T, message=F, warning=F, fig.dim=c(20,8)}
 ####################################################
 # read in HCP data
 HCP = fread(paste0(HCPdir,"/unrestricted_hcp_freesurfer.csv"))
@@ -499,3 +499,234 @@ pHCP <- annotate_figure(pHCP, top = text_grob("HCP",face = "bold", size = 14))
 #ggsave(paste0(out,"phenotypic/HCP_disttributions.jpg"), bg = "white",plot = pHCP, width = 30, height = 10, units = "cm", dpi = 300)
 pHCP
 ```
+
+# Sex effects
+
+It was brought to our attention through the revision process of this project that the HCP has been shown to over-represent males at younger ages and that there are more females at older ages, which could also explain this effect here. 
+
+The plots below show a clear sex difference in ICV and TBV, as expected (i.e., larger ICV in males). It also shows that the unusual direction of effects (smaller heads at older ages) is driven by females. 
+
+```{r, message=F, warning=F}
+HCPcov = fread(paste0(HCPdir,list.files(path = HCPdir, pattern = "unrestricted_annafurtjes")))
+HCPcov = HCPcov[,c("Subject", "Release", "Acquisition","fMRI_3T_ReconVrs")]
+
+HCP = fread(paste0(HCPdir,"unrestricted_hcp_freesurfer.csv"))
+HCP = HCP[,c("Subject", "Gender", "FS_InterCranial_Vol", "FS_BrainSeg_Vol_No_Vent")]
+
+HCP = merge(HCP, HCPcov, by = "Subject")
+
+HCPage = fread(paste0(HCPdir, "RESTRICTED_annafurtjes_12_14_2023_4_18_2.csv"))
+HCPage = HCPage[,c("Subject","Age_in_Yrs", "Family_ID")]
+
+HCP = merge(HCP, HCPage, by ="Subject")
+names(HCP) = c("ID", "Sex", "ICV", "TBV", "Release", "Acquisition","fMRI_3T_ReconVrs", "Age", "Family_ID")
+
+# convert mm3 estimates to more intuitive cm3 estimates
+HCP$ICV = HCP$ICV/1000
+HCP$TBV = HCP$TBV/1000
+
+# calculate atrophy scores
+HCP$diff = HCP$ICV - HCP$TBV
+HCP$ratio = HCP$TBV / HCP$ICV
+
+# delete those from data 
+HCP=HCP[-which(HCP$diff < 0),]
+
+# estimate residual model
+model <- lm(TBV ~ ICV, data = HCP)
+HCP$resid = as.vector(resid(model, na.rm=T))
+
+# standardise variables
+HCP$diff_stand = as.vector(scale(HCP$diff))
+HCP$ratio_stand = as.vector(scale(HCP$ratio))
+HCP$resid_stand = as.vector(scale(HCP$resid))
+
+corICV = ggplot(data = HCP, aes(x = ICV, y = Age, color = Sex))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  ylab("Age in years")+
+  theme(panel.border = element_blank())
+
+corTBV = ggplot(data = HCP, aes(x = TBV, y = Age, color = Sex))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  ylab("Age in years")+
+  theme(panel.border = element_blank())
+
+cordiff = ggplot(data = HCP, aes(x = diff, y = Age, color = Sex))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  ylab("Age in years")+
+  xlab("Difference score")+
+  theme(panel.border = element_blank())
+
+corratio = ggplot(data = HCP, aes(x = ratio, y = Age, color = Sex))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  ylab("Age in years")+
+  xlab("Ratio score")+
+  theme(panel.border = element_blank())
+
+corresid = ggplot(data = HCP, aes(x = resid, y = Age, color = Sex))+
+  geom_point(alpha = 0.2)+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  ylab("Age in years")+
+  xlab("Residual score")+
+  theme(panel.border = element_blank())
+
+ggarrange(corICV, corTBV, cordiff, corratio, corresid, common.legend=T, legend = "bottom")
+```
+
+
+```{r}
+####################################################
+# read in HCP data
+HCP = fread(paste0(HCPdir,"/unrestricted_hcp_freesurfer.csv"))
+HCP = HCP[,c("Subject", "Gender", "FS_InterCranial_Vol", "FS_BrainSeg_Vol_No_Vent")]
+names(HCP) = c("ID", "Sex", "ICV", "TBV")
+
+# add age information
+HCPage = fread(paste0(HCPdir, "/RESTRICTED_annafurtjes_12_14_2023_4_18_2.csv"))
+names(HCPage)[which(names(HCPage) == "Subject")] = "ID"
+names(HCPage)[which(names(HCPage) == "Age_in_Yrs")] = "Age"
+HCP = merge(HCP, HCPage[,c("ID","Age")], by = "ID")
+
+# convert mm3 estimates to more intuitive cm3 estimates
+HCP$ICV = HCP$ICV/1000
+HCP$TBV = HCP$TBV/1000
+
+# estimate brain atrophy from single MRI scan
+HCP$diff = HCP$ICV - HCP$TBV
+HCP$ratio = HCP$TBV / HCP$ICV
+
+# Quality control: 
+#print(paste0("Some participants have negative difference scores and ratio scores > 1, which means that their ICV estimate is smaller than their TBV estimate. This must be an error as the skull always surrounds the brain. Those ", sum((HCP$diff < 0))," HCP participants were excluded from the data set."))
+
+deletedHCP = sum(HCP$diff < 0)
+# delete those from data 
+if(sum(HCP$diff < 0) != 0){HCP=HCP[-which(HCP$diff < 0),]}
+
+# estimate residual model for males and females separately
+model <- lm(TBV ~ ICV, data = HCP)
+HCP$resid = as.vector(resid(model, na.rm=T))
+
+# estimate residual model for males and females separately
+# males
+#males <- HCP[HCP$Sex == "M",]
+#model <- lm(TBV ~ ICV, data = males)
+#males$resid = as.vector(resid(model, na.rm=T))
+
+#females
+#females <- HCP[HCP$Sex == "F",]
+#model <- lm(TBV ~ ICV, data = females)
+#females$resid = as.vector(resid(model, na.rm=T))
+
+# merge males and females back together
+#both = rbind(males,females)
+
+
+# ICV
+icv = ggplot(HCP, aes(y = ICV, x = Sex, fill = Sex))+
+  geom_boxplot(alpha = 0.6, color = "black")+
+  geom_point(aes(fill = factor(Sex)), 
+             color = "grey45", 
+             size = 2, 
+             alpha = 0.5, 
+             position = position_jitter(seed = 1, width = 0.2))+ 
+  xlab("Sex")+
+  ylab("ICV")+
+  theme_bw()+
+  theme(legend.position = "none")+
+  theme(text = element_text(size=20),
+        axis.text.x = element_text(size=20),#angle=45
+        axis.text.y = element_text(size=20),
+        axis.title.y = element_text(colour='black', size=20),
+        axis.title.x = element_text(colour='black', size=20),
+        plot.title = element_text(face = "bold", colour='black', size=20))
+
+tbv = ggplot(HCP, aes(y = TBV, x = Sex, fill = Sex))+
+  geom_boxplot(alpha = 0.6, color = "black")+
+  geom_point(aes(fill = factor(Sex)), 
+             color = "grey45", 
+             size = 2, 
+             alpha = 0.5, 
+             position = position_jitter(seed = 1, width = 0.2))+ 
+  xlab("Sex")+
+  ylab("TBV")+
+  theme_bw()+
+  theme(legend.position = "none")+
+  theme(text = element_text(size=20),
+        axis.text.x = element_text(size=20),#angle=45
+        axis.text.y = element_text(size=20),
+        axis.title.y = element_text(colour='black', size=20),
+        axis.title.x = element_text(colour='black', size=20),
+        plot.title = element_text(face = "bold", colour='black', size=20))
+
+# residual score
+res = ggplot(HCP, aes(y = resid, x = Sex, fill = Sex))+
+  geom_boxplot(alpha = 0.6, color = "black")+
+  geom_point(aes(fill = factor(Sex)), 
+             color = "grey45", 
+             size = 2, 
+             alpha = 0.5, 
+             position = position_jitter(seed = 1, width = 0.2))+ 
+  xlab("Sex")+
+  ylab("Residual score (standardised)\n<- More brain atrophy      Less brain atrophy ->")+
+  scale_fill_manual(values = c("#004225",  "#90ee90"))+
+  theme_bw()+
+  theme(legend.position = "none")+
+  theme(text = element_text(size=20),
+        axis.text.x = element_text(size=20),#angle=45
+        axis.text.y = element_text(size=20),
+        axis.title.y = element_text(colour='black', size=20),
+        axis.title.x = element_text(colour='black', size=20),
+        plot.title = element_text(face = "bold", colour='black', size=20))
+
+# ratio score
+rat = ggplot(HCP, aes(y = ratio, x = Sex, fill = Sex))+
+  geom_boxplot(alpha = 0.6, color = "black")+
+  geom_point(aes(fill = factor(Sex)), 
+             color = "grey45", 
+             size = 2, 
+             alpha = 0.5, 
+             position = position_jitter(seed = 1, width = 0.2))+ 
+  xlab("Sex")+
+  ylab("Ratio score (standardised)\n<- More brain atrophy      Less brain atrophy ->")+
+  scale_fill_manual(values = c("#ffc40c",  "#fcffa4"))+
+  theme_bw()+
+  theme(legend.position = "none")+
+  theme(text = element_text(size=20),
+        axis.text.x = element_text(size=20),#angle=45
+        axis.text.y = element_text(size=20),
+        axis.title.y = element_text(colour='black', size=20),
+        axis.title.x = element_text(colour='black', size=20),
+        plot.title = element_text(face = "bold", colour='black', size=20))
+
+# difference score
+dif = ggplot(HCP, aes(y = diff, x = Sex, fill = Sex))+
+  geom_boxplot(alpha = 0.6, color = "black")+
+  geom_point(aes(fill = factor(Sex)), 
+             color = "grey45", 
+             size = 2, 
+             alpha = 0.5, 
+             position = position_jitter(seed = 1, width = 0.2))+ 
+  xlab("Sex")+
+  ylab("Ratio score (standardised)\n<- More brain atrophy      Less brain atrophy ->")+
+  scale_fill_manual(values = c("#ff1493",  "#ffb6c1"))+
+  theme_bw()+
+  theme(legend.position = "none")+
+  theme(text = element_text(size=20),
+        axis.text.x = element_text(size=20),#angle=45
+        axis.text.y = element_text(size=20),
+        axis.title.y = element_text(colour='black', size=20),
+        axis.title.x = element_text(colour='black', size=20),
+        plot.title = element_text(face = "bold", colour='black', size=20))
+
+plot_grid(icv, tbv, nrow = 1)
+```
+

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Anna Elisabeth Furtjes">
-<meta name="dcterms.date" content="2024-11-14">
+<meta name="dcterms.date" content="2025-02-12">
 
 <title>Brain Atrophy Genetics - Human Connectome Project</title>
 <style>
@@ -173,6 +173,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#explore-age-correlations-in-sample-of-or-below-31-years" id="toc-explore-age-correlations-in-sample-of-or-below-31-years" class="nav-link" data-scroll-target="#explore-age-correlations-in-sample-of-or-below-31-years">Explore age correlations in sample of or below 31 years</a></li>
   </ul></li>
   <li><a href="#plot-distributions-colored-by-age" id="toc-plot-distributions-colored-by-age" class="nav-link" data-scroll-target="#plot-distributions-colored-by-age">Plot distributions colored by age</a></li>
+  <li><a href="#sex-effects" id="toc-sex-effects" class="nav-link" data-scroll-target="#sex-effects">Sex effects</a></li>
   </ul>
 </nav>
     </div>
@@ -198,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 14, 2024</p>
+      <p class="date">February 12, 2025</p>
     </div>
   </div>
     
@@ -762,6 +763,244 @@ F-statistic:  1.85 on 21 and 1081 DF,  p-value: 0.01124</code></pre>
 </details>
 <div class="cell-output-display">
 <p><img src="HCP_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="1920"></p>
+</div>
+</div>
+</section>
+<section id="sex-effects" class="level1">
+<h1>Sex effects</h1>
+<p>It was brought to our attention through the revision process of this project that the HCP has been shown to over-represent males at younger ages and that there are more females at older ages, which could also explain this effect here.</p>
+<p>The plots below show a clear sex difference in ICV and TBV, as expected (i.e., larger ICV in males). It also shows that the unusual direction of effects (smaller heads at older ages) is driven by females.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>HCPcov <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(HCPdir,<span class="fu">list.files</span>(<span class="at">path =</span> HCPdir, <span class="at">pattern =</span> <span class="st">"unrestricted_annafurtjes"</span>)))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>HCPcov <span class="ot">=</span> HCPcov[,<span class="fu">c</span>(<span class="st">"Subject"</span>, <span class="st">"Release"</span>, <span class="st">"Acquisition"</span>,<span class="st">"fMRI_3T_ReconVrs"</span>)]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>HCP <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(HCPdir,<span class="st">"unrestricted_hcp_freesurfer.csv"</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>HCP <span class="ot">=</span> HCP[,<span class="fu">c</span>(<span class="st">"Subject"</span>, <span class="st">"Gender"</span>, <span class="st">"FS_InterCranial_Vol"</span>, <span class="st">"FS_BrainSeg_Vol_No_Vent"</span>)]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>HCP <span class="ot">=</span> <span class="fu">merge</span>(HCP, HCPcov, <span class="at">by =</span> <span class="st">"Subject"</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>HCPage <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(HCPdir, <span class="st">"RESTRICTED_annafurtjes_12_14_2023_4_18_2.csv"</span>))</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>HCPage <span class="ot">=</span> HCPage[,<span class="fu">c</span>(<span class="st">"Subject"</span>,<span class="st">"Age_in_Yrs"</span>, <span class="st">"Family_ID"</span>)]</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>HCP <span class="ot">=</span> <span class="fu">merge</span>(HCP, HCPage, <span class="at">by =</span><span class="st">"Subject"</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(HCP) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"Sex"</span>, <span class="st">"ICV"</span>, <span class="st">"TBV"</span>, <span class="st">"Release"</span>, <span class="st">"Acquisition"</span>,<span class="st">"fMRI_3T_ReconVrs"</span>, <span class="st">"Age"</span>, <span class="st">"Family_ID"</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># convert mm3 estimates to more intuitive cm3 estimates</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>ICV <span class="ot">=</span> HCP<span class="sc">$</span>ICV<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>TBV <span class="ot">=</span> HCP<span class="sc">$</span>TBV<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate atrophy scores</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>diff <span class="ot">=</span> HCP<span class="sc">$</span>ICV <span class="sc">-</span> HCP<span class="sc">$</span>TBV</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>ratio <span class="ot">=</span> HCP<span class="sc">$</span>TBV <span class="sc">/</span> HCP<span class="sc">$</span>ICV</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co"># delete those from data </span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>HCP<span class="ot">=</span>HCP[<span class="sc">-</span><span class="fu">which</span>(HCP<span class="sc">$</span>diff <span class="sc">&lt;</span> <span class="dv">0</span>),]</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate residual model</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(TBV <span class="sc">~</span> ICV, <span class="at">data =</span> HCP)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>resid <span class="ot">=</span> <span class="fu">as.vector</span>(<span class="fu">resid</span>(model, <span class="at">na.rm=</span>T))</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co"># standardise variables</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>diff_stand <span class="ot">=</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(HCP<span class="sc">$</span>diff))</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>ratio_stand <span class="ot">=</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(HCP<span class="sc">$</span>ratio))</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>resid_stand <span class="ot">=</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(HCP<span class="sc">$</span>resid))</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>corICV <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data =</span> HCP, <span class="fu">aes</span>(<span class="at">x =</span> ICV, <span class="at">y =</span> Age, <span class="at">color =</span> Sex))<span class="sc">+</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)<span class="sc">+</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Age in years"</span>)<span class="sc">+</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>corTBV <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data =</span> HCP, <span class="fu">aes</span>(<span class="at">x =</span> TBV, <span class="at">y =</span> Age, <span class="at">color =</span> Sex))<span class="sc">+</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)<span class="sc">+</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Age in years"</span>)<span class="sc">+</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>cordiff <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data =</span> HCP, <span class="fu">aes</span>(<span class="at">x =</span> diff, <span class="at">y =</span> Age, <span class="at">color =</span> Sex))<span class="sc">+</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)<span class="sc">+</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Age in years"</span>)<span class="sc">+</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Difference score"</span>)<span class="sc">+</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>corratio <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data =</span> HCP, <span class="fu">aes</span>(<span class="at">x =</span> ratio, <span class="at">y =</span> Age, <span class="at">color =</span> Sex))<span class="sc">+</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)<span class="sc">+</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Age in years"</span>)<span class="sc">+</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Ratio score"</span>)<span class="sc">+</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>corresid <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data =</span> HCP, <span class="fu">aes</span>(<span class="at">x =</span> resid, <span class="at">y =</span> Age, <span class="at">color =</span> Sex))<span class="sc">+</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)<span class="sc">+</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Age in years"</span>)<span class="sc">+</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Residual score"</span>)<span class="sc">+</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(corICV, corTBV, cordiff, corratio, corresid, <span class="at">common.legend=</span>T, <span class="at">legend =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="HCP_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">####################################################</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># read in HCP data</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>HCP <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(HCPdir,<span class="st">"/unrestricted_hcp_freesurfer.csv"</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>HCP <span class="ot">=</span> HCP[,<span class="fu">c</span>(<span class="st">"Subject"</span>, <span class="st">"Gender"</span>, <span class="st">"FS_InterCranial_Vol"</span>, <span class="st">"FS_BrainSeg_Vol_No_Vent"</span>)]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(HCP) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"Sex"</span>, <span class="st">"ICV"</span>, <span class="st">"TBV"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># add age information</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>HCPage <span class="ot">=</span> <span class="fu">fread</span>(<span class="fu">paste0</span>(HCPdir, <span class="st">"/RESTRICTED_annafurtjes_12_14_2023_4_18_2.csv"</span>))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(HCPage)[<span class="fu">which</span>(<span class="fu">names</span>(HCPage) <span class="sc">==</span> <span class="st">"Subject"</span>)] <span class="ot">=</span> <span class="st">"ID"</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(HCPage)[<span class="fu">which</span>(<span class="fu">names</span>(HCPage) <span class="sc">==</span> <span class="st">"Age_in_Yrs"</span>)] <span class="ot">=</span> <span class="st">"Age"</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>HCP <span class="ot">=</span> <span class="fu">merge</span>(HCP, HCPage[,<span class="fu">c</span>(<span class="st">"ID"</span>,<span class="st">"Age"</span>)], <span class="at">by =</span> <span class="st">"ID"</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># convert mm3 estimates to more intuitive cm3 estimates</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>ICV <span class="ot">=</span> HCP<span class="sc">$</span>ICV<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>TBV <span class="ot">=</span> HCP<span class="sc">$</span>TBV<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate brain atrophy from single MRI scan</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>diff <span class="ot">=</span> HCP<span class="sc">$</span>ICV <span class="sc">-</span> HCP<span class="sc">$</span>TBV</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>ratio <span class="ot">=</span> HCP<span class="sc">$</span>TBV <span class="sc">/</span> HCP<span class="sc">$</span>ICV</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Quality control: </span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste0("Some participants have negative difference scores and ratio scores &gt; 1, which means that their ICV estimate is smaller than their TBV estimate. This must be an error as the skull always surrounds the brain. Those ", sum((HCP$diff &lt; 0))," HCP participants were excluded from the data set."))</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>deletedHCP <span class="ot">=</span> <span class="fu">sum</span>(HCP<span class="sc">$</span>diff <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co"># delete those from data </span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">sum</span>(HCP<span class="sc">$</span>diff <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">!=</span> <span class="dv">0</span>){HCP<span class="ot">=</span>HCP[<span class="sc">-</span><span class="fu">which</span>(HCP<span class="sc">$</span>diff <span class="sc">&lt;</span> <span class="dv">0</span>),]}</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate residual model for males and females separately</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(TBV <span class="sc">~</span> ICV, <span class="at">data =</span> HCP)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>HCP<span class="sc">$</span>resid <span class="ot">=</span> <span class="fu">as.vector</span>(<span class="fu">resid</span>(model, <span class="at">na.rm=</span>T))</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate residual model for males and females separately</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co"># males</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co">#males &lt;- HCP[HCP$Sex == "M",]</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co">#model &lt;- lm(TBV ~ ICV, data = males)</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="co">#males$resid = as.vector(resid(model, na.rm=T))</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co">#females</span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="co">#females &lt;- HCP[HCP$Sex == "F",]</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="co">#model &lt;- lm(TBV ~ ICV, data = females)</span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="co">#females$resid = as.vector(resid(model, na.rm=T))</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="co"># merge males and females back together</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="co">#both = rbind(males,females)</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="co"># ICV</span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>icv <span class="ot">=</span> <span class="fu">ggplot</span>(HCP, <span class="fu">aes</span>(<span class="at">y =</span> ICV, <span class="at">x =</span> Sex, <span class="at">fill =</span> Sex))<span class="sc">+</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"black"</span>)<span class="sc">+</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">factor</span>(Sex)), </span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"grey45"</span>, </span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">seed =</span> <span class="dv">1</span>, <span class="at">width =</span> <span class="fl">0.2</span>))<span class="sc">+</span> </span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Sex"</span>)<span class="sc">+</span></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"ICV"</span>)<span class="sc">+</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)<span class="sc">+</span></span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),<span class="co">#angle=45</span></span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>))</span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>tbv <span class="ot">=</span> <span class="fu">ggplot</span>(HCP, <span class="fu">aes</span>(<span class="at">y =</span> TBV, <span class="at">x =</span> Sex, <span class="at">fill =</span> Sex))<span class="sc">+</span></span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"black"</span>)<span class="sc">+</span></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">factor</span>(Sex)), </span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"grey45"</span>, </span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">seed =</span> <span class="dv">1</span>, <span class="at">width =</span> <span class="fl">0.2</span>))<span class="sc">+</span> </span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Sex"</span>)<span class="sc">+</span></span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"TBV"</span>)<span class="sc">+</span></span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)<span class="sc">+</span></span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),<span class="co">#angle=45</span></span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>))</span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a><span class="co"># residual score</span></span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>res <span class="ot">=</span> <span class="fu">ggplot</span>(HCP, <span class="fu">aes</span>(<span class="at">y =</span> resid, <span class="at">x =</span> Sex, <span class="at">fill =</span> Sex))<span class="sc">+</span></span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"black"</span>)<span class="sc">+</span></span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">factor</span>(Sex)), </span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"grey45"</span>, </span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">seed =</span> <span class="dv">1</span>, <span class="at">width =</span> <span class="fl">0.2</span>))<span class="sc">+</span> </span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Sex"</span>)<span class="sc">+</span></span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Residual score (standardised)</span><span class="sc">\n</span><span class="st">&lt;- More brain atrophy      Less brain atrophy -&gt;"</span>)<span class="sc">+</span></span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#004225"</span>,  <span class="st">"#90ee90"</span>))<span class="sc">+</span></span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)<span class="sc">+</span></span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),<span class="co">#angle=45</span></span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>))</span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a><span class="co"># ratio score</span></span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a>rat <span class="ot">=</span> <span class="fu">ggplot</span>(HCP, <span class="fu">aes</span>(<span class="at">y =</span> ratio, <span class="at">x =</span> Sex, <span class="at">fill =</span> Sex))<span class="sc">+</span></span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"black"</span>)<span class="sc">+</span></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">factor</span>(Sex)), </span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"grey45"</span>, </span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">seed =</span> <span class="dv">1</span>, <span class="at">width =</span> <span class="fl">0.2</span>))<span class="sc">+</span> </span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Sex"</span>)<span class="sc">+</span></span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Ratio score (standardised)</span><span class="sc">\n</span><span class="st">&lt;- More brain atrophy      Less brain atrophy -&gt;"</span>)<span class="sc">+</span></span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#ffc40c"</span>,  <span class="st">"#fcffa4"</span>))<span class="sc">+</span></span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)<span class="sc">+</span></span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),<span class="co">#angle=45</span></span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>))</span>
+<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a><span class="co"># difference score</span></span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a>dif <span class="ot">=</span> <span class="fu">ggplot</span>(HCP, <span class="fu">aes</span>(<span class="at">y =</span> diff, <span class="at">x =</span> Sex, <span class="at">fill =</span> Sex))<span class="sc">+</span></span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"black"</span>)<span class="sc">+</span></span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">factor</span>(Sex)), </span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"grey45"</span>, </span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">seed =</span> <span class="dv">1</span>, <span class="at">width =</span> <span class="fl">0.2</span>))<span class="sc">+</span> </span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Sex"</span>)<span class="sc">+</span></span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Ratio score (standardised)</span><span class="sc">\n</span><span class="st">&lt;- More brain atrophy      Less brain atrophy -&gt;"</span>)<span class="sc">+</span></span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#ff1493"</span>,  <span class="st">"#ffb6c1"</span>))<span class="sc">+</span></span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)<span class="sc">+</span></span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),<span class="co">#angle=45</span></span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>),</span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour=</span><span class="st">'black'</span>, <span class="at">size=</span><span class="dv">20</span>))</span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(icv, tbv, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="HCP_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 

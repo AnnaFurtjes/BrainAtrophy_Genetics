@@ -1,0 +1,340 @@
+---
+title: "Descriptive statistics of LBA (Table S6)"
+format: 
+  html:
+    code-fold: true
+author: "Anna Elisabeth Furtjes"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html
+doi: 10.1101/2024.11.06.622274
+---
+
+------------------------------------------------------------------------
+
+```{r setup, include=F, warning=F, message=F, eval=T}
+load("paths.RData")
+options(knitr.kable.NA = "")
+```
+
+# Load packages
+
+```{r packages, message=F, warning=F, include = T}
+library(data.table)
+```
+
+
+# Define function
+
+```{r, warning=F, message=F}
+# this only works for the correct naming of the variable names to diff, ratio and resid
+descriptives = function(samples = c("HCP", "Share", "both")){
+  # define statistics to include
+  stats = c("N", "TBV: Mean (SD)", "ICV: Mean (SD)", "cor(ICV,TBV)",
+            "*Difference score*", "Mean (SD)", "Median", "Range", "Variance", "Cut off",
+            "*Ratio score*", "Mean (SD)", "Median", "Range", "Variance", "Cut off",
+            "*Residual score*", "Mean (SD)", "Median", "Range", "Variance", "Cut off")
+
+  # object to hold results
+  res = as.data.frame(matrix(ncol = length(samples)+1, nrow = length(stats)))
+  names(res) = c("Statistic", samples)
+  res$Statistic = stats
+
+  for(i in samples){
+    # pull sample
+    dat = as.data.frame(get(i))
+
+    # N
+    N = sum(!is.na(dat$diff))
+    res[which(res$Statistic == "N"), which(names(res) == i)] = N
+
+    # TBV: Mean (SD)
+    mean = round(mean(dat$TBV, na.rm = T), digits = 2)
+    SD = signif(sd(dat$TBV, na.rm = T), digits = 2)
+    res[which(res$Statistic == "TBV: Mean (SD)"), which(names(res) == i)] = paste0(mean, " (", SD,")")
+
+    # ICV: Mean (SD)
+    mean = round(mean(dat$ICV, na.rm = T), digits = 2)
+    SD = signif(sd(dat$ICV, na.rm = T), digits = 2)
+    res[which(res$Statistic == "ICV: Mean (SD)"), which(names(res) == i)] = paste0(mean, " (", SD,")")
+
+    # ICV TBV correlation
+    cor = round(cor.test(dat$ICV, dat$TBV)$estimate, digits = 2)
+    res[which(res$Statistic == "cor(ICV,TBV)"), which(names(res) == i)] = cor
+
+    # Cycle through different scores
+    for(j in c("Difference", "Ratio", "Resid")){
+        # determine variable that matches the right score
+        if(j == "Difference"){
+          VarName = "diff"
+        }else if(j == "Ratio"){
+          VarName = "ratio"
+        }else if(j == "Resid"){
+          VarName = "resid"
+        }
+
+        dat$var = dat[,VarName]
+
+        ### Calculate mean and SD
+        mean = round(mean(dat$var, na.rm=T), digits = 2)
+        sd = round(sd(dat$var, na.rm=T), digits = 2)
+        # find correct position in res to store result
+        index = grep(j, res$Statistic)
+        Cand = grep("Mean", res$Statistic)
+        pos = Cand[which(Cand > index)][1]
+        # store mean result
+        res[pos, which(names(res) == i)] = paste0(mean, " (", sd, ")")
+
+        ### Calculate median
+        median = round(median(dat$var, na.rm=T), digits = 2)
+        #store median result
+        Cand = grep("Median", res$Statistic)
+        pos = Cand[which(Cand > index)][1]
+        res[pos, which(names(res) == i)] = median
+
+        ### Calculate range
+        min = round(min(dat$var, na.rm = T), digits = 2)
+        max = round(max(dat$var, na.rm = T), digits = 2)
+        # store results
+        Cand = grep("Range", res$Statistic)
+        pos = Cand[which(Cand > index)][1]
+        res[pos, which(names(res) == i)] = paste0(min, " to ", max)
+
+        ## Calculate variance
+        variance = round(var(dat$var, na.rm = T))
+        # store variance result
+        Cand = grep("Variance", res$Statistic)
+        pos = Cand[which(Cand > index)][1]
+        res[pos, which(names(res) == i)] = variance
+
+        ### calculate cut-off
+        if(j == "Difference"){
+          cutOff = mean(dat$var, na.rm = T)+(2*sd(dat$var, na.rm = T))
+        }else{
+            cutOff = mean(dat$var, na.rm = T)-(2*sd(dat$var, na.rm = T))
+        }
+        # store results
+        Cand = grep("Cut", res$Statistic)
+        pos = Cand[which(Cand > index)][1]
+        res[pos, which(names(res) == i)] = round(cutOff, digit = 1)
+    }
+  }
+
+  return(res)
+}
+
+```
+
+# Read in data 
+
+## Generation Scotland (neuroimaging sample)
+
+```{r}
+# add in STRADL
+STRADL = fread(paste0(STRADLdir, "/", list.files(path = STRADLdir, pattern = "STRADL")))
+
+names(STRADL) = c("ID", "Age", "Sex", "TBV", "ICV")
+
+# convert mm3 estimates to more intuitive cm3 estimates
+STRADL$ICV = STRADL$ICV/1000
+STRADL$TBV = STRADL$TBV/1000
+
+# estimate brain atrophy from single MRI scan
+STRADL$diff = STRADL$ICV - STRADL$TBV
+STRADL$ratio = STRADL$TBV / STRADL$ICV
+
+# remove participants with zero estimates for TBV and ICV (11 participants)
+STRADL = STRADL[STRADL$TBV != 0,]
+STRADL = STRADL[STRADL$ICV != 0,]
+
+
+# remove participants where ICV is smaller than TBV (excluding 45 participants)
+STRADL = STRADL[which(STRADL$diff > 0),]
+
+model <- lm(TBV ~ ICV, data = STRADL)
+STRADL$resid = resid(model)
+
+# standardise variables
+STRADL$diff_stand = as.vector(scale(STRADL$diff))
+STRADL$ratio_stand = as.vector(scale(STRADL$ratio))
+STRADL$resid_stand = as.vector(scale(STRADL$resid))
+
+```
+
+## MRi-Share
+
+```{r}
+# read in MRi-Share
+Share = fread(paste0(out, "/MRiShare_global_IDPs_BSAF2021.csv"))
+Share$TBV = Share$SPM_GM_Volume + Share$SPM_WM_Volume
+Share = Share[,c("ID", "Age", "Sex", "eTIV", "TBV")]
+names(Share) = c("ID", "Age", "Sex", "ICV", "TBV")
+
+# convert mm3 estimates to more intuitive cm3 estimates
+Share$ICV = Share$ICV/1000
+Share$TBV = Share$TBV/1000
+
+# estimate brain atrophy from single MRI scan
+Share$diff = Share$ICV - Share$TBV
+Share$ratio = Share$TBV / Share$ICV
+
+model <- lm(TBV ~ ICV, data = Share)
+Share$resid = resid(model)
+
+# save intercept value from the regression
+Shareintercept = summary(model)$coefficients[1,1]
+
+# standardise variables
+Share$diff_stand = as.vector(scale(Share$diff))
+Share$ratio_stand = as.vector(scale(Share$ratio))
+Share$resid_stand = as.vector(scale(Share$resid))
+
+# sanity check
+#sum((Share$diff < 0))
+```
+
+
+## HCP
+
+```{r, warning=F, message=F}
+# read in HCP data
+HCP = fread(paste0(out,"/unrestricted_hcp_freesurfer.csv"))
+HCP = HCP[,c("Subject", "Gender", "FS_InterCranial_Vol", "FS_BrainSeg_Vol_No_Vent")]
+names(HCP) = c("ID", "Sex", "ICV", "TBV")
+
+# add age information
+HCPage = fread(paste0(out, "/RESTRICTED_annafurtjes_12_14_2023_4_18_2.csv"))
+names(HCPage)[which(names(HCPage) == "Subject")] = "ID"
+names(HCPage)[which(names(HCPage) == "Age_in_Yrs")] = "Age"
+HCP = merge(HCP, HCPage[,c("ID","Age")], by = "ID")
+
+# as outlined elsewhere, empirical investigations warrant to use an age cut-off of 31 years in this sample
+HCP = HCP[which(HCP$Age <= 31),]
+
+# convert mm3 estimates to more intuitive cm3 estimates
+HCP$ICV = HCP$ICV/1000
+HCP$TBV = HCP$TBV/1000
+
+# estimate brain atrophy from single MRI scan
+HCP$diff = HCP$ICV - HCP$TBV
+HCP$ratio = HCP$TBV / HCP$ICV
+
+# Quality control: 
+#print(paste0("Some participants have negative difference scores and ratio scores > 1, which means that their ICV estimate is smaller than their TBV estimate. This must be an error as the skull always surrounds the brain. Those ", sum((HCP$diff < 0))," HCP participants were excluded from the data set."))
+
+deletedHCP = sum(HCP$diff < 0)
+# delete those from data 
+if(sum(HCP$diff < 0) != 0){HCP=HCP[-which(HCP$diff < 0),]}
+
+# estimate residual model
+model <- lm(TBV ~ ICV, data = HCP)
+HCP$resid = as.vector(resid(model, na.rm=T))
+
+  
+# standardise variables
+HCP$diff_stand = as.vector(scale(HCP$diff))
+HCP$ratio_stand = as.vector(scale(HCP$ratio))
+HCP$resid_stand = as.vector(scale(HCP$resid))
+
+```
+
+
+## LBC
+
+First and last neuroimaging visit as cleaned in [data preparation](LBC_neuro.html).
+
+```{r}
+LBC1 = fread(paste0(out, "/LBC1936_crossNeuroWave1.txt"))
+LBC4 = fread(paste0(out, "/LBC1936_crossNeuroWave4.txt"))
+```
+
+## UKB
+
+First and last neuroimaging visit as cleaned in [data preparation](UKB_neuro.html). Due to additional exclusions, this step re-calculates LBA residual to ensure zero correlation with ICV.
+
+
+### First neuroimaging visit
+
+```{r}
+# read in UKB neuro data
+UKB = fread(paste0(out, "/UKB_neuroNoLongProcess.txt"))
+
+# restrict to first neuroimaging visit (i.e., second visit altogether)
+UKB2 = UKB[UKB$wave == 2,]
+
+# cleaning extreme outliers (looks messy because only realised later that there were a few extreme outliers)
+UKB2 <- UKB2[which(UKB2$TBVdiff_2to3_stand < 10),]
+UKB2 <- UKB2[which(UKB2$TBVdiff_2to3_stand > (-10)),]
+UKB2 <- UKB2[which(UKB2$TBVratio_3to2_stand < 10),]
+UKB2 <- UKB2[which(UKB2$TBVratio_3to2_stand > (-10)),]
+UKB2 <- UKB2[which(UKB2$TBVresid_2to3_stand < 10),]
+UKB2 <- UKB2[which(UKB2$TBVresid_2to3_stand > (-10)),]
+
+# now that more participants were excluded, need to re-calculate the residual score
+model <- lm(TBV ~ ICV, data = UKB2)
+UKB2$resid = resid(model)
+
+UKB2$resid_stand <- as.vector(scale(UKB2$resid))
+
+# for some reason the mean for resid here is not zero ... don't know why - recalculate 
+model <- lm(TBV ~ ICV, data = UKB2)
+UKB2$resid = resid(model)
+
+UKB2$resid_stand <- as.vector(scale(UKB2$resid))
+```
+
+### Second neuroimaging visit
+
+```{r corrUKB, message=F, warning=F, fig.dim=c(8,7)}
+# restrict to second neuroimaging visit (i.e., third visit altogether)
+UKB3 = UKB[UKB$wave == 3,]
+
+# cleaning extreme outliers (looks messy because only realised later that there were a few extreme outliers)
+UKB3 <- UKB3[which(UKB3$TBVdiff_2to3_stand < 10),]
+UKB3 <- UKB3[which(UKB3$TBVdiff_2to3_stand > (-10)),]
+UKB3 <- UKB3[which(UKB3$TBVratio_3to2_stand < 10),]
+UKB3 <- UKB3[which(UKB3$TBVratio_3to2_stand > (-10)),]
+UKB3 <- UKB3[which(UKB3$TBVresid_2to3_stand < 10),]
+UKB3 <- UKB3[which(UKB3$TBVresid_2to3_stand > (-10)),]
+
+# now that more participants were excluded, need to re-calculate the residual score
+model <- lm(TBV ~ ICV, data = UKB3)
+UKB3$resid = resid(model)
+
+UKB3$resid_stand <- as.vector(scale(UKB3$resid))
+```
+
+
+# Calculate descriptive stats
+
+```{r}
+des = descriptives(samples = c("HCP", "Share", "UKB2", "UKB3","LBC1","LBC4","STRADL"))
+# remove cut-off values (artifact)
+des = des[!grepl("Cut off", des$Statistic),]
+# add ages
+HCPage = paste0(round(mean(HCP$Age)), " (",round(min(HCP$Age)), "-", round(max(HCP$Age)), ")")
+Shareage = paste0(round(mean(Share$Age)), " (",round(min(Share$Age)), "-", round(max(Share$Age)), ")")
+# UKB
+UKB2$ageY = UKB2$age / 12
+UKB2age = paste0(round(mean(UKB2$ageY, na.rm=T)), " (",round(min(UKB2$ageY, na.rm=T)), "-", round(max(UKB2$ageY, na.rm=T)), ")")
+UKB3$ageY = UKB3$age / 12
+UKB3age = paste0(round(mean(UKB3$ageY, na.rm=T)), " (",round(min(UKB3$ageY, na.rm=T)), "-", round(max(UKB3$ageY, na.rm=T)), ")")
+
+# LBC
+age = fread(paste0(out, "/LBC1936_allPheno.txt"), select = c("lbc36no","ageMRI_w2"))
+LBC1 = merge(LBC1, age, by = "lbc36no")
+LBC1$ageMRI_w2 = LBC1$ageMRI_w2/365
+LBC1age = paste0(round(mean(LBC1$ageMRI_w2, na.rm=T)), " (",round(min(LBC1$ageMRI_w2, na.rm=T)), "-", round(max(LBC1$ageMRI_w2, na.rm=T)), ")")
+
+LBC4age = "82 (81-83)"
+
+# STRADL
+STRADLage = paste0(round(mean(STRADL$Age, na.rm=T)), " (",round(min(STRADL$Age, na.rm=T)), "-", round(max(STRADL$Age, na.rm=T)), ")")
+
+# merge ages into data.frame
+res=rbind(des[1,], 
+      c("Age in years", HCPage, Shareage, UKB2age, UKB3age, LBC1age, LBC4age, STRADLage),
+      des[2:nrow(des),])
+
+knitr::kable(res, col.names = c("Statistic","HCP","MRi-Share","UKB (first visit)","UKB (second visit)", "LBC (first visit)", "LBC (fourth visit)", "STRADL"))
+```
+

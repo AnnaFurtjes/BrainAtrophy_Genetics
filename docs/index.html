@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Anna Elisabeth Furtjes">
-<meta name="dcterms.date" content="2025-02-12">
+<meta name="dcterms.date" content="2025-03-20">
 
 <title>Brain Atrophy Genetics - Lifetime brain atrophy GWAS</title>
 <style>
@@ -99,7 +99,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#analysis-steps" id="toc-analysis-steps" class="nav-link active" data-scroll-target="#analysis-steps">Analysis steps</a></li>
+  <li><a href="#analysis-steps" id="toc-analysis-steps" class="nav-link active" data-scroll-target="#analysis-steps">Analysis steps</a>
+  <ul class="collapse">
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data preparation</a></li>
+  <li><a href="#description-and-characterisation-of-the-lba-phenotype" id="toc-description-and-characterisation-of-the-lba-phenotype" class="nav-link" data-scroll-target="#description-and-characterisation-of-the-lba-phenotype">Description and characterisation of the LBA phenotype</a></li>
+  <li><a href="#genome-wide-association-study-of-lba" id="toc-genome-wide-association-study-of-lba" class="nav-link" data-scroll-target="#genome-wide-association-study-of-lba">Genome-wide association study of LBA</a></li>
+  <li><a href="#supplementary-analyses" id="toc-supplementary-analyses" class="nav-link" data-scroll-target="#supplementary-analyses">Supplementary analyses</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -125,7 +131,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 12, 2025</p>
+      <p class="date">March 20, 2025</p>
     </div>
   </div>
     
@@ -147,7 +153,8 @@ ul.task-list li input[type="checkbox"] {
 <p>Pre-registration: <a href="https://osf.io/gydmw/" class="uri">https://osf.io/gydmw/</a></p>
 <section id="analysis-steps" class="level1">
 <h1>Analysis steps</h1>
-<p><strong>Data preparation</strong></p>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data preparation</h2>
 <ol type="1">
 <li><p>UK Biobank</p>
 <p>1.1. <a href="UKB_pheno.html">Phenotypic data</a></p>
@@ -160,19 +167,34 @@ ul.task-list li input[type="checkbox"] {
 <li><p><a href="STRADL.html">Generation Scotland Subsample (STRADL)</a></p></li>
 <li><p><a href="MRiShare.html">MRi-Share</a></p></li>
 </ol>
-<p><strong>Description and characterisation of the LBA phenotype</strong></p>
+</section>
+<section id="description-and-characterisation-of-the-lba-phenotype" class="level2">
+<h2 class="anchored" data-anchor-id="description-and-characterisation-of-the-lba-phenotype">Description and characterisation of the LBA phenotype</h2>
 <ol type="1">
+<li><p><a href="descriptivesLBA.html">Descriptive statistics (Table S6)</a></p></li>
 <li><p><a href="pheno_assocs.html">Measures of LBA predict brain atrophy rated by neuroradiological experts, as well as other ageing-related health traits such as frailty and cognitive ability</a></p></li>
 <li><p>Measures of LBA indicate age-associated brain shrinkage</p>
 <p>2.1. <a href="age_corrs.html">Single time-point MRI measures age correlation</a></p>
 <p>2.2. <a href="age_corrsLBC.html">Repeated MRI measures age correlations in LBC1936</a></p></li>
 <li><p><a href="long_assocs.html">LBA moderately captures within-person atrophic changes that were longitudinally observed between two MRI scans a few years apart</a></p></li>
 </ol>
-<p><strong>Genome-wide association study of LBA</strong></p>
+</section>
+<section id="genome-wide-association-study-of-lba" class="level2">
+<h2 class="anchored" data-anchor-id="genome-wide-association-study-of-lba">Genome-wide association study of LBA</h2>
 <ol type="1">
 <li><p><a href="h2.html">SNP-heritability</a></p></li>
 <li><p><a href="GWAS.html">GWAS analysis</a></p></li>
 <li><p><a href="rg.html">Genetic correlations</a></p></li>
+</ol>
+</section>
+<section id="supplementary-analyses" class="level2">
+<h2 class="anchored" data-anchor-id="supplementary-analyses">Supplementary analyses</h2>
+<ol type="1">
+<li><p><a href="FS_vs_manual.html">LBA from main analysis (FreeSurferv5) comparisons with manually segmented estimates of LBA and FreeSurfer v7</a></p></li>
+<li><p><a href="aims3_moderation.html">Pre-registered aims 3.1-3.3</a></p></li>
+<li><p><a href="h2_comp.html">Conservative z-test to compare h2 estimates</a></p></li>
+<li><p><a href="geneticPCs.html">Determining the most appropriate number of genetic PCs</a></p></li>
+<li><p><a href="Comp_risk_loci.html">Comparison FUMA results across LBA phenotypes</a></p></li>
 </ol>
 <hr>
 <div class="quarto-figure quarto-figure-center">
@@ -183,6 +205,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

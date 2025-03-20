@@ -1,0 +1,91 @@
+---
+title: "Conservative z-tests to compare heritability estimates"
+format: 
+  html:
+    code-fold: true
+author: "Anna Elisabeth Furtjes"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html
+doi: 10.1101/2024.11.06.622274
+---
+
+------------------------------------------------------------------------
+
+This was only added on request of the reviewers. There may be a more elegant way to test whether there is a significant difference between two heritability estimates, this is certainly the most straightforward one, assuming that the difference between the h2 estimates follow a normal distribution (which I think is questionable?).
+The formula I use here includes a correlation term in the denominator (the correlation between the two heritability estimates taken from LDSC calculations), which will increase the z value (i.e., be more likely significant) because we are dividing the difference between two values by a smaller number 
+
+
+```{r, message=F, warning=F}
+# h2 residual score
+h2_1 <- 0.41
+# h2 ratio score
+h2_2 <- 0.42
+se_1 <- 0.01
+se_2 <- 0.01
+
+# correlation between h2 taken from LDSC correlations
+corr = 0.96
+
+# calculate z score
+z = (h2_1 - h2_2)/sqrt(se_1^2 + se_2^2 - (2 * corr * se_1 * se_2))
+#z
+
+# get p-value for z score one tailed test
+p = pnorm(q = z,
+          mean = 0, # mean of the normal distribution
+          sd = 1,
+          lower.tail = T) # standard deviation of the normal distribution
+
+# not multiplying by 2 here because I have a specific expectation that one estimate is larger here and I am only asking whether it is or it isnt 
+
+if (p < 0.05) {
+  res_ratio = paste0("Reject the null hypothesis:\nh2 for the residual score is significantly smaller than h2 for the ratio score:\nz = ", round(z, digits=2), "; p = ", signif(p, digits=2),".")
+} else {
+  res_ratio = paste0("Fail to reject the null hypothesis:\nh2 for the residual score is not significantly smaller than h2 for the ratio score:\nz = ", round(z, digits=2), "; p = ", signif(p, digits=2),".")
+}
+#################################
+# h2 residual score
+h2_1 <- 0.41
+# h2 difference score
+h2_2 <- 0.47
+se_1 <- 0.01
+se_2 <- 0.01
+
+# correlation between h2 taken from LDSC correlations
+corr = 0.72
+
+# calculate z score
+z = (h2_1 - h2_2)/sqrt(se_1^2 + se_2^2 - (2 * corr * se_1 * se_2))
+#z
+
+# get p-value for z score
+p = pnorm(q = z,
+          mean = 0, # mean of the normal distribution
+          sd = 1,
+          lower.tail = T) # standard deviation of the normal distribution
+
+if (p < 0.05) {
+  res_diff = paste0("Reject the null hypothesis:\nh2 for the residual score is significantly smaller than h2 for the difference score:\nz = ", round(z, digits=2), "; p = ", signif(p, digits=2),".")
+} else {
+  res_diff = paste0("Fail to reject the null hypothesis:\nh2 for the residual score is not significantly smaller than h2 for the difference score:\nz = ", round(z, digits=2), "; p = ", signif(p, digits=2),".")
+}
+```
+
+Comparison residual & ratio score:
+
+`r res_ratio`
+
+
+Comparison residual & difference score:
+
+`r res_diff`
+
+
+------------------------------------------------------------------------
+
+
+Reference to future self:
+
+I got confused for a minute about whether the formula contained se or se^2 values, because I found conflicting sources online. One sample z test uses se in the denominator, and the two sample z test has to consider the se of the difference between two measures which is why we exponentiate: 
+
+SE of the difference between the two measures is sqrt(se^2 + se^2)

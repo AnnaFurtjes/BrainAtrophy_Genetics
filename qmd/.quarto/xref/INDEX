@@ -46,5 +46,23 @@
   },
   "UKB_pheno.qmd": {
     "UKB_pheno.html": "ea4ba0c7"
+  },
+  "FS_vs_manual.qmd": {
+    "FS_vs_manual.html": "553f3de6"
+  },
+  "aims3_moderation.qmd": {
+    "aims3_moderation.html": "d14fd99f"
+  },
+  "descriptivesLBA.qmd": {
+    "descriptivesLBA.html": "4f6659b6"
+  },
+  "h2_comp.qmd": {
+    "h2_comp.html": "76a9fd0c"
+  },
+  "geneticPCs.qmd": {
+    "geneticPCs.html": "8ce9c520"
+  },
+  "Comp_risk_loci.qmd": {
+    "Comp_risk_loci.html": "b38931ab"
   }
 }

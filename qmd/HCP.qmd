@@ -157,7 +157,7 @@ HCPunrel$resid_stand = as.vector(scale(HCPunrel$resid))
 
 
 ########## plot age correlations (copied from Aim 1)
-corICV = ggplot(data = HCPunrel, aes(x = ICV, y = Age))+
+corICVunrel = ggplot(data = HCPunrel, aes(x = ICV, y = Age))+
   geom_point(alpha = 0.2)+
   theme_bw()+
   geom_smooth(method='lm')+
@@ -165,7 +165,7 @@ corICV = ggplot(data = HCPunrel, aes(x = ICV, y = Age))+
   ylab("Age in years")+
   theme(panel.border = element_blank())
 
-corTBV = ggplot(data = HCPunrel, aes(x = TBV, y = Age))+
+corTBVunrel = ggplot(data = HCPunrel, aes(x = TBV, y = Age))+
   geom_point(alpha = 0.2)+
   theme_bw()+
   geom_smooth(method='lm')+
@@ -174,7 +174,7 @@ corTBV = ggplot(data = HCPunrel, aes(x = TBV, y = Age))+
   theme(panel.border = element_blank())
 
 
-cordiff = ggplot(data = HCPunrel, aes(x = diff, y = Age))+
+cordiffunrel = ggplot(data = HCPunrel, aes(x = diff, y = Age))+
   geom_point(alpha = 0.2)+
   theme_bw()+
   geom_smooth(method='lm')+
@@ -183,7 +183,7 @@ cordiff = ggplot(data = HCPunrel, aes(x = diff, y = Age))+
   xlab("Difference score")+
   theme(panel.border = element_blank())
 
-corratio = ggplot(data = HCPunrel, aes(x = ratio, y = Age))+
+corratiounrel = ggplot(data = HCPunrel, aes(x = ratio, y = Age))+
   geom_point(alpha = 0.2)+
   theme_bw()+
   geom_smooth(method='lm')+
@@ -192,7 +192,7 @@ corratio = ggplot(data = HCPunrel, aes(x = ratio, y = Age))+
   xlab("Ratio score")+
   theme(panel.border = element_blank())
 
-corresid = ggplot(data = HCPunrel, aes(x = resid, y = Age))+
+corresidunrel = ggplot(data = HCPunrel, aes(x = resid, y = Age))+
   geom_point(alpha = 0.2)+
   theme_bw()+
   geom_smooth(method='lm')+
@@ -201,7 +201,7 @@ corresid = ggplot(data = HCPunrel, aes(x = resid, y = Age))+
   xlab("Residual score")+
   theme(panel.border = element_blank())
 
-ggarrange(corICV, corTBV, cordiff, corratio, corresid, common.legend=T, legend = "bottom")
+ggarrange(corICVunrel, corTBVunrel, cordiffunrel, corratiounrel, corresidunrel, common.legend=T, legend = "bottom")
 ```
 
 
@@ -220,7 +220,7 @@ summary(model)
 
 HCP$ICVadj = resid(model)
 
-corICV = ggplot(data = HCP, aes(x = ICVadj, y = Age))+
+corICV_adj = ggplot(data = HCP, aes(x = ICVadj, y = Age))+
   geom_point(alpha = 0.2)+
   theme_bw()+
   geom_smooth(method='lm')+
@@ -233,7 +233,7 @@ corICV = ggplot(data = HCP, aes(x = ICVadj, y = Age))+
 model = lm('TBV ~ Release + Acquisition', data =HCP)
 HCP$TBVadj = resid(model)
 
-corTBV = ggplot(data = HCP, aes(x = TBVadj, y = Age))+
+corTBV_adj = ggplot(data = HCP, aes(x = TBVadj, y = Age))+
   geom_point(alpha = 0.2)+
   theme_bw()+
   geom_smooth(method='lm')+
@@ -245,7 +245,7 @@ corTBV = ggplot(data = HCP, aes(x = TBVadj, y = Age))+
 # re-create diff score with adjusted variables
 HCP$diff_adj = HCP$ICVadj - HCP$TBVadj
   
-cordiff = ggplot(data = HCP, aes(x = diff_adj, y = Age))+
+cordiff_adj = ggplot(data = HCP, aes(x = diff_adj, y = Age))+
   geom_point(alpha = 0.2)+
   theme_bw()+
   geom_smooth(method='lm')+
@@ -257,7 +257,7 @@ cordiff = ggplot(data = HCP, aes(x = diff_adj, y = Age))+
 # re-create ratio score with adjusted variables
 HCP$ratio_adj = HCP$TBVadj / HCP$ICVadj
  
-corratio = ggplot(data = HCP, aes(x = ratio_adj, y = Age))+
+corratio_adj = ggplot(data = HCP, aes(x = ratio_adj, y = Age))+
   geom_point(alpha = 0.2)+
   theme_bw()+
   geom_smooth(method='lm')+
@@ -266,7 +266,7 @@ corratio = ggplot(data = HCP, aes(x = ratio_adj, y = Age))+
   xlab("Ratio score")+
   theme(panel.border = element_blank())
 
-ggarrange(corICV, corTBV, common.legend = T, legend = "bottom")
+ggarrange(corICV_adj, corTBV_adj, common.legend = T, legend = "bottom")
 ```
 
 
@@ -543,13 +543,16 @@ HCP$resid_stand = as.vector(scale(HCP$resid))
 
 corICV = ggplot(data = HCP, aes(x = ICV, y = Age, color = Sex))+
   geom_point(alpha = 0.2)+
+  stat_cor(aes(color = Sex), method = "pearson")+
   theme_bw()+
   geom_smooth(method='lm')+
   ylab("Age in years")+
-  theme(panel.border = element_blank())
+  theme(panel.border = element_blank())+
+  ggtitle("Full HCP sample")
 
 corTBV = ggplot(data = HCP, aes(x = TBV, y = Age, color = Sex))+
   geom_point(alpha = 0.2)+
+  stat_cor(aes(color = Sex), method = "pearson")+
   theme_bw()+
   geom_smooth(method='lm')+
   ylab("Age in years")+
@@ -558,6 +561,7 @@ corTBV = ggplot(data = HCP, aes(x = TBV, y = Age, color = Sex))+
 cordiff = ggplot(data = HCP, aes(x = diff, y = Age, color = Sex))+
   geom_point(alpha = 0.2)+
   theme_bw()+
+  stat_cor(aes(color = Sex), method = "pearson")+
   geom_smooth(method='lm')+
   ylab("Age in years")+
   xlab("Difference score")+
@@ -573,6 +577,7 @@ corratio = ggplot(data = HCP, aes(x = ratio, y = Age, color = Sex))+
 
 corresid = ggplot(data = HCP, aes(x = resid, y = Age, color = Sex))+
   geom_point(alpha = 0.2)+
+  stat_cor(aes(color = Sex), method = "pearson")+
   theme_bw()+
   geom_smooth(method='lm')+
   ylab("Age in years")+
@@ -728,5 +733,40 @@ dif = ggplot(HCP, aes(y = diff, x = Sex, fill = Sex))+
         plot.title = element_text(face = "bold", colour='black', size=20))
 
 plot_grid(icv, tbv, nrow = 1)
+```
+
+
+Test if sex effect is still there when restricting participants to <31 year-olds.
+
+```{r}
+# read in HCP data
+HCP = fread(paste0(HCPdir,"/unrestricted_hcp_freesurfer.csv"))
+HCP = HCP[,c("Subject", "Gender", "FS_InterCranial_Vol", "FS_BrainSeg_Vol_No_Vent")]
+names(HCP) = c("ID", "Sex", "ICV", "TBV")
+
+# add age information
+HCPage = fread(paste0(HCPdir, "/RESTRICTED_annafurtjes_12_14_2023_4_18_2.csv"))
+names(HCPage)[which(names(HCPage) == "Subject")] = "ID"
+names(HCPage)[which(names(HCPage) == "Age_in_Yrs")] = "Age"
+HCP = merge(HCP, HCPage[,c("ID","Age")], by = "ID")
+
+# convert mm3 estimates to more intuitive cm3 estimates
+HCP$ICV = HCP$ICV/1000
+
+# as outlined elsewhere, empirical investigations warrant to use an age cut-off of 31 years in this sample
+HCP = HCP[which(HCP$Age <= 31),]
+
+#corICV 
+
+corICV_below31= ggplot(data = HCP, aes(x = ICV, y = Age, color = Sex))+
+  geom_point(alpha = 0.2)+
+  stat_cor(aes(color = Sex), method = "pearson")+
+  theme_bw()+
+  geom_smooth(method='lm')+
+  ylab("Age in years")+
+  theme(panel.border = element_blank())+
+  ggtitle("Only <31-year olds from HCP sample")
+
+ggarrange(corICV, corICV_below31, common.legend = T, legend = "bottom")
 ```
 

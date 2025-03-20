@@ -1,0 +1,184 @@
+---
+title: "Comparing genomic risk loci"
+format: 
+  html:
+    code-fold: true
+author: "Anna Elisabeth Furtjes"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html
+doi: 10.1101/2024.11.06.622274
+---
+
+------------------------------------------------------------------------
+
+
+```{r setup, include=F, warning=F, message=F, eval=T}
+load("paths.RData")
+options(knitr.kable.NA = "")
+```
+
+
+To determine whether the different LBA measures capture similar biology, here I compare FUMA output from the three phenotypes.
+
+Three approaches to test whether associated biology overlaps
+
+  1. Compare locus boundaries
+  
+  2. Compare lead and significant SNPs
+  
+  3. Compare mapped genes
+  
+
+# Load packages
+
+```{r}
+library(data.table)
+library(readxl)
+library(stringr)
+```
+
+
+# Read in data
+
+```{r}
+dir = paste0(substr(out, 1, 76), "Results/FUMA")
+
+# loci
+resid_loci <- fread(paste0(dir, "/resid_loci.txt"))
+ratio_loci <- fread(paste0(dir, "/ratio_loci.txt"))
+diff_loci <- fread(paste0(dir, "/diff_loci.txt"))
+
+# genes
+resid_genes = fread(paste0(dir,"/resid_mapped_genes.txt"))
+ratio_genes = fread(paste0(dir,"/ratio_mapped_genes.txt"))
+diff_genes = fread(paste0(dir,"/diff_mapped_genes.txt"))
+
+```
+
+# Compare locus boundaries
+
+
+```{r}
+# save results
+Names <- c("Resid_locus", "overlap_with_ratio", "overlap_with_diff")
+save <- data.frame(matrix(ncol = length(Names), nrow=length(unique(resid_loci$GenomicLocus))))
+names(save) <- Names
+save$Resid_locus <- resid_loci$GenomicLocus
+save$overlap_with_ratio <- FALSE
+save$overlap_with_diff <- FALSE
+
+# Comparison with ratio score
+for(j in save$Resid_locus){
+  # get resid start and end locations
+  start1 <- resid_loci$start[resid_loci$GenomicLocus == j]
+  end1 <- resid_loci$end[resid_loci$GenomicLocus == j]
+  
+  # get list that holds locations for all loci
+  for(i in unique(ratio_loci$GenomicLocus)){
+    # get ratio start and end locations
+    start2 <- ratio_loci$start[ratio_loci$GenomicLocus == i]
+    end2 <- ratio_loci$end[ratio_loci$GenomicLocus == i]
+  
+    # is this locus overlapping with the resid locus in question
+    overlap <- !(end1 < start2 || end2 < start1)
+    
+    # only change status in overlap table if it's true
+    if(overlap == TRUE){
+      save$overlap_with_ratio[save$Resid_locus == j] <- TRUE
+      
+    }
+  }
+
+}
+
+# Comparison with diff score
+for(j in save$Resid_locus){
+  # get resid start and end locations
+  start1 <- resid_loci$start[resid_loci$GenomicLocus == j]
+  end1 <- resid_loci$end[resid_loci$GenomicLocus == j]
+  
+  # get list that holds locations for all loci
+  for(i in unique(diff_loci$GenomicLocus)){
+    # get diff start and end locations
+    start2 <- diff_loci$start[diff_loci$GenomicLocus == i]
+    end2 <- diff_loci$end[diff_loci$GenomicLocus == i]
+  
+    # is this locus overlapping with the resid locus in question
+    overlap <- !(end1 < start2 || end2 < start1)
+    
+    # only change status in overlap table if it's true
+    if(overlap == TRUE){
+      save$overlap_with_diff[save$Resid_locus == j] <- TRUE
+    }
+  }
+}
+
+print(paste0(sum(save$overlap_with_ratio), " of the ", nrow(resid_loci), " loci picked up by LBA residual overlapped with the loci picked up by LBA ratio."))
+
+print(paste0(sum(save$overlap_with_diff), " of the ", nrow(resid_loci), " loci picked up by LBA residual overlapped with the loci picked up by LBA difference."))
+
+```
+
+# Compare lead SNPs
+
+```{r}
+# get lead SNPs for residual score
+resid_leadSNPs <- resid_loci$LeadSNPs
+resid_leadSNPs <- unlist(str_split(resid_leadSNPs, ";"))
+
+# get lead SNPs for ratio score
+ratio_leadSNPs <- ratio_loci$LeadSNPs
+ratio_leadSNPs <- unlist(str_split(ratio_leadSNPs, ";"))
+
+# number of overlapping lead SNPs
+print(paste0("Of the ", length(resid_leadSNPs)," lead SNPs captured by LBA resid, ", sum(resid_leadSNPs %in% ratio_leadSNPs), " overlapped with the lead SNPs captured by LBA ratio."))
+
+# get lead SNPs for diff score
+diff_leadSNPs <- diff_loci$LeadSNPs
+diff_leadSNPs <- unlist(str_split(diff_leadSNPs, ";"))
+
+# number of overlapping lead SNPs
+print(paste0("Of the ", length(resid_leadSNPs)," SNPs captured by LBA resid, ", sum(resid_leadSNPs %in% diff_leadSNPs), " overlapped with the lead SNPs captured by LBA difference"))
+
+```
+
+# Compare independent significant SNPs
+
+```{r}
+# get independent SNPs for residual score
+resid_indepSNPs <- resid_loci$IndSigSNPs
+resid_indepSNPs <- unlist(str_split(resid_indepSNPs, ";"))
+
+# get indep SNPs for ratio score
+ratio_indepSNPs <- ratio_loci$IndSigSNPs
+ratio_indepSNPs <- unlist(str_split(ratio_indepSNPs, ";"))
+
+# number of overlapping indep SNPs
+print(paste0("Of the ", length(resid_indepSNPs)," independent SNPs captured by LBA resid, ", sum(resid_indepSNPs %in% ratio_indepSNPs), " overlapped with the independent SNPs captured by LBA ratio ", sum(resid_indepSNPs %in% ratio_indepSNPs)/length(resid_indepSNPs)*100, "%."))
+
+# get indep SNPs for diff score
+diff_indepSNPs <- diff_loci$IndSigSNPs
+diff_indepSNPs <- unlist(str_split(diff_indepSNPs, ";"))
+
+# number of overlapping indep SNPs
+print(paste0("Of the ", length(resid_indepSNPs)," independent SNPs captured by LBA resid, ", sum(resid_indepSNPs %in% diff_indepSNPs), " overlapped with the independent SNPs captured by LBA difference ", sum(resid_indepSNPs %in% diff_indepSNPs)/length(resid_indepSNPs)*100, "%."))
+
+```
+
+# Compare mapped genes
+
+```{r}
+## resid vs ratio score
+# number of genes picked up by both
+sum(resid_genes$ensg %in% ratio_genes$ensg)
+# percentage of resid genes also picked up by ratio
+print(paste0(sum(resid_genes$ensg %in% ratio_genes$ensg)/ length(resid_genes$ensg)))
+
+## resid vs diff score
+# number of genes picked up by both
+sum(resid_genes$ensg %in% diff_genes$ensg)
+# percentage of resid genes also picked up by ratio
+sum(resid_genes$ensg %in% diff_genes$ensg)/ length(resid_genes$ensg)
+
+```
+

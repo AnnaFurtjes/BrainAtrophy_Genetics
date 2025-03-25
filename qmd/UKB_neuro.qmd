@@ -508,15 +508,15 @@ fwrite(file, paste0(wd, "/UKB_covarGWAS.txt"), quote = F, col.names = T, sep = "
 ```{r, eval = F}
 ##### this next section of code has been taken from REGENIE_step1_reAnalyse_resid.sh
 # read in pheno file
-all = fread("/CCACE_Shared/Anna_F/BrainAtrophy/data/UKB_CrossNeuroIDP_noOutliers.txt")
+all = fread("/BrainAtrophy/data/UKB_CrossNeuroIDP_noOutliers.txt")
 # read in fam file that restricts participants
-fam = fread("/CCACE_Shared/Anna_F/BrainAtrophy/data/geneticQC/ukb_neuroimaging_brainAtrophy_GWASinput.fam")
+fam = fread("/BrainAtrophy/data/geneticQC/ukb_neuroimaging_brainAtrophy_GWASinput.fam")
 
 # keep only fam particiants
 all = all[all$FID %in% fam$V1,]
 
 # read in covar file to keep all non-missing participants
-covar = fread("/CCACE_Shared/Anna_F/BrainAtrophy/data/UKB_covarGWAS.txt")
+covar = fread("/BrainAtrophy/data/UKB_covarGWAS.txt")
 covar = covar[complete.cases(covar),]
 
 # only keep complte covar cases

@@ -68,7 +68,7 @@ Input data used here was kindly provided by Joanna Moodie who had modeled the g-
 library(lavaan)
 
 # read in the data
-UKBcog <- read.csv("/CCACE_Shared/Joanna/ForShare/UKB_g/UKB_cogtests.csv", sep = " ")
+UKBcog <- read.csv("/UKB_g/UKB_cogtests.csv", sep = " ")
 # name ID column
 names(UKBcog)[which(names(UKBcog) == "ID")] = "f.eid"
 
@@ -1437,7 +1437,7 @@ names(save)[which(names(save) == "File")] = "f.eid"
 # rename
 save$f.eid = stringr::str_remove(save$f.eid, pattern = "_orig_defaced")
 
-write.table(save, file = "/CCACE_Shared/Anna_F/BrainAtrophy/data/UKB_BrainAge_T1_orig_defaced.txt", col.names = T, row.names = F, quote = F, sep = "\t")
+write.table(save, file = "/BrainAtrophy/data/UKB_BrainAge_T1_orig_defaced.txt", col.names = T, row.names = F, quote = F, sep = "\t")
 ```
 
 

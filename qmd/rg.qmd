@@ -79,9 +79,9 @@ library(data.table)
 library(tidyr)
 
 
-setwd("/CCACE_Shared/Anna_F/BrainAtrophy/data/GWASsumstats")
+setwd("/BrainAtrophy/data/GWASsumstats")
 
-hm3 <- "/CCACE_Shared/Anna_F/BrainAtrophy/eur_w_ld_chr/w_hm3.snplist"
+hm3 <- "/BrainAtrophy/eur_w_ld_chr/w_hm3.snplist"
 maf.filter = 0.01
 info.filter = 0.9
 

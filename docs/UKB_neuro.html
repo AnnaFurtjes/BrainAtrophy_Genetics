@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Anna Elisabeth Furtjes">
-<meta name="dcterms.date" content="2025-03-20">
+<meta name="dcterms.date" content="2025-03-25">
 
 <title>Brain Atrophy Genetics - UK Biobank: Neuroimaging data preparation</title>
 <style>
@@ -199,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 20, 2025</p>
+      <p class="date">March 25, 2025</p>
     </div>
   </div>
     
@@ -709,15 +709,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### this next section of code has been taken from REGENIE_step1_reAnalyse_resid.sh</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># read in pheno file</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>all <span class="ot">=</span> <span class="fu">fread</span>(<span class="st">"/CCACE_Shared/Anna_F/BrainAtrophy/data/UKB_CrossNeuroIDP_noOutliers.txt"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>all <span class="ot">=</span> <span class="fu">fread</span>(<span class="st">"/BrainAtrophy/data/UKB_CrossNeuroIDP_noOutliers.txt"</span>)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read in fam file that restricts participants</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>fam <span class="ot">=</span> <span class="fu">fread</span>(<span class="st">"/CCACE_Shared/Anna_F/BrainAtrophy/data/geneticQC/ukb_neuroimaging_brainAtrophy_GWASinput.fam"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>fam <span class="ot">=</span> <span class="fu">fread</span>(<span class="st">"/BrainAtrophy/data/geneticQC/ukb_neuroimaging_brainAtrophy_GWASinput.fam"</span>)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># keep only fam particiants</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>all <span class="ot">=</span> all[all<span class="sc">$</span>FID <span class="sc">%in%</span> fam<span class="sc">$</span>V1,]</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># read in covar file to keep all non-missing participants</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">=</span> <span class="fu">fread</span>(<span class="st">"/CCACE_Shared/Anna_F/BrainAtrophy/data/UKB_covarGWAS.txt"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">=</span> <span class="fu">fread</span>(<span class="st">"/BrainAtrophy/data/UKB_covarGWAS.txt"</span>)</span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">=</span> covar[<span class="fu">complete.cases</span>(covar),]</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># only keep complte covar cases</span></span>

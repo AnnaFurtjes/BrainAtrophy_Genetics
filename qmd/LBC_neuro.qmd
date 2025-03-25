@@ -383,17 +383,17 @@ The naming is kind of confusing and here I am using the naming as the folder are
 # remove long scans
 #dirs = dirs[!grepl(".long.", dirs)]
 
-#write.table(dirs, "/CCACE_Shared/Anna_F/BrainAtrophy/scripts/LBClong/subjects_wave3.csv", col.names=F, row.names=F, quote=F, sep="\t")
+#write.table(dirs, "/LBClong/subjects_wave3.csv", col.names=F, row.names=F, quote=F, sep="\t")
 ## use this ID list to extract measurements from FS dirs
 
 
 FREESURFER_HOME=/Cluster_Filespace/mharris4/LBC_long_W4/freesurfer510
 $FREESURFER_HOME/SetUpFreeSurfer.sh
-out="/CCACE_Shared/Anna_F/BrainAtrophy/data"
-ref1="/CCACE_Shared/Anna_F/BrainAtrophy/scripts/LBClong/subjects_wave1.csv"
-ref2="/CCACE_Shared/Anna_F/BrainAtrophy/scripts/LBClong/subjects_wave2.csv"
-ref3="/CCACE_Shared/Anna_F/BrainAtrophy/scripts/LBClong/subjects_wave3.csv"
-ref4="/CCACE_Shared/Anna_F/BrainAtrophy/scripts/LBClong/subjects_wave4.csv"
+out="/data"
+ref1="/scripts/LBClong/subjects_wave1.csv"
+ref2="/scripts/LBClong/subjects_wave2.csv"
+ref3="/scripts/LBClong/subjects_wave3.csv"
+ref4="/scripts/LBClong/subjects_wave4.csv"
 
 
 SUBJECTS_DIR=/Brain_Imaging/LBC1936_FS_long/LBC_long_W4
@@ -477,7 +477,7 @@ fwrite(crossLBC[,c("lbc36no", "ICV", "TBV", "CSF", "diff", "ratio", "resid", "IC
 ```{r, eval =F}
 # read in cross-stats
 ## wave 2
-crossDir="/CCACE_Shared/Anna_F/BrainAtrophy/data"
+crossDir="/BrainAtrophy/data"
 cross = fread(paste0(crossDir, "/LBC1936_global_w2_cross.csv"), data.table=F)
 names(cross) = gsub("-", ".", names(cross), fixed = T)
 
@@ -535,7 +535,7 @@ fwrite(crossLBC[,c("lbc36no", "ICV", "TBV", "CSF", "diff", "ratio", "resid", "IC
 ```{r, eval =F}
 # read in cross-stats
 ## wave 3
-crossDir="/CCACE_Shared/Anna_F/BrainAtrophy/data"
+crossDir="/BrainAtrophy/data"
 cross = fread(paste0(crossDir, "/LBC1936_global_w3_cross.csv"), data.table=F)
 names(cross) = gsub("-", ".", names(cross), fixed = T)
 
@@ -592,7 +592,7 @@ fwrite(crossLBC[,c("lbc36no", "ICV", "TBV", "CSF", "diff", "ratio", "resid", "IC
 ```{r, eval =F}
 # read in cross-stats
 ## wave 4
-crossDir="/CCACE_Shared/Anna_F/BrainAtrophy/data"
+crossDir="/BrainAtrophy/data"
 cross = fread(paste0(crossDir, "/LBC1936_global_w4_cross.csv"), data.table=F)
 names(cross) = gsub("-", ".", names(cross), fixed = T)
 

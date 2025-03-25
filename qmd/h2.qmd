@@ -95,7 +95,7 @@ library(data.table)
 dat = dat[complete.cases(dat),]
 
 # restrict only to participants with clean genetic data
-keep = fread("/CCACE_Shared/Anna_F/BrainAtrophy/data/GCTA_out/UKB_neuroimagingN43392_MAF0.01_unrelated0.025.grm.id")
+keep = fread("/GCTA_out/UKB_neuroimagingN43392_MAF0.01_unrelated0.025.grm.id")
 
 dat = dat[dat$IID %in% keep$V1,]
 
@@ -158,7 +158,6 @@ done
 
 # R
 # library(data.table)
-# setwd("/CCACE_Shared/Anna_F/BrainAtrophy/data")
 # prep input covar files in R
 # covar = fread("UKB_covarGWAS.txt")
 

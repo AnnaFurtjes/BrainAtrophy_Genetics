@@ -190,7 +190,7 @@ for(i in all_traits){
     print(head(dat))
     
     # define file name to save the merged file
-    fileName <- paste0("/CCACE_Shared/Anna_F/BrainAtrophy/data/regenie_out/finalGWAS/GWAS_brainAtrophy_", i,"_N43110.gz")
+    fileName <- paste0("/finalGWAS/GWAS_brainAtrophy_", i,"_N43110.gz")
 	
 	# if this is an interaction run, name accordingly}               
 	if(grepl("interaction", j)){
@@ -631,7 +631,7 @@ for(trait_name in all_traits){
 	if(trait_name == "diff_stand"){pretty_name = "Difference score"}
 
 	# set up to save plot
-	fileName <- paste0("/CCACE_Shared/Anna_F/BrainAtrophy/data/QQeval_",trait_name,".png")
+	fileName <- paste0("/QQeval_",trait_name,".png")
 	png(filename = fileName, width = 1000, height=1000, units="px")
 
 		layout_matrix <- matrix(c(1,3,5,2,4,6), ncol=2, nrow=3)

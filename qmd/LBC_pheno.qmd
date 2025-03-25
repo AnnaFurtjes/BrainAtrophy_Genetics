@@ -722,7 +722,7 @@ write.table(file[,c("lbc36no","brainAge")], file = paste0(wd, "/LBC1936_brainAge
 
 ```{r, eval =F}
 # set path to where data was saved 
-target="/CCACE_Shared/Anna_F/BrainAtrophy/data"
+target="/BrainAtrophy/data"
 
 # read data
 file = foreign::read.spss(paste0(target, "/LBC1936_BrainAtrophy_AF_07NOV2023.sav"), to.data.frame=T)
@@ -760,7 +760,7 @@ Note we did not have access to rating scales at wave 5, only wave 3.
 
 ```{r, eval =F}
 # set path to where data was saved 
-target="/CCACE_Shared/Anna_F/BrainAtrophy/data"
+target="/BrainAtrophy/data"
 
 # read data
 file = foreign::read.spss(paste0(target, "/LBC1936_BrainAtrophy_AtrophyRating_AF_03MAY2024.sav"), to.data.frame=T)

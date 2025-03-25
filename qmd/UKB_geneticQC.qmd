@@ -213,7 +213,7 @@ done
 ## put data from each chromosome together into one bim, bed and fam file
 ## and filter participants of interest
 cd $target
-phenoIDs="/CCACE_Shared/Anna_F/BrainAtrophy/data/geneticQC/ukb_neuroimaging_4MeansClustering_excl_het_missEUR.txt"
+phenoIDs="/BrainAtrophy/data/geneticQC/ukb_neuroimaging_4MeansClustering_excl_het_missEUR.txt"
 
 plink19 \
 --merge-list $target/allGenoFiles.txt \
@@ -328,7 +328,7 @@ This next step removes IDs of related individuals just identified in the previou
 
 ```{bash, eval = F}
 # Step 5: Make fam ID list excluding related individuals
-relatedIDs="/CCACE_Shared/Anna_F/BrainAtrophy/data/geneticQC/sourceCopy/IDstoRemove_related.txt"
+relatedIDs="/BrainAtrophy/data/geneticQC/sourceCopy/IDstoRemove_related.txt"
 
 plink19 \
 --bed ${target}/ukb_neuroimaging_autosomal_sex_preQC.bed \
@@ -425,8 +425,6 @@ plink19 \
 
 ```{bash bed, eval =F}
 # Step 9: Generate final bed files that will be used as input
-final="/CCACE_Shared/Anna_F/BrainAtrophy/data/geneticQC"
-
 plink19 \
 --bed ${target}/ukb_neuroimaging_autosomal_sex_preQC.bed \
 --bim ${target}/ukb_neuroimaging_autosomal_sex_preQC.bim \

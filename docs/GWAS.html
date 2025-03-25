@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Anna Elisabeth Furtjes">
-<meta name="dcterms.date" content="2025-03-20">
+<meta name="dcterms.date" content="2025-03-25">
 
 <title>Brain Atrophy Genetics - Genome-wide association study</title>
 <style>
@@ -198,7 +198,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 20, 2025</p>
+      <p class="date">March 25, 2025</p>
     </div>
   </div>
     
@@ -396,7 +396,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">head</span>(dat))</span>
 <span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>    <span class="co"># define file name to save the merged file</span></span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>    fileName <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"/CCACE_Shared/Anna_F/BrainAtrophy/data/regenie_out/finalGWAS/GWAS_brainAtrophy_"</span>, i,<span class="st">"_N43110.gz"</span>)</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>    fileName <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"/finalGWAS/GWAS_brainAtrophy_"</span>, i,<span class="st">"_N43110.gz"</span>)</span>
 <span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if this is an interaction run, name accordingly}               </span></span>
 <span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">grepl</span>(<span class="st">"interaction"</span>, j)){</span>
@@ -851,7 +851,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(trait_name <span class="sc">==</span> <span class="st">"diff_stand"</span>){pretty_name <span class="ot">=</span> <span class="st">"Difference score"</span>}</span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set up to save plot</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    fileName <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"/CCACE_Shared/Anna_F/BrainAtrophy/data/QQeval_"</span>,trait_name,<span class="st">".png"</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    fileName <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"/QQeval_"</span>,trait_name,<span class="st">".png"</span>)</span>
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">png</span>(<span class="at">filename =</span> fileName, <span class="at">width =</span> <span class="dv">1000</span>, <span class="at">height=</span><span class="dv">1000</span>, <span class="at">units=</span><span class="st">"px"</span>)</span>
 <span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>        layout_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>), <span class="at">ncol=</span><span class="dv">2</span>, <span class="at">nrow=</span><span class="dv">3</span>)</span>

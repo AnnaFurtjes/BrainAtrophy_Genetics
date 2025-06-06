@@ -12,7 +12,7 @@ doi: 10.1101/2024.11.06.622274
 ------------------------------------------------------------------------
 
 
-```{r setup, include=F, warning=F, message=F, eval=T}
+```{r setup, include=F, warning=F, message=F, eval=F}
 load("paths.RData")
 options(knitr.kable.NA = "")
 ```
@@ -31,7 +31,7 @@ Three approaches to test whether associated biology overlaps
 
 # Load packages
 
-```{r}
+```{r, eval=F}
 library(data.table)
 library(readxl)
 library(stringr)
@@ -40,7 +40,7 @@ library(stringr)
 
 # Read in data
 
-```{r}
+```{r, eval=F}
 dir = paste0(substr(out, 1, 76), "Results/FUMA")
 
 # loci
@@ -58,7 +58,7 @@ diff_genes = fread(paste0(dir,"/diff_mapped_genes.txt"))
 # Compare locus boundaries
 
 
-```{r}
+```{r, eval=F}
 # save results
 Names <- c("Resid_locus", "overlap_with_ratio", "overlap_with_diff")
 save <- data.frame(matrix(ncol = length(Names), nrow=length(unique(resid_loci$GenomicLocus))))
@@ -121,7 +121,7 @@ print(paste0(sum(save$overlap_with_diff), " of the ", nrow(resid_loci), " loci p
 
 # Compare lead SNPs
 
-```{r}
+```{r, eval=F}
 # get lead SNPs for residual score
 resid_leadSNPs <- resid_loci$LeadSNPs
 resid_leadSNPs <- unlist(str_split(resid_leadSNPs, ";"))
@@ -144,7 +144,7 @@ print(paste0("Of the ", length(resid_leadSNPs)," SNPs captured by LBA resid, ", 
 
 # Compare independent significant SNPs
 
-```{r}
+```{r, eval=F}
 # get independent SNPs for residual score
 resid_indepSNPs <- resid_loci$IndSigSNPs
 resid_indepSNPs <- unlist(str_split(resid_indepSNPs, ";"))
@@ -167,7 +167,7 @@ print(paste0("Of the ", length(resid_indepSNPs)," independent SNPs captured by L
 
 # Compare mapped genes
 
-```{r}
+```{r, eval=F}
 ## resid vs ratio score
 # number of genes picked up by both
 sum(resid_genes$ensg %in% ratio_genes$ensg)
@@ -182,3 +182,105 @@ sum(resid_genes$ensg %in% diff_genes$ensg)/ length(resid_genes$ensg)
 
 ```
 
+# Revisions (second round)
+
+The reviewer insisted on comparing the residual method with the adjustment method which should mathmatically be identical but produces slightly different results, likely due to the strong associations between TBV and ICV.
+
+Here I am testing whether the adjustment method picked up on different loci to the residual method.
+
+# Read in data
+
+```{r, eval=F}
+dir = paste0(substr(out, 1, 76), "Results/FUMA")
+
+# loci
+resid_loci <- fread(paste0(dir, "/resid_loci.txt"))
+adjust_loci <- fread(paste0(dir, "/adjustment_loci.txt"))
+
+# genes
+resid_genes = fread(paste0(dir,"/resid_mapped_genes.txt"))
+adjust_genes = fread(paste0(dir,"/adjustment_mapped_genes.txt"))
+
+```
+
+# Compare locus boundaries
+
+
+```{r, eval=F}
+# save results
+Names <- c("Resid_locus", "overlap_with_adjust")
+save <- data.frame(matrix(ncol = length(Names), nrow=length(unique(resid_loci$GenomicLocus))))
+names(save) <- Names
+save$Resid_locus <- resid_loci$GenomicLocus
+save$overlap_with_adjust <- FALSE
+
+# Comparison with adjust score
+for(j in save$Resid_locus){
+  # get resid start and end locations
+  start1 <- resid_loci$start[resid_loci$GenomicLocus == j]
+  end1 <- resid_loci$end[resid_loci$GenomicLocus == j]
+  
+  # get list that holds locations for all loci
+  for(i in unique(adjust_loci$GenomicLocus)){
+    # get adjust start and end locations
+    start2 <- adjust_loci$start[adjust_loci$GenomicLocus == i]
+    end2 <- adjust_loci$end[adjust_loci$GenomicLocus == i]
+  
+    # is this locus overlapping with the resid locus in question
+    overlap <- !(end1 < start2 || end2 < start1)
+    
+    # only change status in overlap table if it's true
+    if(overlap == TRUE){
+      save$overlap_with_adjust[save$Resid_locus == j] <- TRUE
+      
+    }
+  }
+
+}
+
+
+print(paste0(sum(save$overlap_with_adjust), " of the ", nrow(resid_loci), " loci picked up by LBA residual overlapped with the loci picked up by LBA adjust."))
+```
+
+# Compare lead SNPs
+
+```{r, eval=F}
+# get lead SNPs for residual score
+resid_leadSNPs <- resid_loci$LeadSNPs
+resid_leadSNPs <- unlist(str_split(resid_leadSNPs, ";"))
+
+# get lead SNPs for adjust score
+adjust_leadSNPs <- adjust_loci$LeadSNPs
+adjust_leadSNPs <- unlist(str_split(adjust_leadSNPs, ";"))
+
+# number of overlapping lead SNPs
+print(paste0("Of the ", length(resid_leadSNPs)," lead SNPs captured by LBA resid, ", sum(resid_leadSNPs %in% adjust_leadSNPs), " overlapped with the lead SNPs captured by LBA adjust."))
+
+```
+
+# Compare independent significant SNPs
+
+```{r, eval=F}
+# get independent SNPs for residual score
+resid_indepSNPs <- resid_loci$IndSigSNPs
+resid_indepSNPs <- unlist(str_split(resid_indepSNPs, ";"))
+
+# get indep SNPs for adjust score
+adjust_indepSNPs <- adjust_loci$IndSigSNPs
+adjust_indepSNPs <- unlist(str_split(adjust_indepSNPs, ";"))
+
+# number of overlapping indep SNPs
+print(paste0("Of the ", length(resid_indepSNPs)," independent SNPs captured by LBA resid, ", sum(resid_indepSNPs %in% adjust_indepSNPs), " overlapped with the independent SNPs captured by LBA adjust ", sum(resid_indepSNPs %in% adjust_indepSNPs)/length(resid_indepSNPs)*100, "%."))
+
+```
+
+# Compare mapped genes
+
+```{r, eval=F}
+## resid vs ratio score
+# number of genes picked up by both
+sum(resid_genes$ensg %in% adjust_genes$ensg)
+# percentage of resid genes also picked up by adjust
+print(paste0(sum(resid_genes$ensg %in% adjust_genes$ensg)/ length(resid_genes$ensg)))
+
+```
